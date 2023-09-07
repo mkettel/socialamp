@@ -19,6 +19,7 @@ extend(geometry)
 
 export default function Experience()
 {
+  const { camera } = useThree();
 
   // Scene Resizing for Mobile -----------------------------------------------
   const [wordScale, setWordScale ] = useState(1.5);
@@ -72,6 +73,9 @@ export default function Experience()
   });
 
   useEffect(() => {
+    camera.position.set(...startingCameraPosition);
+    camera.lookAt(...startingTarget);
+    camera.updateProjectionMatrix();
     setCameraLook();
     if (overlayVisible) {
       setMinPolarAngle(0);
