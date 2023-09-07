@@ -19,6 +19,27 @@ extend(geometry)
 
 export default function Experience()
 {
+
+  // Scene Resizing for Mobile -----------------------------------------------
+  const [wordScale, setWordScale ] = useState(1.5);
+  const [enterScale, setEnterScale ] = useState(1);
+  useEffect(() => {
+    function handleResize() {
+      const { innerWidth } = window;
+      const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
+      const wordScale = isMobile ? .60 : 1.5; // Adjust the scale values for mobile
+      const enterScale = isMobile ? .8 : 1; // Adjust the scale values for mobile
+      setWordScale(wordScale);
+      setEnterScale(enterScale);
+    }
+    window.addEventListener('resize', handleResize);
+  handleResize(); // Call the function initially
+
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+  }, []);
+  // --------------------------------------------------------------------------
   const [about, setAbout] = useState(false);
   const lenseRef = useRef()
   const [minPolarAngle, setMinPolarAngle] = useState(0);
@@ -56,7 +77,7 @@ export default function Experience()
     return <>
 
     <CameraControls  ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} />
-    {overlayVisible && <Overlay  onEnter={overlayEnter} />}
+    {overlayVisible && <Overlay enterScale={enterScale} setEnterScale={setEnterScale}  onEnter={overlayEnter} />}
 
         <Perf position="top-right" />
         {/* <OrbitControls makeDefault /> */}
@@ -66,7 +87,7 @@ export default function Experience()
 
 
           {/* 3D TEXT */}
-        <group scale={1.5} position={[0, 0.16, 0]} rotation={[0, 0, 0]}>
+        <group scale={wordScale} position={[0, 0.16, 0]} rotation={[0, 0, 0]}>
           <Center>
             <Text3D
               castShadow

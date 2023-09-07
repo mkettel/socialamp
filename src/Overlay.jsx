@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { MeshTransmissionMaterial, Html, Text3D } from '@react-three/drei';
 import { useRef, useState, useEffect } from 'react';
 
-function Overlay({ onEnter }) {
+function Overlay({ onEnter, ...props }) {
 
   const enterRef = useRef()
 
@@ -17,7 +17,7 @@ function Overlay({ onEnter }) {
 
 
   return (
-    <group position={[0, 19.5, 27]}>
+    <group position={[0, 19.5, 27]} scale={props.enterScale}>
 
       <Text3D
           ref={enterRef}
