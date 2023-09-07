@@ -68,3 +68,14 @@ body,
   border-radius: 5px;
   font-family: 'Montserrat', sans-serif;
 }
+
+
+/* Overlay Container */
+.overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.346);
+  height: 100vh;
+  cursor: pointer;
+}

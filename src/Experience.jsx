@@ -1,14 +1,16 @@
-import { OrbitControls, Caustics, MeshTransmissionMaterial, Text3D, Center, SoftShadows, Html, Text, Environment } from '@react-three/drei'
+import { CameraControls, OrbitControls, Caustics, MeshTransmissionMaterial, Text3D, Center, SoftShadows, Html, Text, Environment } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import { Canvas, extend, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { easing, geometry } from 'maath'
-import { useState, ControlledInput, Suspense, useRef, useMemo } from 'react'
+import { useState, ControlledInput, Suspense, useRef, useMemo, useEffect } from 'react'
 import lenseVertexShader from './shaders/lenseVertexShader'
 import lenseFragmentShader from './shaders/lenseFragmentShader'
 import Ocean from './Ocean'
 import { useSpring, a } from '@react-spring/three';
 import { useThree } from '@react-three/fiber'
+import Overlay from './Overlay'
+import { lerp } from 'three/src/math/MathUtils'
 
 
 extend(geometry)
@@ -19,18 +21,42 @@ export default function Experience()
 {
   const [about, setAbout] = useState(false);
   const lenseRef = useRef()
+
+  const [overlayVisible, setOverlayVisible] = useState(true);
+  const cameraRef = useRef();
+
+  const startingCameraPosition = [1, 4, -10];
+  const startingTarget = [0, 0, 0];
+  const endingCameraPosition = [-0.4, 0.2, 6.5];
+  const endingTarget = [0, 0, 0];
+
+  useEffect(() => {
+    if (cameraRef.current) {
+      cameraRef.current.setLookAt( ...startingCameraPosition, ...startingTarget, 0);
+    }
+  }, []); // The empty dependency array means this effect runs once when the component mounts.
+  const overlayEnter = () => {
+
+    setOverlayVisible(false);
+    cameraRef.current.setLookAt( ...endingCameraPosition, ...endingTarget, lerp(0, 1, 0.025) );
+
+  }
+
+
     return <>
 
+    <CameraControls ref={cameraRef} />
+    {overlayVisible && <Overlay  onEnter={overlayEnter} />}
+
         {/* <Perf position="top-left" /> */}
-
         <OrbitControls makeDefault />
-
         <directionalLight castShadow position={ [ .5, 1, 3 ] } intensity={ 1.2 } />
         <ambientLight intensity={ 0.1 } />
         <Environment background files="./background/s-1.hdr" />
-        <Environment files="./background/s-1.hdr" />
 
-        {/* <Center> */}
+
+
+          {/* 3D TEXT */}
         <group scale={1.5} position={[0, 0.16, 0]} rotation={[0, 0, 0]}>
           <Center>
             <Text3D
