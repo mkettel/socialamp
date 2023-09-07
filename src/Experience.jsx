@@ -6,6 +6,9 @@ import { easing, geometry } from 'maath'
 import { useState, ControlledInput, Suspense, useRef, useMemo } from 'react'
 import lenseVertexShader from './shaders/lenseVertexShader'
 import lenseFragmentShader from './shaders/lenseFragmentShader'
+import Ocean from './Ocean'
+import { useSpring, a } from '@react-spring/three';
+import { useThree } from '@react-three/fiber'
 
 
 extend(geometry)
@@ -24,19 +27,8 @@ export default function Experience()
 
         <directionalLight castShadow position={ [ .5, 1, 3 ] } intensity={ 1.2 } />
         <ambientLight intensity={ 0.1 } />
-        <Environment background files="./background/kloppenheim_02_puresky_4k.hdr" />
-        <Environment files="./background/syferfontein_1d_clear_puresky_4k.hdr" />
-        <SoftShadows
-          size={ 3 }
-          near={ 9.5 }
-          far={ 10 }
-          resolution={ 1024 }
-          samples={ 17 }
-          rings={ 11 }
-          opacity={ 0.9 }
-          blur={ 1.5 }
-          bake={ true }
-        />
+        <Environment background files="./background/s-1.hdr" />
+        <Environment files="./background/s-1.hdr" />
 
         {/* <Center> */}
         <group scale={1.5} position={[0, 0.16, 0]} rotation={[0, 0, 0]}>
@@ -78,28 +70,25 @@ export default function Experience()
           </Center>
         </group>
 
-        {/* Plane on the ground */}
-        {/* <mesh receiveShadow position-y={ -.5 } rotation-x={ - Math.PI * 0.5 } scale={ 20 }>
-            <planeGeometry />
-            <meshStandardMaterial color="white" side={THREE.DoubleSide} />
-        </mesh> */}
+        <Ocean />
 
       {/* About Button */}
       {about ? (
         <>
           <AboutModal position={[-1.3, 1.5, 0]} scale={.9}/>
-          <Annotation position={[-3.6, -1.5, .4]} scale={1} onJoinClick={() => setAbout(false)}>
+          <Annotation position={[-3.5, -1, .2]} scale={1} onJoinClick={() => setAbout(false)}>
             <span style={{ fontSize: '1.5em' }}>Close</span>
           </Annotation>
         </>
       ) : (
-        <Annotation position={[-3.6, -1.5, .4]} scale={1} onJoinClick={() => setAbout(true)}>
+        <Annotation position={[-3.5, -1, .2]} scale={1} onJoinClick={() => setAbout(true)}>
           <span style={{ fontSize: '1.5em' }}>About</span>
         </Annotation>
       )}
-      <MouseEvents lenseRef={lenseRef} />
-      <Lense lenseRef={lenseRef} />
+      {/* <MouseEvents lenseRef={lenseRef} /> */}
+      {/* <Lense lenseRef={lenseRef} /> */}
     </>
+
 }
 
 // Buttons
