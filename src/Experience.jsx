@@ -41,8 +41,8 @@ export default function Experience()
       setMaxPolarAngle(1.9);
     } else {
       cameraRef.current.setLookAt( ...endingCameraPosition, ...endingTarget, lerp(0, 1, -0.25) );
-      setMinPolarAngle(Math.PI / 2);
-      setMaxPolarAngle(Math.PI / 2);
+      setMinPolarAngle(1);
+      setMaxPolarAngle(1.7);
     }
   }, [])
 
@@ -55,7 +55,7 @@ export default function Experience()
 
     return <>
 
-    <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} />
+    <CameraControls  ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} />
     {overlayVisible && <Overlay  onEnter={overlayEnter} />}
 
         <Perf position="top-right" />
