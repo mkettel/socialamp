@@ -25,16 +25,20 @@ export default function Experience()
   const [overlayVisible, setOverlayVisible] = useState(true);
   const cameraRef = useRef();
 
-  const startingCameraPosition = [1, 4, -10];
-  const startingTarget = [0, 0, 0];
+  const startingCameraPosition = [0, 4, -10];
+  const startingTarget = [0, 4, 0];
   const endingCameraPosition = [-0.4, 0.2, 6.5];
   const endingTarget = [0, 0, 0];
 
+  // setting the starting camera position
   useEffect(() => {
     if (cameraRef.current) {
-      cameraRef.current.setLookAt( ...startingCameraPosition, ...startingTarget, 0);
+      cameraRef.current.setLookAt(...startingCameraPosition, ...startingTarget, true);
+      console.log(cameraRef.current);
     }
   }, []); // The empty dependency array means this effect runs once when the component mounts.
+
+  // setting the ending camera position after overlay is clicked
   const overlayEnter = () => {
 
     setOverlayVisible(false);
@@ -45,11 +49,11 @@ export default function Experience()
 
     return <>
 
-    <CameraControls ref={cameraRef} />
+    <CameraControls ref={cameraRef}  />
     {overlayVisible && <Overlay  onEnter={overlayEnter} />}
 
         {/* <Perf position="top-left" /> */}
-        <OrbitControls makeDefault />
+        {/* <OrbitControls makeDefault /> */}
         <directionalLight castShadow position={ [ .5, 1, 3 ] } intensity={ 1.2 } />
         <ambientLight intensity={ 0.1 } />
         <Environment background files="./background/s-1.hdr" />
