@@ -22,13 +22,13 @@ export default function Experience()
 
   // Scene Resizing for Mobile -----------------------------------------------
   const [wordScale, setWordScale ] = useState(1.5);
-  const [enterScale, setEnterScale ] = useState(1);
+  const [enterScale, setEnterScale ] = useState(2);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const wordScale = isMobile ? .60 : 1.5; // Adjust the scale values for mobile
-      const enterScale = isMobile ? .8 : 1; // Adjust the scale values for mobile
+      const enterScale = isMobile ? .8 : 2; // Adjust the scale values for mobile
       setWordScale(wordScale);
       setEnterScale(enterScale);
     }
@@ -48,8 +48,8 @@ export default function Experience()
   const [overlayVisible, setOverlayVisible] = useState(true);
   const cameraRef = useRef();
 
-  const startingCameraPosition = [0, 20, 30];
-  const startingTarget = [0, 15, 0];
+  const startingCameraPosition = [0, 7, 13];
+  const startingTarget = [0, 2, 13];
   const endingCameraPosition = [0, 0.3, 4];
   const endingTarget = [0, 0, 0];
 
@@ -58,12 +58,12 @@ export default function Experience()
   useEffect(() => {
     if (overlayVisible) {
       cameraRef.current.setLookAt( ...startingCameraPosition, ...startingTarget, lerp(0, 1, -0.25) );
-      setMinPolarAngle(1.3); // sets the top down view angle to 75 degrees (1.3 radians)
-      setMaxPolarAngle(1.9);
+      setMinPolarAngle(0); // sets the top down view angle to 75 degrees (1.3 radians)
+      setMaxPolarAngle(0);
     } else {
       cameraRef.current.setLookAt( ...endingCameraPosition, ...endingTarget, lerp(0, 1, -0.25) );
       setMinPolarAngle(1);
-      setMaxPolarAngle(1.7);
+      setMaxPolarAngle(1.55);
     }
   }, [])
 
@@ -76,7 +76,7 @@ export default function Experience()
 
     return <>
 
-    <CameraControls  ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} />
+    <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} />
     {overlayVisible && <Overlay enterScale={enterScale} setEnterScale={setEnterScale}  onEnter={overlayEnter} />}
 
         <Perf position="top-right" />

@@ -17,7 +17,10 @@ function Overlay({ onEnter, ...props }) {
 
 
   return (
-    <group position={[0, 19.5, 27]} scale={props.enterScale}>
+    <>
+    <directionalLight color={'#E6FDFF'} position={[2, 3, 8]} lookAt={enterRef} intensity={2} castShadow shadow-mapSize-width={1024} shadow-mapSize-height={1024} shadow-camera-far={50} shadow-camera-left={-10} shadow-camera-right={10} shadow-camera-top={10} shadow-camera-bottom={-10} />
+
+    <group position={[0, -1, 14]} rotation={[-Math.PI / 2, 0, 0]} scale={props.enterScale}>
 
       <Text3D
           ref={enterRef}
@@ -39,10 +42,10 @@ function Overlay({ onEnter, ...props }) {
 
       >
           enter
-          <meshStandardMaterial envMapIntensity={1.2} color={"#001011"} metalness={.8} roughness={.01} />
+          <meshStandardMaterial envMapIntensity={1.2} color={"#E6FDFF"} metalness={.8} roughness={.01} />
       </Text3D>
     </group>
-
+    </>
   );
 }
 
