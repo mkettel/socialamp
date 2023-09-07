@@ -14,13 +14,6 @@ export default function App() {
 
     <Canvas
         shadows
-        camera={ {
-            fov: 45,
-            near: 0.1,
-            far: 200,
-            position: [0, 4, -10],
-            lookat: [0, 4, 0]
-        } }
     >
         <Experience />
     </Canvas>

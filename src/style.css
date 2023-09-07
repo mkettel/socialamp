@@ -74,9 +74,9 @@ body,
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.74);
+  background-color: rgba(0, 0, 0, 0.475);
   height: 100vh;
-  cursor: pointer;
+  /* cursor: pointer; */
   position: fixed;
   top: 0;
   left: 0;
@@ -88,5 +88,5 @@ body,
   color: white;
   cursor: pointer;
   font-family: 'montserrat', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
 }

@@ -3,7 +3,7 @@ import { Perf } from 'r3f-perf'
 import { Canvas, extend, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { easing, geometry } from 'maath'
-import { useState, ControlledInput, Suspense, useRef, useMemo, useEffect } from 'react'
+import { useState, ControlledInput, Suspense, useRef, useMemo, useEffect, React } from 'react'
 import lenseVertexShader from './shaders/lenseVertexShader'
 import lenseFragmentShader from './shaders/lenseFragmentShader'
 import Ocean from './Ocean'
@@ -21,41 +21,46 @@ export default function Experience()
 {
   const [about, setAbout] = useState(false);
   const lenseRef = useRef()
+  const [minPolarAngle, setMinPolarAngle] = useState(0);
+  const [maxPolarAngle, setMaxPolarAngle] = useState(Math.PI);
 
   const [overlayVisible, setOverlayVisible] = useState(true);
   const cameraRef = useRef();
 
-  const startingCameraPosition = [0, 4, -10];
-  const startingTarget = [0, 4, 0];
-  const endingCameraPosition = [-0.4, 0.2, 6.5];
+  const startingCameraPosition = [0, 20, 30];
+  const startingTarget = [0, 15, 0];
+  const endingCameraPosition = [0, 0.3, 4];
   const endingTarget = [0, 0, 0];
 
-  // setting the starting camera position
+
+  // setting the starting camera position with the overlay visible
   useEffect(() => {
-    if (cameraRef.current) {
-      cameraRef.current.setLookAt(...startingCameraPosition, ...startingTarget, true);
-      console.log(cameraRef.current);
+    if (overlayVisible) {
+      cameraRef.current.setLookAt( ...startingCameraPosition, ...startingTarget, lerp(0, 1, -0.25) );
+      setMinPolarAngle(1.3); // sets the top down view angle to 75 degrees (1.3 radians)
+      setMaxPolarAngle(1.9);
+    } else {
+      cameraRef.current.setLookAt( ...endingCameraPosition, ...endingTarget, lerp(0, 1, -0.25) );
+      setMinPolarAngle(Math.PI / 2);
+      setMaxPolarAngle(Math.PI / 2);
     }
-  }, []); // The empty dependency array means this effect runs once when the component mounts.
+  }, [])
 
   // setting the ending camera position after overlay is clicked
   const overlayEnter = () => {
-
     setOverlayVisible(false);
-    cameraRef.current.setLookAt( ...endingCameraPosition, ...endingTarget, lerp(0, 1, 0.025) );
-
+    cameraRef.current.setLookAt( ...endingCameraPosition, ...endingTarget, lerp(0, 1, -0.25) );
   }
 
 
     return <>
 
-    <CameraControls ref={cameraRef}  />
+    <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} />
     {overlayVisible && <Overlay  onEnter={overlayEnter} />}
 
-        {/* <Perf position="top-left" /> */}
+        <Perf position="top-right" />
         {/* <OrbitControls makeDefault /> */}
         <directionalLight castShadow position={ [ .5, 1, 3 ] } intensity={ 1.2 } />
-        <ambientLight intensity={ 0.1 } />
         <Environment background files="./background/s-1.hdr" />
 
 
