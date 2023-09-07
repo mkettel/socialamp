@@ -28,7 +28,7 @@ export default function Experience()
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const wordScale = isMobile ? .60 : 1.5; // Adjust the scale values for mobile
-      const enterScale = isMobile ? .8 : 2; // Adjust the scale values for mobile
+      const enterScale = isMobile ? 2 : 2; // Adjust the scale values for mobile
       setWordScale(wordScale);
       setEnterScale(enterScale);
     }
