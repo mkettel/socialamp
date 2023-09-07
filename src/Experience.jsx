@@ -40,6 +40,7 @@ export default function Experience()
   };
   }, []);
   // --------------------------------------------------------------------------
+
   const [about, setAbout] = useState(false);
   const lenseRef = useRef()
   const [minPolarAngle, setMinPolarAngle] = useState(0);
@@ -53,31 +54,44 @@ export default function Experience()
   const endingCameraPosition = [0, 0.3, 4];
   const endingTarget = [0, 0, 0];
 
+  const [animationProgress, setAnimationProgress] = useState(0);
 
-  // setting the starting camera position with the overlay visible
+  const setCameraLook = () => { // set the camera position and target based on the animation progress
+    const lerpFactor = lerp(0, 1, animationProgress);
+    const position = startingCameraPosition.map((start, index) => lerp(start, endingCameraPosition[index], lerpFactor));
+    const target = startingTarget.map((start, index) => lerp(start, endingTarget[index], lerpFactor));
+
+    cameraRef.current.setLookAt(...position, ...target);
+  };
+
+  useFrame(() => {
+    if (!overlayVisible && animationProgress < 1) {
+      setAnimationProgress(prev => Math.min(prev + 0.0095, 1)); // increase progress towards 1
+      setCameraLook();
+    }
+  });
+
   useEffect(() => {
+    setCameraLook();
     if (overlayVisible) {
-      cameraRef.current.setLookAt( ...startingCameraPosition, ...startingTarget, lerp(0, 1, -0.25) );
-      setMinPolarAngle(0); // sets the top down view angle to 75 degrees (1.3 radians)
+      setMinPolarAngle(0);
       setMaxPolarAngle(0);
     } else {
-      cameraRef.current.setLookAt( ...endingCameraPosition, ...endingTarget, lerp(0, 1, -0.25) );
-      setMinPolarAngle(1);
-      setMaxPolarAngle(1.55);
+      setMinPolarAngle(Math.PI / 2);
+      setMaxPolarAngle(Math.PI / 2);
     }
-  }, [])
+  }, [overlayVisible]);
 
-  // setting the ending camera position after overlay is clicked
   const overlayEnter = () => {
     setOverlayVisible(false);
-    cameraRef.current.setLookAt( ...endingCameraPosition, ...endingTarget, lerp(0, 1, -0.25) );
-  }
+    setAnimationProgress(0); // restart the animation progress when the overlay is clicked
+  };
 
 
     return <>
 
     <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} />
-    {overlayVisible && <Overlay enterScale={enterScale} setEnterScale={setEnterScale}  onEnter={overlayEnter} />}
+    {overlayVisible && <Overlay enterScale={enterScale} setEnterScale={setEnterScale} onEnter={overlayEnter} />}
 
         <Perf position="top-right" />
         {/* <OrbitControls makeDefault /> */}
