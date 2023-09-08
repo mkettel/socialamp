@@ -23,15 +23,12 @@ export default function Experience()
 
   // Scene Resizing for Mobile -----------------------------------------------
   const [wordScale, setWordScale ] = useState(1.5);
-  const [enterScale, setEnterScale ] = useState(2);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const wordScale = isMobile ? .60 : 1.5; // Adjust the scale values for mobile
-      const enterScale = isMobile ? 2 : 2; // Adjust the scale values for mobile
       setWordScale(wordScale);
-      setEnterScale(enterScale);
     }
     window.addEventListener('resize', handleResize);
   handleResize(); // Call the function initially
@@ -44,16 +41,16 @@ export default function Experience()
 
   const [about, setAbout] = useState(false);
   const lenseRef = useRef()
-  const [minPolarAngle, setMinPolarAngle] = useState(0);
-  const [maxPolarAngle, setMaxPolarAngle] = useState(Math.PI);
+  const [minPolarAngle, setMinPolarAngle] = useState(.7);
+  const [maxPolarAngle, setMaxPolarAngle] = useState(Math.PI / 2);
 
-  const [overlayVisible, setOverlayVisible] = useState(true);
   const cameraRef = useRef();
 
   const startingCameraPosition = [0, 7, 13];
-  const startingTarget = [0, 2, 13];
+  const startingTarget = [0, 1, 13];
   const endingCameraPosition = [0, 0.3, 4];
   const endingTarget = [0, 0, 0];
+
 
   const [animationProgress, setAnimationProgress] = useState(0);
 
@@ -65,29 +62,24 @@ export default function Experience()
     cameraRef.current.setLookAt(...position, ...target);
   };
 
-  useFrame(() => {
-    if (overlayVisible && animationProgress < 1) {
-      setAnimationProgress(prev => Math.min(prev + 0.0095, 1)); // increase progress towards 1
-      setCameraLook();
-    }
-  });
-
   useEffect(() => {
     camera.position.set(...startingCameraPosition);
     camera.lookAt(...startingTarget);
     camera.updateProjectionMatrix();
     setCameraLook();
-    if (!overlayVisible) {
-      setMinPolarAngle(0);
-      setMaxPolarAngle(0);
-    } else {
-      setMinPolarAngle(Math.PI / 2);
-      setMaxPolarAngle(Math.PI / 2);
+    setMinPolarAngle(.7);
+    setMaxPolarAngle(Math.PI / 2);
+  }, []);
+
+  useFrame(() => {
+    if (animationProgress < 1) {
+      setAnimationProgress(prev => Math.min(prev + 0.0095, 1)); // increase progress towards 1
+      setCameraLook();
     }
-  }, [overlayVisible]);
+  });
+
 
   const overlayEnter = () => {
-    setOverlayVisible(false);
     setAnimationProgress(0); // restart the animation progress when the overlay is clicked
   };
 
@@ -95,7 +87,6 @@ export default function Experience()
     return <>
 
     <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} />
-    {overlayVisible && <Overlay enterScale={enterScale} setEnterScale={setEnterScale} onEnter={overlayEnter} />}
 
         <Perf position="top-right" />
         {/* <OrbitControls makeDefault /> */}
