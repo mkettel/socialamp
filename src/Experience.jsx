@@ -66,7 +66,7 @@ export default function Experience()
   };
 
   useFrame(() => {
-    if (!overlayVisible && animationProgress < 1) {
+    if (overlayVisible && animationProgress < 1) {
       setAnimationProgress(prev => Math.min(prev + 0.0095, 1)); // increase progress towards 1
       setCameraLook();
     }

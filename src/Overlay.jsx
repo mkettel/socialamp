@@ -41,7 +41,7 @@ function Overlay({ onEnter, ...props }) {
           onPointerLeave={() => setHovered(false)}
 
       >
-          enter
+          hi victor
           <meshStandardMaterial envMapIntensity={1.2} color={"#E6FDFF"} metalness={.8} roughness={.01} />
       </Text3D>
     </group>
