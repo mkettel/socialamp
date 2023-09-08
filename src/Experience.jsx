@@ -77,7 +77,7 @@ export default function Experience()
     camera.lookAt(...startingTarget);
     camera.updateProjectionMatrix();
     setCameraLook();
-    if (overlayVisible) {
+    if (!overlayVisible) {
       setMinPolarAngle(0);
       setMaxPolarAngle(0);
     } else {
