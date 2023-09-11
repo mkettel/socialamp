@@ -9,7 +9,6 @@ import lenseFragmentShader from './shaders/lenseFragmentShader'
 import Ocean from './Ocean'
 import { useSpring, a } from '@react-spring/three';
 import { useThree } from '@react-three/fiber'
-import Overlay from './Overlay'
 import { lerp } from 'three/src/math/MathUtils'
 
 
@@ -38,19 +37,17 @@ export default function Experience()
   };
   }, []);
   // --------------------------------------------------------------------------
-
   const [about, setAbout] = useState(false);
   const lenseRef = useRef()
   const [minPolarAngle, setMinPolarAngle] = useState(.7);
   const [maxPolarAngle, setMaxPolarAngle] = useState(Math.PI / 2);
 
-  const cameraRef = useRef();
+  const cameraRef = useRef(); // reference to the camera
 
   const startingCameraPosition = [0, 7, 13];
   const startingTarget = [0, 1, 13];
   const endingCameraPosition = [0, 0.3, 4];
   const endingTarget = [0, 0, 0];
-
 
   const [animationProgress, setAnimationProgress] = useState(0);
 
@@ -58,8 +55,9 @@ export default function Experience()
     const lerpFactor = lerp(0, 1, animationProgress);
     const position = startingCameraPosition.map((start, index) => lerp(start, endingCameraPosition[index], lerpFactor));
     const target = startingTarget.map((start, index) => lerp(start, endingTarget[index], lerpFactor));
-
-    cameraRef.current.setLookAt(...position, ...target);
+    if (cameraRef.current) {
+      cameraRef.current.setLookAt(...position, ...target);
+    }
   };
 
   useEffect(() => {
@@ -79,9 +77,26 @@ export default function Experience()
   });
 
 
+
+
   const overlayEnter = () => {
     setAnimationProgress(0); // restart the animation progress when the overlay is clicked
   };
+
+  // Function for when the About button is clicked
+  const handleAboutClick = () => {
+    console.log('About button clicked');
+    const aboutModalPosition = [0, 0, 6];
+    const aboutModalTarget = [0, 3, 0];
+    if (about) {
+        // If About is already opened, set camera to starting position
+        cameraRef.current.setLookAt(...endingCameraPosition, ...endingTarget, .1);
+      } else {
+        // If About is closed, set camera to ending position
+        cameraRef.current.setLookAt(...aboutModalPosition, ...aboutModalTarget, .1);
+    }
+    setAbout(prev => !prev);  // Toggle the 'about' state
+};
 
 
     return <>
@@ -89,8 +104,6 @@ export default function Experience()
     <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} />
 
         <Perf position="top-right" />
-        {/* <OrbitControls makeDefault /> */}
-        <directionalLight castShadow position={ [ .5, 1, 3 ] } intensity={ 1.2 } />
         <Environment background files="./background/s-1.hdr" />
 
 
@@ -99,7 +112,6 @@ export default function Experience()
         <group scale={wordScale} position={[0, 0.16, 0]} rotation={[0, 0, 0]}>
           <Center>
             <Text3D
-              castShadow
               font="./fonts/Fontana_Bold.json"
               size={ 1 }
               height={ 0.2 }
@@ -127,7 +139,6 @@ export default function Experience()
               bevelSegments={ 5 }
               position={[1.65, 0.11, 0]}
               letterSpacing={.001}
-              castShadow
           >
               amp
               <meshStandardMaterial envMapIntensity={1.2} color={"red"} metalness={.8} roughness={.01} />
@@ -141,23 +152,23 @@ export default function Experience()
       {about ? (
         <>
           <AboutModal position={[-1.3, 1.5, 0]} scale={.9}/>
-          <Annotation position={[-3.5, -1, .2]} scale={1} onJoinClick={() => setAbout(false)}>
+          <Annotation position={[-3.5, 1, .2]} scale={1} onJoinClick={handleAboutClick} >
             <span style={{ fontSize: '1.5em' }}>Close</span>
           </Annotation>
         </>
       ) : (
-        <Annotation position={[-3.5, -1, .2]} scale={1} onJoinClick={() => setAbout(true)}>
+        <Annotation position={[-3.5, 1, .2]} scale={1} onJoinClick={handleAboutClick}>
           <span style={{ fontSize: '1.5em' }}>About</span>
         </Annotation>
       )}
       {/* <MouseEvents lenseRef={lenseRef} /> */}
       {/* <Lense lenseRef={lenseRef} /> */}
-    </>
-
+      </>
 }
 
 // Buttons
 function Annotation({ children,onJoinClick, ...props }) {
+
   return (
     <Html
       {...props}
