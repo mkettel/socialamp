@@ -22,12 +22,15 @@ export default function Experience()
 
   // Scene Resizing for Mobile -----------------------------------------------
   const [wordScale, setWordScale ] = useState(1.5);
+  const [aboutModalScale, setAboutModalScale] = useState(1.4);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
-      const wordScale = isMobile ? .60 : 1.5; // Adjust the scale values for mobile
+      const wordScale = isMobile ? .60 : 1.5;
+      const aboutModalScale = isMobile ? .8 : 1.4;
       setWordScale(wordScale);
+      setAboutModalScale(aboutModalScale);
     }
     window.addEventListener('resize', handleResize);
   handleResize(); // Call the function initially
@@ -41,6 +44,8 @@ export default function Experience()
   const lenseRef = useRef()
   const [minPolarAngle, setMinPolarAngle] = useState(.7);
   const [maxPolarAngle, setMaxPolarAngle] = useState(Math.PI / 2);
+  const [minAzimuthAngle, setMinAzimuthAngle] = useState(-Math.PI / 2);
+  const [maxAzimuthAngle, setMaxAzimuthAngle] = useState(Math.PI / 2);
 
   const cameraRef = useRef(); // reference to the camera
 
@@ -59,7 +64,7 @@ export default function Experience()
       cameraRef.current.setLookAt(...position, ...target);
     }
   };
-
+  // setting the starting camera position and target
   useEffect(() => {
     camera.position.set(...startingCameraPosition);
     camera.lookAt(...startingTarget);
@@ -67,6 +72,7 @@ export default function Experience()
     setCameraLook();
     setMinPolarAngle(.7);
     setMaxPolarAngle(Math.PI / 2);
+    console.log(about);
   }, []);
 
   useFrame(() => {
@@ -76,32 +82,30 @@ export default function Experience()
     }
   });
 
-
-
-
-  const overlayEnter = () => {
-    setAnimationProgress(0); // restart the animation progress when the overlay is clicked
-  };
-
-  // Function for when the About button is clicked
+  // Action when the About Button gets clicked
   const handleAboutClick = () => {
-    console.log('About button clicked');
-    const aboutModalPosition = [0, 0, 6];
+    const newAboutValue = !about;
+    setAbout(newAboutValue);
+    const aboutModalPosition = [0, 3, 6];
     const aboutModalTarget = [0, 3, 0];
-    if (about) {
-        // If About is already opened, set camera to starting position
-        cameraRef.current.setLookAt(...endingCameraPosition, ...endingTarget, .1);
-      } else {
-        // If About is closed, set camera to ending position
-        cameraRef.current.setLookAt(...aboutModalPosition, ...aboutModalTarget, .1);
+    if (newAboutValue) {
+      // If About is already opened, set camera to starting position
+      cameraRef.current.azimuthRotateSpeed = 0; // disable camera rotation
+      cameraRef.current.polarRotateSpeed = 0; // disable camera rotation
+      cameraRef.current.setLookAt(...aboutModalPosition, ...aboutModalTarget, .1);
+      console.log(cameraRef);
+    } else {
+      // If About is closed, set camera to ending position
+      cameraRef.current.setLookAt(...endingCameraPosition, ...endingTarget, .1);
+      cameraRef.current.azimuthRotateSpeed = 1;
+      cameraRef.current.polarRotateSpeed = 1;
     }
-    setAbout(prev => !prev);  // Toggle the 'about' state
-};
+  };
 
 
     return <>
 
-    <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} />
+    <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} minAzimuthAngle={minAzimuthAngle} maxAzimuthAngle={maxAzimuthAngle} />
 
         <Perf position="top-right" />
         <Environment background files="./background/s-1.hdr" />
@@ -137,7 +141,7 @@ export default function Experience()
               bevelSize={ 0.01 }
               bevelOffset={ 0 }
               bevelSegments={ 5 }
-              position={[1.65, 0.11, 0]}
+              position={[1.64, 0.11, 0]}
               letterSpacing={.001}
           >
               amp
@@ -151,7 +155,7 @@ export default function Experience()
       {/* About Button */}
       {about ? (
         <>
-          <AboutModal position={[-1.3, 1.5, 0]} scale={.9}/>
+          <AboutModal position={[0, 4, 0]} scale={aboutModalScale}/>
           <Annotation position={[-3.5, 1, .2]} scale={1} onJoinClick={handleAboutClick} >
             <span style={{ fontSize: '1.5em' }}>Close</span>
           </Annotation>
@@ -161,8 +165,6 @@ export default function Experience()
           <span style={{ fontSize: '1.5em' }}>About</span>
         </Annotation>
       )}
-      {/* <MouseEvents lenseRef={lenseRef} /> */}
-      {/* <Lense lenseRef={lenseRef} /> */}
       </>
 }
 
@@ -189,20 +191,18 @@ function AboutModal(props) {
   return (
     <>
       <group {...props}>
-        {/* <Text position={[0, 0, 0]} anchorX="0px" font="/Inter-Regular.woff" fontSize={0.2} letterSpacing={-0.0}>
+        {/* <Text position={[0, 0, 0.1]} anchorX="0px" font="/Inter-Regular.woff" fontSize={0.2} letterSpacing={-0.0}>
           howdy
           <meshStandardMaterial color="black" />
         </Text> */}
-        {/* <mesh position={[0, 0, 0]} scale={[3.9, 0.48, 1]}>
-          <planeGeometry />
-          <meshBasicMaterial transparent opacity={0.3} depthWrite={false} />
-        </mesh> */}
+        <mesh position={[0, 0, 0]} >
+          <planeGeometry args={[5.5, 1, 2]} />
+          <meshBasicMaterial color="#91C7B1" transparent opacity={0.7} depthWrite={false} />
+        </mesh>
         <Html transform position={[0, 0, 0]}>
-           <p className='about-text'>SocialAmp can be used to amplify <br></br> your movies social media engagement</p>
+           <p className='about-text'>SocialAmp can be used to amplify your movies social media engagement. <br></br> Using stats from various social media outlets, we give you what you are <br></br> looking for to analyze your latest media. </p>
         </Html>
-
       </group>
-
     </>
   )
 }
@@ -236,18 +236,14 @@ function Lense({ lenseRef }) {
         color={'#ffffff'}
         />
     </mesh>
-
   </>
 }
 
-// Rig to move camera with mouse
 function Rig() {
 
-  const vec = new THREE.Vector3();
+  const { camera } = useThree();
 
-  return useFrame(({ camera, mouse }) => {
-    vec.set(mouse.x * 2, mouse.y * 2, camera.position.z)
-    camera.position.lerp(vec, 0.025)
-    camera.lookAt(0, 0, 0)
-  })
+  return <>
+
+  </>
 }

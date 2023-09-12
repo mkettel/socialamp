@@ -13,57 +13,33 @@ body,
 
 
 .annotation {
-  transition: all 0.5s ease-in-out;
-  box-shadow: inset 0 0 0 0.09px white;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  font-size: 4px;
-  font-weight: 300;
-  background: indianred;
+  /* transition: all 0.5s ease-in-out; */
+  /* box-shadow: inset 0 0 0 0.09px white; */
+  /* cursor: pointer; */
+  /* outline: none; */
+  /* border: none; */
+  /* font-size: 4px; */
+  /* font-weight: 300; */
+  /* background: indianred; */
   color: white;
-  padding: 5px 10px;
-  border-radius: 25px;
-  letter-spacing: 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  font-family: 'Roboto', sans-serif;
+  /* padding: 5px 10px; */
+  /* border-radius: 25px; */
+  /* letter-spacing: 1px; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* gap: 5px; */
+  /* font-family: 'Roboto', sans-serif; */
 }
 
 .annotation:hover {
-  box-shadow: inset 250px 0 0 0 white;
-  color: black;
-}
-
-/* Input field for join */
-.join-input {
-  font-family: 'Inter';
-  width: 150px;
-  border: none;
-  background-image: none;
-  background-color: transparent;
-  color: transparent;
-  caret-color: #848484;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  font-weight: 400;
-  /* caret-color: black; */
-  outline: 0;
-  cursor: text;
-  z-index: 10;
-}
-.join-input:focus {
-  outline: none;
-  box-shadow: none !important;
-  /* border: 1px solid black; */
+  /* box-shadow: inset 250px 0 0 0 white;
+  color: black; */
 }
 
 .about-text {
-  font-size: 6px;
-  border: .5px solid black;
+  font-size: 9px;
+  /* border: .5px solid black; */
   padding: 5px;
   border-radius: 5px;
   font-family: 'Montserrat', sans-serif;
@@ -79,4 +55,17 @@ body,
 }
 .loading-text h1 {
   color: white;
+}
+
+.overlay-right-container {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  z-index: 100000000;
+}
+.overlay-right {
+  color: white;
+  background-color: transparent;
+  position: relative;
+  z-index: 10000;
 }
