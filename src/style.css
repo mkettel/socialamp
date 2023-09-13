@@ -59,13 +59,34 @@ body,
 
 .overlay-right-container {
   position: absolute;
-  top: 50px;
-  right: 50px;
+  top: 30px;
+  left: 50px;
   z-index: 100000000;
 }
 .overlay-right {
-  color: white;
+  color: rgb(14, 14, 14);
   background-color: transparent;
   position: relative;
   z-index: 10000;
+}
+.overlay-right img {
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+  animation: fadeIn 2.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  80% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
 }
