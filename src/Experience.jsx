@@ -24,14 +24,17 @@ export default function Experience()
   // Scene Resizing for Mobile -----------------------------------------------
   const [wordScale, setWordScale ] = useState(1.5);
   const [aboutModalScale, setAboutModalScale] = useState(1.4);
+  const [aboutTextScale, setAboutTextScale] = useState(.4);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const wordScale = isMobile ? .60 : 1.5;
-      const aboutModalScale = isMobile ? .8 : 1.4;
+      const aboutModalScale = isMobile ? .7 : 1;
+      const aboutTextScale = isMobile ? .3 : .4;
       setWordScale(wordScale);
       setAboutModalScale(aboutModalScale);
+      setAboutTextScale(aboutTextScale);
     }
     window.addEventListener('resize', handleResize);
   handleResize(); // Call the function initially
@@ -148,24 +151,25 @@ export default function Experience()
               amp
               <meshStandardMaterial envMapIntensity={1.2} color={"red"} metalness={.8} roughness={.01} />
           </Text3D>
+
+            {/* About Button */}
+            {about ? (
+              <>
+                <AboutModal position={[1, 3, 0]} scale={aboutModalScale}/>
+                <Annotation position={[3, 2, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick} >
+                  Close
+                </Annotation>
+              </>
+            ) : (
+              <Annotation position={[2.6, .8, 0.05]} rotation={[0, 0, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick}>
+                about
+              </Annotation>
+            )}
           </Center>
         </group>
 
-        <Ocean />
 
-      {/* About Button */}
-      {about ? (
-        <>
-          <AboutModal position={[0, 4, 0]} scale={aboutModalScale}/>
-          <Annotation position={[3.3, 2.6, .2]} scale={.4} onJoinClick={handleAboutClick} >
-            Close
-          </Annotation>
-        </>
-      ) : (
-        <Annotation position={[2.5, .7, 0]} rotation={[0, 0, 0]} scale={.4} onJoinClick={handleAboutClick}>
-          about
-        </Annotation>
-      )}
+      <Ocean />
       {/* <Rig
         animationProgress={animationProgress}
         cameraRef={cameraRef}
@@ -187,14 +191,14 @@ function Annotation({ children, onJoinClick, ...props }) {
 
   const AnimatedText = animated(MeshDistortMaterial);
   const springs = useSpring({
-    color: hovered ? '#ff6d6d' : '#ECEBE4',
+    color: hovered ? '#247BA0' : '#ECEBE4',
     config: { mass: 1, tension: 500, friction: 100 },
   })
 
   return (
      <Text3D
-      font="./fonts/Fontana_Bold.json"
-      size={ 1 }
+      font="./fonts/Alpino Variable_Regular.json"
+      size={ .8 }
       height={ 0.2 }
       curveSegments={ 12 }
       bevelEnabled
@@ -207,15 +211,15 @@ function Annotation({ children, onJoinClick, ...props }) {
       {...props}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
-   >
+      >
       {children}
       <AnimatedText
-      envMapIntensity={1.2}
-      metalness={.3}
-      roughness={.3}
-      speed={5}
-      distort={0.15}
-      color={springs.color}
+        envMapIntensity={1.2}
+        metalness={.3}
+        roughness={.3}
+        speed={5}
+        distort={0.15}
+        color={springs.color}
        />
   </Text3D>
   )
