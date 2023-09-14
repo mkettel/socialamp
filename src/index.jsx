@@ -5,8 +5,15 @@ import App from './App'
 
 const root = ReactDOM.createRoot(document.querySelector('#root'))
 
+
 root.render(
   <>
-    <App />
+    {/* Overlay */}
+    <div className="overlay-right-container">
+      <div className="overlay-right">
+          <img src="pxl.png" alt="" />
+      </div>
+    </div>
+    <App  />
   </>
 )

@@ -1,4 +1,4 @@
-import { CameraControls, OrbitControls, Caustics, MeshTransmissionMaterial, Text3D, Center, SoftShadows, Html, Text, Environment } from '@react-three/drei'
+import { CameraControls, OrbitControls, MeshTransmissionMaterial, Text3D, Center, Html, Text, Environment, Billboard, RoundedBox, MeshDistortMaterial } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import { Canvas, extend, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -7,7 +7,7 @@ import { useState, ControlledInput, Suspense, useRef, useMemo, useEffect, React 
 import lenseVertexShader from './shaders/lenseVertexShader'
 import lenseFragmentShader from './shaders/lenseFragmentShader'
 import Ocean from './Ocean'
-import { useSpring, a } from '@react-spring/three';
+import { useSpring, a, animated } from '@react-spring/three';
 import { useThree } from '@react-three/fiber'
 import { lerp } from 'three/src/math/MathUtils'
 import { Vector2, Vector3, MathUtils } from 'three';
@@ -41,6 +41,7 @@ export default function Experience()
   };
   }, []);
   // --------------------------------------------------------------------------
+  // STATES & OPENING ANIMATION------------------------------------------------
   const [about, setAbout] = useState(false);
   const lenseRef = useRef()
   const [minPolarAngle, setMinPolarAngle] = useState(.7);
@@ -83,12 +84,13 @@ export default function Experience()
     }
   });
 
+  // ABOUT BUTTON MODAL CAMERA MOVEMENT ---------------------------------------
   // Action when the About Button gets clicked
   const handleAboutClick = () => {
     const newAboutValue = !about;
     setAbout(newAboutValue);
-    const aboutModalPosition = [0, 3, 6];
-    const aboutModalTarget = [0, 3, 0];
+    const aboutModalPosition = [0, 4, 7];
+    const aboutModalTarget = [0, 4, 0];
     if (newAboutValue) {
       // If About is already opened, set camera to starting position
       cameraRef.current.azimuthRotateSpeed = 0; // disable camera rotation
@@ -109,9 +111,7 @@ export default function Experience()
     <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} minAzimuthAngle={minAzimuthAngle} maxAzimuthAngle={maxAzimuthAngle} />
 
         {/* <Perf position="top-right" /> */}
-        <Environment background files="./background/s-1.hdr" />
-
-
+        <Environment background files='./background/s-1.hdr' />
 
           {/* 3D TEXT */}
         <group scale={wordScale} position={[0, 0.16, 0]} rotation={[0, 0, 0]}>
@@ -157,36 +157,67 @@ export default function Experience()
       {about ? (
         <>
           <AboutModal position={[0, 4, 0]} scale={aboutModalScale}/>
-          <Annotation position={[4, 3, .2]} scale={1} onJoinClick={handleAboutClick} >
-            <span style={{ fontSize: '1em' }}>Close</span>
+          <Annotation position={[3.3, 2.6, .2]} scale={.4} onJoinClick={handleAboutClick} >
+            Close
           </Annotation>
         </>
       ) : (
-        <Annotation position={[4, 2, .2]} scale={1} onJoinClick={handleAboutClick}>
-          <span style={{ fontSize: '1em' }}>About</span>
+        <Annotation position={[2.5, .7, 0]} rotation={[0, 0, 0]} scale={.4} onJoinClick={handleAboutClick}>
+          about
         </Annotation>
       )}
-      <Rig
+      {/* <Rig
         animationProgress={animationProgress}
         cameraRef={cameraRef}
-      />
+      /> */}
     </>
 
 }
 
 // Buttons
-function Annotation({ children,onJoinClick, ...props }) {
+function Annotation({ children, onJoinClick, ...props }) {
+
+  // HOVERED STATE POINTER -----------------------------------------------------
+  const [hovered, setHovered] = useState(false);
+  useEffect(() => {
+    document.body.style.cursor = hovered ? 'pointer' : 'auto'
+    console.log(document.body.style);
+  }, [hovered])
+
+
+  const AnimatedText = animated(MeshDistortMaterial);
+  const springs = useSpring({
+    color: hovered ? '#ff6d6d' : '#ECEBE4',
+    config: { mass: 1, tension: 500, friction: 100 },
+  })
 
   return (
-    <Html
+     <Text3D
+      font="./fonts/Fontana_Bold.json"
+      size={ 1 }
+      height={ 0.2 }
+      curveSegments={ 12 }
+      bevelEnabled
+      bevelThickness={ 0.02 }
+      bevelSize={ 0.01 }
+      bevelOffset={ 0 }
+      bevelSegments={ 5 }
+      letterSpacing={.001}
+      onClick={onJoinClick}
       {...props}
-      transform
-      // occlude="blending"
-      geometry={
-        <roundedPlaneGeometry args={[.9, 0.27, 0.13]} />
-      }>
-      <div className="annotation" onClick={onJoinClick}>{children}</div>
-    </Html>
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+   >
+      {children}
+      <AnimatedText
+      envMapIntensity={1.2}
+      metalness={.3}
+      roughness={.3}
+      speed={5}
+      distort={0.15}
+      color={springs.color}
+       />
+  </Text3D>
   )
 }
 
@@ -197,14 +228,15 @@ function AboutModal(props) {
   return (
     <>
       <group {...props}>
-        {/* <Text position={[0, 0, 0.1]} anchorX="0px" font="/Inter-Regular.woff" fontSize={0.2} letterSpacing={-0.0}>
-          howdy
-          <meshStandardMaterial color="black" />
-        </Text> */}
-        <mesh position={[0, 0, 0]} >
-          <planeGeometry args={[5.5, 1, 2]} />
-          <meshBasicMaterial color="#91C7B1" transparent opacity={0.7} depthWrite={false} />
-        </mesh>
+        <RoundedBox
+          args={[6.5, 1.2, .2]} // Width, height, depth. Default is [1, 1, 1]
+          radius={0.1} // Radius of the rounded corners. Default is 0.05
+          smoothness={4} // The number of curve segments. Default is 4
+          bevelSegments={4} // The number of bevel segments. Default is 4, setting it to 0 removes the bevel, as a result the texture is applied to the whole geometry.
+          creaseAngle={0.4} // Smooth normals everywhere except faces that meet at an angle greater than the crease angle
+        >
+          <meshStandardMaterial color="white" />
+        </RoundedBox>
         <Html transform position={[0, 0, 0]}>
            <p className='about-text'>SocialAmp can be used to amplify your movies social media engagement. <br></br> Using stats from various social media outlets, we give you what you are <br></br> looking for to analyze your latest media. </p>
         </Html>
