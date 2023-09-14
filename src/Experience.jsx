@@ -10,6 +10,7 @@ import Ocean from './Ocean'
 import { useSpring, a } from '@react-spring/three';
 import { useThree } from '@react-three/fiber'
 import { lerp } from 'three/src/math/MathUtils'
+import { Vector2, Vector3, MathUtils } from 'three';
 
 
 extend(geometry)
@@ -107,7 +108,7 @@ export default function Experience()
 
     <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} minAzimuthAngle={minAzimuthAngle} maxAzimuthAngle={maxAzimuthAngle} />
 
-        <Perf position="top-right" />
+        {/* <Perf position="top-right" /> */}
         <Environment background files="./background/s-1.hdr" />
 
 
@@ -156,16 +157,21 @@ export default function Experience()
       {about ? (
         <>
           <AboutModal position={[0, 4, 0]} scale={aboutModalScale}/>
-          <Annotation position={[-3.5, 1, .2]} scale={1} onJoinClick={handleAboutClick} >
-            <span style={{ fontSize: '1.5em' }}>Close</span>
+          <Annotation position={[4, 3, .2]} scale={1} onJoinClick={handleAboutClick} >
+            <span style={{ fontSize: '1em' }}>Close</span>
           </Annotation>
         </>
       ) : (
-        <Annotation position={[-3.5, 1, .2]} scale={1} onJoinClick={handleAboutClick}>
-          <span style={{ fontSize: '1.5em' }}>About</span>
+        <Annotation position={[4, 2, .2]} scale={1} onJoinClick={handleAboutClick}>
+          <span style={{ fontSize: '1em' }}>About</span>
         </Annotation>
       )}
-      </>
+      <Rig
+        animationProgress={animationProgress}
+        cameraRef={cameraRef}
+      />
+    </>
+
 }
 
 // Buttons
@@ -175,7 +181,7 @@ function Annotation({ children,onJoinClick, ...props }) {
     <Html
       {...props}
       transform
-      occlude="blending"
+      // occlude="blending"
       geometry={
         <roundedPlaneGeometry args={[.9, 0.27, 0.13]} />
       }>
@@ -239,11 +245,43 @@ function Lense({ lenseRef }) {
   </>
 }
 
-function Rig() {
 
-  const { camera } = useThree();
+function Rig({ animationProgress, cameraRef }) {
+    const vec = new Vector3();
+    const move = new Vector3();
+    const position = new Vector3();
+    const wobble = new Vector3();
+    const wobbleAngle = MathUtils.degToRad(Math.random() * 360);
+    const wobbleStrength = 0.001;
+    const wobbleSpeed = 75e-5;
 
-  return <>
+    const strength = 2;
+    const moveXY = new Vector2(8, 4);
+    const deltaRotate = 20;
 
-  </>
+    if (animationProgress >= 1) {
+      const camera = cameraRef.current.camera;
+      console.log(camera);
+
+        return useFrame(({ mouse, clock }) => {
+            const t = clock.elapsedTime;
+            const mouseX = (mouse.x + 1) / 2;  // Convert mouse range [-1, 1] to [0, 1]
+            const mouseY = (mouse.y + 1) / 2;
+
+            // Calculate desired movement based on the mouse
+            move.x = MathUtils.mapLinear(mouseX, 0, 1, -1, 1) * strength * moveXY.x;
+            move.y = MathUtils.mapLinear(mouseY, 0, 1, -1, 1) * strength * moveXY.y;
+            position.lerp(move, 0.04);  // Lerp speed for the camera position
+
+            // Wobbling effect
+            wobble.x = Math.cos(wobbleAngle + t * (wobbleSpeed)) * (wobbleAngle + 100 * Math.sin(t * (95e-4)));
+            wobble.y = Math.sin(Math.asin(Math.cos(wobbleAngle + t * (85e-5)))) * (150 * Math.sin(wobbleAngle + t * (75e-5)));
+            wobble.z = Math.sin(wobbleAngle + .025 * wobble.x) * 100;
+            wobble.multiplyScalar(wobbleStrength);
+            camera.position.add(wobble);
+
+            camera.position.lerp(position, 0.04);
+            camera.lookAt(0, 0, 0);
+        });
+    }
 }
