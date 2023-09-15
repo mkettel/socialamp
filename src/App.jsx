@@ -33,7 +33,7 @@ export default function App() {
          canvasSize={canvasSize}
          setCanvasSize={setCanvasSize}
          sliderOut={sliderOut}
-          setSliderOut={setSliderOut}
+         setSliderOut={setSliderOut}
          />
 
     </>
@@ -44,20 +44,26 @@ export default function App() {
 function Overlay({sliderOut, setSliderOut, canvasSize, setCanvasSize}) {
 
   const animation = useSpring({
-    transform: sliderOut ? 'translateX(0%)' : 'translateX(0%)'
+    transform: sliderOut ? 'translateX(-50%)' : 'translateX(100%)'
   });
 
   const onAboutClick = () => {
     setSliderOut(!sliderOut);
+    console.log(sliderOut);
   };
 
   return <>
     <animated.div className="overlay-button-container"
-      // style={{ width: canvasSize.width, height: canvasSize.height }}
-      style={animation}
     >
       <div className="overlay-button">
         <p onClick={onAboutClick}>about</p>
+      </div>
+    </animated.div>
+
+    {/* about modal slide out */}
+    <animated.div className="about-modal-container" style={animation}>
+      <div className="about-modal">
+        <p>About socialamp</p>
       </div>
     </animated.div>
 
