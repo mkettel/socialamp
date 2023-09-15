@@ -146,6 +146,14 @@ canvas {
 /* mobile device media query */
 @media only screen and (max-width: 760px) {
 
+  .overlay-button-container .overlay-button {
+    top: 15px;
+    right: 30px;
+  }
+  .overlay-button-container .overlay-button p {
+    font-size: 22px;
+  }
+
   .about-modal .about-text {
     padding: 0px 20px;
   }
