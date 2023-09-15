@@ -53,8 +53,8 @@ export default function Experience()
   const lenseRef = useRef()
   const [minPolarAngle, setMinPolarAngle] = useState(.7);
   const [maxPolarAngle, setMaxPolarAngle] = useState(Math.PI / 2);
-  const [minAzimuthAngle, setMinAzimuthAngle] = useState(-Math.PI / 2);
-  const [maxAzimuthAngle, setMaxAzimuthAngle] = useState(Math.PI / 2);
+  const [minAzimuthAngle, setMinAzimuthAngle] = useState(-.5);
+  const [maxAzimuthAngle, setMaxAzimuthAngle] = useState(.5);
 
   const cameraRef = useRef(); // reference to the camera
 
@@ -79,7 +79,7 @@ export default function Experience()
     camera.lookAt(...startingTarget);
     camera.updateProjectionMatrix();
     setCameraLook();
-    setMinPolarAngle(.7);
+    setMinPolarAngle(1.1);
     setMaxPolarAngle(Math.PI / 2);
     console.log(about);
   }, []);
