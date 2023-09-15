@@ -173,10 +173,12 @@ export default function Experience()
 
         {/* [2.6, .8, 0.05] */}
       <Ocean />
-      <Rig
-        animationProgress={animationProgress}
-        cameraRef={cameraRef}
-      />
+      {window.innerWidth > 768 &&
+        <Rig
+          animationProgress={animationProgress}
+          cameraRef={cameraRef}
+        />
+      }
     </>
 
 }
