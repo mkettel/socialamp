@@ -42,7 +42,7 @@ function Overlay() {
 
 
   const animation = useSpring({
-    transform: sliderOut ? 'translateX(-25%)' : 'translateX(100%)'
+    transform: sliderOut ? 'translateX(-20%)' : 'translateX(100%)'
   });
 
   const onAboutClick = () => {

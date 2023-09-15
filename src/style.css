@@ -156,6 +156,10 @@ canvas {
   }
 
   .about-modal-container {
+    top: 25%;
+  }
+
+  .about-modal-container {
     overflow-y: hidden scroll;
   }
 
