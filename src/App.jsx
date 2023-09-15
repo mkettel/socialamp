@@ -17,7 +17,6 @@ export default function App() {
     height: '100%'
   })
 
-  const [sliderOut, setSliderOut] = useState(false);
 
 
   return <>
@@ -30,10 +29,6 @@ export default function App() {
             <Experience />
         </Canvas>
         <Overlay
-         canvasSize={canvasSize}
-         setCanvasSize={setCanvasSize}
-         sliderOut={sliderOut}
-         setSliderOut={setSliderOut}
          />
 
     </>
@@ -41,10 +36,13 @@ export default function App() {
 }
 
 
-function Overlay({sliderOut, setSliderOut, canvasSize, setCanvasSize}) {
+function Overlay() {
+
+  const [sliderOut, setSliderOut] = useState(false);
+
 
   const animation = useSpring({
-    transform: sliderOut ? 'translateX(-50%)' : 'translateX(100%)'
+    transform: sliderOut ? 'translateX(-25%)' : 'translateX(100%)'
   });
 
   const onAboutClick = () => {
@@ -63,7 +61,12 @@ function Overlay({sliderOut, setSliderOut, canvasSize, setCanvasSize}) {
     {/* about modal slide out */}
     <animated.div className="about-modal-container" style={animation}>
       <div className="about-modal">
-        <p>About socialamp</p>
+        <div className="about-modal-header">
+          <h2>About socialamp</h2>
+        </div>
+        <div className="about-text">
+          <p>socialamp is a social media platform that allows users to create and share music playlists with their friends. Users can create a room, add songs to their playlist, and invite their friends to join. The room host can then play, pause, and skip songs for everyone in the room.</p>
+        </div>
       </div>
     </animated.div>
 
