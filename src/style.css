@@ -154,10 +154,14 @@ canvas {
     font-size: 22px;
   }
 
+  .about-modal-container {
+    overflow-y: hidden scroll;
+  }
+
   .about-modal .about-text {
     padding: 0px 20px;
   }
   .about-text p {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
