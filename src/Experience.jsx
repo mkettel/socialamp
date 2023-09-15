@@ -25,14 +25,17 @@ export default function Experience()
   const [wordScale, setWordScale ] = useState(1.5);
   const [aboutModalScale, setAboutModalScale] = useState(1.4);
   const [aboutTextScale, setAboutTextScale] = useState(.4);
+  const [wordPosition, setWordPosition] = useState([0, 0.56, 0]);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const wordScale = isMobile ? .60 : 1.5;
-      const aboutModalScale = isMobile ? .7 : 1;
+      const wordPosition = isMobile ? [0, 0, 0] : [0, 0.56, 0];
+      const aboutModalScale = isMobile ? .6 : 1;
       const aboutTextScale = isMobile ? .3 : .4;
       setWordScale(wordScale);
+      setWordPosition(wordPosition);
       setAboutModalScale(aboutModalScale);
       setAboutTextScale(aboutTextScale);
     }
@@ -117,7 +120,7 @@ export default function Experience()
         <Environment background files='./background/s-1.hdr' />
 
           {/* 3D TEXT */}
-        <group scale={wordScale} position={[0, 0.16, 0]} rotation={[0, 0, 0]}>
+        <group scale={wordScale} position={wordPosition} rotation={[0, 0, 0]}>
           <Center>
             <Text3D
               font="./fonts/Fontana_Bold.json"
@@ -161,19 +164,19 @@ export default function Experience()
                 </Annotation>
               </>
             ) : (
-              <Annotation position={[2.6, .8, 0.05]} rotation={[0, 0, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick}>
+              <Annotation position={[-1.4, -0.40, 0.1]} rotation={[0, 0, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick}>
                 about
               </Annotation>
             )}
           </Center>
         </group>
 
-
+        {/* [2.6, .8, 0.05] */}
       <Ocean />
-      {/* <Rig
+      <Rig
         animationProgress={animationProgress}
         cameraRef={cameraRef}
-      /> */}
+      />
     </>
 
 }
@@ -191,7 +194,7 @@ function Annotation({ children, onJoinClick, ...props }) {
 
   const AnimatedText = animated(MeshDistortMaterial);
   const springs = useSpring({
-    color: hovered ? '#247BA0' : '#ECEBE4',
+    color: hovered ? '#247BA0' : '#D64933',
     config: { mass: 1, tension: 500, friction: 100 },
   })
 
@@ -214,7 +217,7 @@ function Annotation({ children, onJoinClick, ...props }) {
       >
       {children}
       <AnimatedText
-        envMapIntensity={1.2}
+        envMapIntensity={.9}
         metalness={.3}
         roughness={.3}
         speed={5}
@@ -317,7 +320,7 @@ function Rig({ animationProgress, cameraRef }) {
             camera.position.add(wobble);
 
             camera.position.lerp(position, 0.04);
-            camera.lookAt(0, 0, 0);
+            // camera.lookAt(0, 0, 0);
         });
     }
 }
