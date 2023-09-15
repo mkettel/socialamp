@@ -295,7 +295,7 @@ function Rig({ animationProgress, cameraRef }) {
             camera.position.add(wobble);
 
             camera.position.lerp(position, 0.04);
-            // camera.lookAt(0, 0, 0);
+            camera.lookAt(0, 0, 0);
         });
     }
 }
