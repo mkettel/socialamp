@@ -31,7 +31,7 @@ export default function Experience()
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const wordScale = isMobile ? .60 : 1.5;
-      const wordPosition = isMobile ? [0, 0, 0] : [0, 0.56, 0];
+      const wordPosition = isMobile ? [0, 0, 0] : [0, 0.36, 0];
       const aboutModalScale = isMobile ? .6 : 1;
       const aboutTextScale = isMobile ? .3 : .4;
       setWordScale(wordScale);
@@ -95,13 +95,13 @@ export default function Experience()
   const handleAboutClick = () => {
     const newAboutValue = !about;
     setAbout(newAboutValue);
-    const aboutModalPosition = [0, 4, 7];
-    const aboutModalTarget = [0, 4, 0];
+    const aboutModalPosition = [0, 3, 7];
+    const aboutModalTarget = [0, 3, 0];
     if (newAboutValue) {
       // If About is already opened, set camera to starting position
       cameraRef.current.azimuthRotateSpeed = 0; // disable camera rotation
       cameraRef.current.polarRotateSpeed = 0; // disable camera rotation
-      cameraRef.current.setLookAt(...aboutModalPosition, ...aboutModalTarget, .1);
+      cameraRef.current.setLookAt(...aboutModalPosition, ...aboutModalTarget, .001);
       console.log(cameraRef);
     } else {
       // If About is closed, set camera to ending position
@@ -162,6 +162,9 @@ export default function Experience()
                 <Annotation position={[3, 2, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick} >
                   Close
                 </Annotation>
+                  <Annotation position={[-1.4, -0.40, 0.1]} rotation={[0, 0, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick}>
+                  about
+              </Annotation>
               </>
             ) : (
               <Annotation position={[-1.4, -0.40, 0.1]} rotation={[0, 0, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick}>
@@ -196,7 +199,7 @@ function Annotation({ children, onJoinClick, ...props }) {
 
   const AnimatedText = animated(MeshDistortMaterial);
   const springs = useSpring({
-    color: hovered ? '#247BA0' : '#D64933',
+    color: hovered ? '#F6908E' : '#D64933',
     config: { mass: 1, tension: 500, friction: 100 },
   })
 
