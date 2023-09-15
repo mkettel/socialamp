@@ -23,17 +23,17 @@ export default function Experience()
 
   // Scene Resizing for Mobile -----------------------------------------------
   const [wordScale, setWordScale ] = useState(1.5);
-  const [aboutModalScale, setAboutModalScale] = useState(1.4);
-  const [aboutTextScale, setAboutTextScale] = useState(.4);
-  const [wordPosition, setWordPosition] = useState([0, 0.56, 0]);
+  const [wordPosition, setWordPosition] = useState([0, 0.4, 0]);
+  const [aboutModalScale, setAboutModalScale] = useState(1);
+  const [aboutTextScale, setAboutTextScale] = useState(.35);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const wordScale = isMobile ? .60 : 1.5;
-      const wordPosition = isMobile ? [0, 0, 0] : [0, 0.36, 0];
+      const wordPosition = isMobile ? [0, 0, 0] : [0, 0.4, 0];
       const aboutModalScale = isMobile ? .6 : 1;
-      const aboutTextScale = isMobile ? .3 : .4;
+      const aboutTextScale = isMobile ? .3 : .35;
       setWordScale(wordScale);
       setWordPosition(wordPosition);
       setAboutModalScale(aboutModalScale);

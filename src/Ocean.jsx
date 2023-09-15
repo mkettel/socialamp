@@ -20,8 +20,8 @@ export default function Ocean() {
       waterNormals,
       sunDirection: new THREE.Vector3(),
       sunColor: "#D4C3AC",
-      waterColor: "#17242E",
-      distortionScale: 1.7,
+      waterColor: "#5FBFF9",
+      distortionScale: 1.5,
       fog: false,
       format: gl.encoding
     }),
