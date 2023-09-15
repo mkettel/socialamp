@@ -60,7 +60,7 @@ export default function Experience()
 
   const startingCameraPosition = [0, 7, 13];
   const startingTarget = [0, 1, 13];
-  const endingCameraPosition = [0, 0.3, 4];
+  const endingCameraPosition = [0, 0.9, 5];
   const endingTarget = [0, 0, 0];
 
   const [animationProgress, setAnimationProgress] = useState(0);
@@ -170,7 +170,7 @@ export default function Experience()
             {ampText}
 
             {/* About Button */}
-            {about ? (
+            {/* {about ? (
               <>
                 <AboutModal position={[1, 3, 0]} scale={aboutModalScale} />
                 <Annotation position={[3, 2, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick} >
@@ -184,7 +184,7 @@ export default function Experience()
               <Annotation position={[-1.4, -0.40, 0.1]} rotation={[0, 0, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick}>
                 about
               </Annotation>
-            )}
+            )} */}
           </Center>
         </group>
 
