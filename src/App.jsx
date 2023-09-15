@@ -65,7 +65,7 @@ function Overlay() {
           <h2>About socialamp</h2>
         </div>
         <div className="about-text">
-          <p>socialamp is a social media platform that allows users to create and share music playlists with their friends. Users can create a room, add songs to their playlist, and invite their friends to join. The room host can then play, pause, and skip songs for everyone in the room.</p>
+          <p>SocialAmp can be used to amplify your movies' social media engagement. Using stats from various social media outlets, we give you what you are looking for to analyze your latest media. </p>
         </div>
       </div>
     </animated.div>

@@ -122,6 +122,7 @@ canvas {
 }
 .about-modal .about-text {
   padding: 0px 45px;
+  text-align: center;
 }
 .about-text p {
   font-size: 20px;
