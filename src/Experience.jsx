@@ -2,8 +2,8 @@ import { CameraControls, OrbitControls, MeshTransmissionMaterial, Text3D, Center
 import { Perf } from 'r3f-perf'
 import { Canvas, extend, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { easing, geometry } from 'maath'
-import { useState, ControlledInput, Suspense, useRef, useMemo, useEffect, React } from 'react'
+import { easing, geometry, three } from 'maath'
+import { useState, Suspense, useRef, useMemo, useEffect, React } from 'react'
 import lenseVertexShader from './shaders/lenseVertexShader'
 import lenseFragmentShader from './shaders/lenseFragmentShader'
 import Ocean from './Ocean'
@@ -11,6 +11,7 @@ import { useSpring, a, animated } from '@react-spring/three';
 import { useThree } from '@react-three/fiber'
 import { lerp } from 'three/src/math/MathUtils'
 import { Vector2, Vector3, MathUtils } from 'three';
+import Annotation from './Annotation'
 
 
 extend(geometry)
@@ -85,7 +86,7 @@ export default function Experience()
 
   useFrame(() => {
     if (animationProgress < 1) {
-      setAnimationProgress(prev => Math.min(prev + 0.0095, 1)); // increase progress towards 1
+      setAnimationProgress(prev => Math.min(prev + 0.0098, 1)); // increase progress towards 1
       setCameraLook();
     }
   });
@@ -112,6 +113,49 @@ export default function Experience()
   };
 
 
+  // Performance Optimization --------------------------------------------------
+  const socialText = useMemo(() => {
+    return (
+      <Text3D
+        font="./fonts/Fontana_Bold.json"
+        size={ 1 }
+        height={ 0.2 }
+        curveSegments={ 12 }
+        bevelEnabled
+        bevelThickness={ 0.02 }
+        bevelSize={ 0.01 }
+        bevelOffset={ 0 }
+        bevelSegments={ 5 }
+        position={[-1.35, 0.11, 0]}
+        letterSpacing={.001}
+        >
+        social
+        <meshStandardMaterial envMapIntensity={1.2} color={"#001011"} metalness={.8} roughness={.01} />
+      </Text3D>
+    )
+  })
+
+  const ampText = useMemo(() => {
+    return (
+      <Text3D
+        font="./fonts/Fontana_Bold.json"
+        size={ 1 }
+        height={ 0.2 }
+        curveSegments={ 12 }
+        bevelEnabled
+        bevelThickness={ 0.02 }
+        bevelSize={ 0.01 }
+        bevelOffset={ 0 }
+        bevelSegments={ 5 }
+        position={[1.64, 0.11, 0]}
+        letterSpacing={.001}
+        >
+        amp
+        <meshStandardMaterial envMapIntensity={1.2} color={"red"} metalness={.8} roughness={.01} />
+      </Text3D>
+    )
+  })
+
     return <>
 
     <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} minAzimuthAngle={minAzimuthAngle} maxAzimuthAngle={maxAzimuthAngle} />
@@ -122,43 +166,13 @@ export default function Experience()
           {/* 3D TEXT */}
         <group scale={wordScale} position={wordPosition} rotation={[0, 0, 0]}>
           <Center>
-            <Text3D
-              font="./fonts/Fontana_Bold.json"
-              size={ 1 }
-              height={ 0.2 }
-              curveSegments={ 12 }
-              bevelEnabled
-              bevelThickness={ 0.02 }
-              bevelSize={ 0.01 }
-              bevelOffset={ 0 }
-              bevelSegments={ 5 }
-              position={[-1.35, 0.11, 0]}
-              letterSpacing={.001}
-          >
-              social
-              <meshStandardMaterial envMapIntensity={1.2} color={"#001011"} metalness={.8} roughness={.01} />
-          </Text3D>
-            <Text3D
-              font="./fonts/Fontana_Bold.json"
-              size={ 1 }
-              height={ 0.2 }
-              curveSegments={ 12 }
-              bevelEnabled
-              bevelThickness={ 0.02 }
-              bevelSize={ 0.01 }
-              bevelOffset={ 0 }
-              bevelSegments={ 5 }
-              position={[1.64, 0.11, 0]}
-              letterSpacing={.001}
-          >
-              amp
-              <meshStandardMaterial envMapIntensity={1.2} color={"red"} metalness={.8} roughness={.01} />
-          </Text3D>
+           {socialText}
+            {ampText}
 
             {/* About Button */}
             {about ? (
               <>
-                <AboutModal position={[1, 3, 0]} scale={aboutModalScale}/>
+                <AboutModal position={[1, 3, 0]} scale={aboutModalScale} />
                 <Annotation position={[3, 2, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick} >
                   Close
                 </Annotation>
@@ -174,8 +188,9 @@ export default function Experience()
           </Center>
         </group>
 
-        {/* [2.6, .8, 0.05] */}
       <Ocean />
+
+      {/* Don't use Rig on mobile */}
       {window.innerWidth > 768 &&
         <Rig
           animationProgress={animationProgress}
@@ -186,52 +201,7 @@ export default function Experience()
 
 }
 
-// Buttons
-function Annotation({ children, onJoinClick, ...props }) {
 
-  // HOVERED STATE POINTER -----------------------------------------------------
-  const [hovered, setHovered] = useState(false);
-  useEffect(() => {
-    document.body.style.cursor = hovered ? 'pointer' : 'auto'
-    console.log(document.body.style);
-  }, [hovered])
-
-
-  const AnimatedText = animated(MeshDistortMaterial);
-  const springs = useSpring({
-    color: hovered ? '#F6908E' : '#D64933',
-    config: { mass: 1, tension: 500, friction: 100 },
-  })
-
-  return (
-     <Text3D
-      font="./fonts/Alpino Variable_Regular.json"
-      size={ .8 }
-      height={ 0.2 }
-      curveSegments={ 12 }
-      bevelEnabled
-      bevelThickness={ 0.02 }
-      bevelSize={ 0.01 }
-      bevelOffset={ 0 }
-      bevelSegments={ 5 }
-      letterSpacing={.001}
-      onClick={onJoinClick}
-      {...props}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-      >
-      {children}
-      <AnimatedText
-        envMapIntensity={.9}
-        metalness={.3}
-        roughness={.3}
-        speed={5}
-        distort={0.15}
-        color={springs.color}
-       />
-  </Text3D>
-  )
-}
 
 
 // Modal for About
@@ -297,7 +267,7 @@ function Rig({ animationProgress, cameraRef }) {
     const wobble = new Vector3();
     const wobbleAngle = MathUtils.degToRad(Math.random() * 360);
     const wobbleStrength = 0.001;
-    const wobbleSpeed = 75e-5;
+    const wobbleSpeed = 75e-2;
 
     const strength = 2;
     const moveXY = new Vector2(8, 4);
