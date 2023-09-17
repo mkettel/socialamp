@@ -84,23 +84,30 @@ canvas {
   animation: fadeIn 2.5s ease-in-out forwards;
 }
 
-/* OVERLAY BUTTON MODAL REACT-SPRING */
+/* -----------------OVERLAY BUTTON MODAL REACT-SPRING-------------------- */
 .overlay-button-container {
   position: absolute;
-  top: 0;
+  bottom: 0;
   right: 0;
-  width: 20%;  /* Assuming you want the overlay to be 30% of the screen width */
-  height: 100%;
+  width: 100%;  /* Assuming you want the overlay to be 30% of the screen width */
+  height: 20%;
   z-index: 100000000;
   background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 .overlay-button-container .overlay-button {
   cursor: pointer;
-  position: absolute;
+  /* position: absolute; */
   top: 50px;
-  right: 70px;
+  left: 80px;
   z-index: 100000000;
 }
+.overlay-button-container .overlay-button p {
+  font-size: 20px;
+}
+/* --------------------- ABOUT MODAL ---------------------------------------- */
 .about-modal-container {
   position: absolute;
   top: 15%;
@@ -108,7 +115,8 @@ canvas {
   width: 70%;
   height: 50%;
   z-index: 100000000;
-  background-color: rgba(168, 234, 235, 0.967);
+  background-color: rgba(168, 234, 235, 0.959);
+  background-color: rgba(202, 56, 178, 0.846);
   border-radius: 25px;
 }
 .about-modal {
@@ -119,6 +127,7 @@ canvas {
 }
 .about-modal h2 {
   font-size: 28px;
+  color: white;
 }
 .about-modal .about-text {
   padding: 0px 45px;
@@ -127,6 +136,64 @@ canvas {
 .about-text p {
   font-size: 20px;
   margin: 0px;
+  color: white;
+}
+/*---------------------------------- Case Study Section -------------------- */
+.case-study-modal-container {
+  position: absolute;
+  top: 55%;
+  right: 0;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  z-index: 100000000;
+  /* background-color: rgba(168, 234, 235, 0.959); */
+  background-color: rgba(16, 16, 16, 0.407);
+  border-radius: 25px;
+}
+.case-study-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+}
+.case-study-modal h2 {
+  font-size: 28px;
+  color: white;
+}
+.case-study-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.case-study-title h3 {
+  color: white;
+}
+
+/* ---------------------------- Contact Section Modal ---------------------- */
+.contact-modal-container {
+  position: absolute;
+  top: 0;
+  right: 15%;
+  width: 70%;
+  height: 60%;
+  z-index: 100000000;
+  background-color: rgba(168, 234, 235, 0.959);
+  background-color: rgba(16, 16, 16, 0.846);
+  border-radius: 25px;
+}
+.contact-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+}
+.contact-modal h2 {
+  font-size: 28px;
+  color: white;
+}
+.contact-modal .contact-text {
+  padding: 0px 45px;
+  text-align: center;
 }
 
 @keyframes fadeIn {

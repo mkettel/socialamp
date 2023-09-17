@@ -151,7 +151,7 @@ export default function Experience()
         letterSpacing={.001}
         >
         amp
-        <meshStandardMaterial envMapIntensity={1.2} color={"red"} metalness={.8} roughness={.01} />
+        <meshStandardMaterial envMapIntensity={1.2} color={"#59D2FE"} metalness={.8} roughness={.01} />
       </Text3D>
     )
   })
@@ -197,6 +197,7 @@ export default function Experience()
           cameraRef={cameraRef}
         />
       }
+      {/* <MouseEvents ref={lenseRef} /> */}
     </>
 
 }
@@ -269,7 +270,7 @@ function Rig({ animationProgress, cameraRef }) {
     const wobbleStrength = 0.001;
     const wobbleSpeed = 75e-2;
 
-    const strength = 2;
+    const strength = 3;
     const moveXY = new Vector2(8, 4);
     const deltaRotate = 20;
 
