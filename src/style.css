@@ -199,7 +199,7 @@ canvas {
   height: 60%;
   z-index: 100000000;
   background-color: rgba(168, 234, 235, 0.959);
-  background-color: rgba(16, 16, 16, 0.846);
+  background-color: rgba(16, 16, 16, 0.738);
   border-radius: 25px;
 }
 .contact-modal {

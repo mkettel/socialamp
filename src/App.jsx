@@ -111,7 +111,7 @@ function Overlay() {
           <h2>About SocialAmp</h2>
         </div>
         <div className="about-text">
-          <p>SocialAmp can be used to amplify your movies' social media engagement. We use Twitter and other social media outlets to curate short video clips in response to user comments. Giving fans a deep sense of engagement to the movie they love.</p>
+          <p>SocialAmp can be used to amplify your movie's social media engagement. We use Twitter and other social media outlets to curate short video clips in response to user comments. Giving fans a deep sense of engagement to the movie they love.</p>
         </div>
       </div>
     </animated.div>
