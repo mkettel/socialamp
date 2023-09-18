@@ -43,7 +43,7 @@ function Overlay() {
   // About animation -----------------------------------------------------
   const [sliderOut, setSliderOut] = useState(false);
   const animation = useSpring({
-    transform: sliderOut ? 'translateX(-20%)' : 'translateX(100%)',
+    transform: sliderOut ? 'translateX(-22%)' : 'translateX(100%)',
     config: { mass: 1.3, tension: 80, friction: 12 },
   });
 
@@ -86,6 +86,8 @@ function Overlay() {
   };
 
 
+
+
   return <>
     <animated.div className="overlay-button-container">
       <div className="overlay-button">
@@ -102,6 +104,9 @@ function Overlay() {
     {/* about modal slide out */}
     <animated.div className="about-modal-container" style={animation}>
       <div className="about-modal">
+      <div className="closing-button" onClick={onAboutClick} >
+        <p>+</p>
+      </div>
         <div className="about-modal-header">
           <h2>About SocialAmp</h2>
         </div>
@@ -114,6 +119,9 @@ function Overlay() {
     {/* Case Study Modal with IFrames? */}
     <animated.div className="case-study-modal-container" style={caseAnimation}>
       <div className="case-study-modal">
+      <div className="closing-button" onClick={onCaseClick} >
+        <p>+</p>
+      </div>
         <div className="case-study-modal-header">
           <h2>Case Studies</h2>
         </div>
@@ -139,6 +147,9 @@ function Overlay() {
     {/* Contact Us Modal */}
     <animated.div className="contact-modal-container" style={contactAnimation} >
       <div className="contact-modal">
+      <div className="closing-button" onClick={onContactClick} >
+        <p>+</p>
+      </div>
         <div className="contact-modal-header">
           <h2>Contact Us</h2>
         </div>

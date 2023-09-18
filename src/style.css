@@ -108,6 +108,21 @@ canvas {
   font-size: 20px;
 }
 /* --------------------- ABOUT MODAL ---------------------------------------- */
+.closing-button {
+  position: absolute;
+  top: -15px;
+  right: 15px;
+  cursor: pointer;
+  color: white;
+  font-size: 60px;
+  transform: rotate(45deg);
+}
+.closing-button p {
+  margin: 0;
+}
+.closing-button:hover {
+  color: black;
+}
 .about-modal-container {
   position: absolute;
   top: 15%;
@@ -116,8 +131,9 @@ canvas {
   height: 50%;
   z-index: 100000000;
   background-color: rgba(168, 234, 235, 0.959);
-  background-color: rgba(202, 56, 178, 0.846);
+  background-color: rgba(56, 52, 52, 0.846);
   border-radius: 25px;
+  border: 4px solid white;
 }
 .about-modal {
   display: flex;
@@ -163,7 +179,12 @@ canvas {
 }
 .case-study-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.case-study-card {
+  border: 1px solid white;
+  border-radius: 15px;
 }
 .case-study-title h3 {
   color: white;
