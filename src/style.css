@@ -84,6 +84,12 @@ canvas {
   animation: fadeIn 2.5s ease-in-out forwards;
 }
 
+.overlay-button-free {
+  position: absolute;
+  left: 200px;
+  bottom: 200px;
+  cursor: pointer;
+}
 /* -----------------OVERLAY BUTTON MODAL REACT-SPRING-------------------- */
 .overlay-button-container {
   position: absolute;

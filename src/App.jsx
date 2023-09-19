@@ -89,6 +89,9 @@ function Overlay() {
 
 
   return <>
+      <div className="overlay-button-free">
+        <p onClick={onAboutClick}>about</p>
+      </div>
     <animated.div className="overlay-button-container">
       <div className="overlay-button">
         <p onClick={onAboutClick}>about</p>
