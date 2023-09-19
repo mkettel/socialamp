@@ -119,9 +119,11 @@ canvas {
 }
 .closing-button p {
   margin: 0;
+  transition: .2s;
 }
 .closing-button:hover {
   color: black;
+  transition: .2s;
 }
 .about-modal-container {
   position: absolute;
@@ -131,8 +133,8 @@ canvas {
   height: 50%;
   z-index: 100000000;
   background-color: rgba(168, 234, 235, 0.959);
-  background-color: rgba(56, 52, 52, 0.846);
-  border-radius: 25px;
+  /* background-color: rgba(56, 52, 52, 0.846); */
+  border-radius: 15px;
   border: 4px solid white;
 }
 .about-modal {
@@ -144,6 +146,7 @@ canvas {
 .about-modal h2 {
   font-size: 28px;
   color: white;
+  color: black;
 }
 .about-modal .about-text {
   padding: 0px 45px;
@@ -153,19 +156,21 @@ canvas {
   font-size: 20px;
   margin: 0px;
   color: white;
+  color: black;
 }
 /*---------------------------------- Case Study Section -------------------- */
 .case-study-modal-container {
   position: absolute;
-  top: 55%;
+  top: 60%;
   right: 0;
-  left: 10%;
-  width: 80%;
-  height: 80%;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 100000000;
   /* background-color: rgba(168, 234, 235, 0.959); */
-  background-color: rgba(16, 16, 16, 0.407);
-  border-radius: 25px;
+  background-color: rgba(16, 16, 16, 0.876);
+  border-radius: 0px;
+  backdrop-filter: blur(10px);
 }
 .case-study-modal {
   display: flex;
@@ -243,6 +248,7 @@ canvas {
     font-size: 22px;
   }
 
+  /* ABOUT MODAL */
   .about-modal-container {
     top: 25%;
   }
@@ -256,5 +262,26 @@ canvas {
   }
   .about-text p {
     font-size: 14px;
+  }
+
+  /* CASE STUDY MODAL */
+  .case-study-modal-container {
+    width: 85%;
+    height: 75%;
+    left: 10%;
+  }
+
+
+  /* CONTACT MODAL */
+  .contact-modal-container {
+    position: absolute;
+    top: 0;
+    right: 10%;
+    width: 75%;
+    height: 60%;
+    z-index: 100000000;
+    background-color: rgba(168, 234, 235, 0.959);
+    background-color: rgba(16, 16, 16, 0.738);
+    border-radius: 25px;
   }
 }

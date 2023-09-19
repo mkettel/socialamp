@@ -19,7 +19,6 @@ export default function App() {
   })
 
 
-
   return <>
     <>
         <Canvas
@@ -75,6 +74,7 @@ function Overlay() {
   const [contactSliderOut, setContactSliderOut] = useState(false);
   const contactAnimation = useSpring({
     transform: contactSliderOut ? 'translateY(25%)' : 'translateY(-100%)',
+    // rotateZ: contactSliderOut ? '-180deg' : '0deg',
     config: { mass: 2, tension: 80, friction: 15 },
   });
 
@@ -118,6 +118,7 @@ function Overlay() {
 
     {/* Case Study Modal with IFrames? */}
     <animated.div className="case-study-modal-container" style={caseAnimation}>
+      <div className="modal-blur-filter"></div>
       <div className="case-study-modal">
       <div className="closing-button" onClick={onCaseClick} >
         <p>+</p>
