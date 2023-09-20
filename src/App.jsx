@@ -24,7 +24,7 @@ export default function App() {
       id: 1,
       title: 'Black Phone',
       type: 'image',
-      src: '/VN.jpg',
+      src: '/BP.jpg',
     },
     {
       id: 2,
@@ -41,7 +41,7 @@ export default function App() {
   ]
   // Current Project State Selection
   const [currentProject, setCurrentProject] = useState(projects[1]);
-  const [previousProjectId, setPreviousProjectId] = useState(null);
+  const [previousProject, setPreviousProject] = useState(currentProject);
   // const [nextProjectId, setNextProjectId] = useState(null);
 
 
@@ -52,17 +52,17 @@ export default function App() {
             camera={{ position: [0, 7, 13] }}
             gl={{ alpha: false }}
         >
-            <Experience currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} previousProjectId={previousProjectId} setPreviousProjectId={setPreviousProjectId} />
+            <Experience currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} previousProject={previousProject} setPreviousProject={setPreviousProject} />
         </Canvas>
         <Overlay />
-        <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProjectId={setPreviousProjectId} />
+        <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProject={setPreviousProject} />
 
     </>
   </>
 }
 
 // 2D Project Selection Overlay
-function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProjectId }) {
+function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject }) {
 
 
   return <>
@@ -74,7 +74,7 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
           onClick={() => {
             console.log("Setting project: ", project);
             console.log("Setting previous project: ", currentProject);
-            setPreviousProjectId(currentProject.id);
+            setPreviousProject(currentProject);
             setCurrentProject(project);
           }}
         >

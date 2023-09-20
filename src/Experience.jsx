@@ -17,7 +17,7 @@ import { Vector2, Vector3, MathUtils } from 'three';
 extend(geometry)
 
 
-export default function Experience( { currentProject, setCurrentProject, projects, previousProjectId, setPreviousProjectId} )
+export default function Experience( { currentProject, setCurrentProject, projects, previousProject, setPreviousProject} )
 {
   const { camera } = useThree();
 
@@ -31,7 +31,7 @@ export default function Experience( { currentProject, setCurrentProject, project
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const wordScale = isMobile ? .60 : 1.5;
       const wordPosition = isMobile ? [0, 0, 0] : [0, 0.4, 0];
-      const imageScale = isMobile ? [6, 4, 1] : [6, 3, 1];
+      const imageScale = isMobile ? [4, 2, 1] : [7, 4, 1];
       setWordScale(wordScale);
       setWordPosition(wordPosition);
       setImageScale(imageScale);
@@ -54,10 +54,10 @@ export default function Experience( { currentProject, setCurrentProject, project
 
   const cameraRef = useRef(); // reference to the camera
 
-  const startingCameraPosition = [0, 7, 13];
-  const startingTarget = [0, 1, 13];
-  const endingCameraPosition = [0, 0.1, 5];
-  const endingTarget = [0, 0, 0];
+  const startingCameraPosition = [0, 7, 12];
+  const startingTarget = [0, 1, 12];
+  const endingCameraPosition = [0, 0.3, 5.5];
+  const endingTarget = [0, 0.2, 0];
 
   const [animationProgress, setAnimationProgress] = useState(0);
 
@@ -112,7 +112,7 @@ export default function Experience( { currentProject, setCurrentProject, project
 
   const fade = useSpring({
     // opacity animation
-    position: isMounted  ? [0, 0.5, 0] : [0, -5, 0],
+    position: isMounted  ? [0, 0.6, 0] : [0, -5, 0],
     config: { mass: 1, tension: 500, friction: 300 },
   });
 
@@ -122,7 +122,7 @@ export default function Experience( { currentProject, setCurrentProject, project
     <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} minAzimuthAngle={minAzimuthAngle} maxAzimuthAngle={maxAzimuthAngle} />
 
         {/* <Perf position="top-right" /> */}
-        <Environment background files='./background/s-1.hdr' />
+        <Environment background files='./background/eveninghdr.hdr' />
 
           {/* 3D TEXT */}
         <group scale={wordScale} position={wordPosition} rotation={[0, 0, 0]}>
@@ -137,7 +137,7 @@ export default function Experience( { currentProject, setCurrentProject, project
           <AnimatedImage
             key={currentProject.id}
             ref={imageV}
-            url={currentProject.src}
+            url={isMounted ? currentProject.src : previousProject.src}
             transparent
             opacity={.8}
             scale={imageScale}
@@ -193,6 +193,9 @@ function Lense({ lenseRef }) {
 
 
 function Rig({ animationProgress, cameraRef }) {
+
+    if (!cameraRef.current || !cameraRef.current.camera) return null;
+
     const vec = new Vector3();
     const move = new Vector3();
     const position = new Vector3();
@@ -227,7 +230,7 @@ function Rig({ animationProgress, cameraRef }) {
             camera.position.add(wobble);
 
             camera.position.lerp(position, 0.04);
-            camera.lookAt(0, 0, 0);
+            camera.lookAt(0, 0.2, 0);
         });
     }
 }
