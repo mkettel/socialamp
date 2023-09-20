@@ -4,7 +4,6 @@ import { Canvas, extend } from '@react-three/fiber'
 import Experience from './Experience.jsx'
 import { useState, useEffect } from 'react'
 import { Html, OrbitControls } from '@react-three/drei'
-// import Overlay from './Overlay'
 // import { useSpring, a, animated } from '@react-spring/three';
 import { useSpring, animated } from '@react-spring/web'
 
@@ -42,8 +41,8 @@ function Overlay() {
   // About animation -----------------------------------------------------
   const [sliderOut, setSliderOut] = useState(false);
   const animation = useSpring({
-    transform: sliderOut ? 'translateX(-22%)' : 'translateX(100%)',
-    config: { mass: 1.3, tension: 80, friction: 12 },
+    transform: sliderOut ? 'translateX(0%)' : 'translateX(100%)',
+    config: { mass: 1.2, tension: 50, friction: 15 },
   });
 
   const onAboutClick = () => {
@@ -73,9 +72,9 @@ function Overlay() {
   // Contact animation ------------------------------------------------
   const [contactSliderOut, setContactSliderOut] = useState(false);
   const contactAnimation = useSpring({
-    transform: contactSliderOut ? 'translateY(25%)' : 'translateY(-100%)',
+    transform: contactSliderOut ? 'translateY(0%)' : 'translateY(-100%)',
     // rotateZ: contactSliderOut ? '-180deg' : '0deg',
-    config: { mass: 2, tension: 80, friction: 15 },
+    config: { mass: 1.2, tension: 50, friction: 15 },
   });
 
   const onContactClick = () => {
@@ -89,16 +88,13 @@ function Overlay() {
 
 
   return <>
-      {/* <div className="overlay-button-free">
-        <p onClick={onAboutClick}>about</p>
-      </div> */}
     <animated.div className="overlay-button-container">
       <div className="overlay-button">
         <p onClick={onAboutClick}>about</p>
       </div>
-      <div className="overlay-button">
+      {/* <div className="overlay-button">
         <p onClick={onCaseClick}>case studies</p>
-      </div>
+      </div> */}
       <div className="overlay-button">
         <p onClick={onContactClick}>contact</p>
       </div>

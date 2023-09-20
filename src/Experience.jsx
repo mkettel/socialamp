@@ -63,7 +63,7 @@ export default function Experience()
 
   const startingCameraPosition = [0, 7, 13];
   const startingTarget = [0, 1, 13];
-  const endingCameraPosition = [0, 0.9, 5];
+  const endingCameraPosition = [0, 0.1, 5];
   const endingTarget = [0, 0, 0];
 
   const [animationProgress, setAnimationProgress] = useState(0);
