@@ -1,4 +1,4 @@
-import { CameraControls, OrbitControls, MeshTransmissionMaterial, Text3D, Center, Html, Text, Environment, Billboard, RoundedBox, MeshDistortMaterial } from '@react-three/drei'
+import { CameraControls, OrbitControls, MeshTransmissionMaterial, Text3D, Center, Html, Text, Environment, Billboard, RoundedBox, MeshDistortMaterial, Image } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import { Canvas, extend, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -25,6 +25,7 @@ export default function Experience()
   // Scene Resizing for Mobile -----------------------------------------------
   const [wordScale, setWordScale ] = useState(1.5);
   const [wordPosition, setWordPosition] = useState([0, 0.4, 0]);
+  const [imageScale, setImageScale] = useState([4, 2, 1]);
   const [aboutModalScale, setAboutModalScale] = useState(1);
   const [aboutTextScale, setAboutTextScale] = useState(.35);
   useEffect(() => {
@@ -35,10 +36,12 @@ export default function Experience()
       const wordPosition = isMobile ? [0, 0, 0] : [0, 0.4, 0];
       const aboutModalScale = isMobile ? .6 : 1;
       const aboutTextScale = isMobile ? .3 : .35;
+      const imageScale = isMobile ? [6, 4, 1] : [4, 2, 1];
       setWordScale(wordScale);
       setWordPosition(wordPosition);
       setAboutModalScale(aboutModalScale);
       setAboutTextScale(aboutTextScale);
+      setImageScale(imageScale);
     }
     window.addEventListener('resize', handleResize);
   handleResize(); // Call the function initially
@@ -112,49 +115,17 @@ export default function Experience()
     }
   };
 
+  const imageV = useRef();
+  console.log(imageV.current);
 
-  // Performance Optimization --------------------------------------------------
-  const socialText = useMemo(() => {
-    return (
-      <Text3D
-        font="./fonts/Fontana_Bold.json"
-        size={ 1 }
-        height={ 0.2 }
-        curveSegments={ 12 }
-        bevelEnabled
-        bevelThickness={ 0.02 }
-        bevelSize={ 0.01 }
-        bevelOffset={ 0 }
-        bevelSegments={ 5 }
-        position={[-1.35, 0.11, 0]}
-        letterSpacing={.001}
-        >
-        social
-        <meshStandardMaterial envMapIntensity={1.2} color={"#001011"} metalness={.8} roughness={.01} />
-      </Text3D>
-    )
+  useFrame(() => {
+    imageV.current.material.zoom = 1 // 1 and higher
+    // imageV.current.material.grayscale = ... // between 0 and 1
+    imageV.current.material.color.set('#C6C8EE') // mix-in color
   })
 
-  const ampText = useMemo(() => {
-    return (
-      <Text3D
-        font="./fonts/Fontana_Bold.json"
-        size={ 1 }
-        height={ 0.2 }
-        curveSegments={ 12 }
-        bevelEnabled
-        bevelThickness={ 0.02 }
-        bevelSize={ 0.01 }
-        bevelOffset={ 0 }
-        bevelSegments={ 5 }
-        position={[1.64, 0.11, 0]}
-        letterSpacing={.001}
-        >
-        amp
-        <meshStandardMaterial envMapIntensity={1.2} color={"#59D2FE"} metalness={.8} roughness={.01} />
-      </Text3D>
-    )
-  })
+  const { width: w, height: h } = useThree((state) => state.viewport)
+
 
     return <>
 
@@ -166,25 +137,19 @@ export default function Experience()
           {/* 3D TEXT */}
         <group scale={wordScale} position={wordPosition} rotation={[0, 0, 0]}>
           <Center>
-           {socialText}
-            {ampText}
 
-            {/* About Button */}
-            {/* {about ? (
-              <>
-                <AboutModal position={[1, 3, 0]} scale={aboutModalScale} />
-                <Annotation position={[3, 2, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick} >
-                  Close
-                </Annotation>
-                  <Annotation position={[-1.4, -0.40, 0.1]} rotation={[0, 0, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick}>
-                  about
-              </Annotation>
-              </>
-            ) : (
-              <Annotation position={[-1.4, -0.40, 0.1]} rotation={[0, 0, 0]} scale={aboutTextScale} onJoinClick={handleAboutClick}>
-                about
-              </Annotation>
-            )} */}
+
+            {/* image */}
+            <Image
+              ref={imageV}
+              url="/VN.jpg"
+              transparent
+              opacity={0.9}
+              scale={imageScale}
+              position={[0, 0, 0]}
+            />
+
+
           </Center>
         </group>
 
