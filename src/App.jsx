@@ -22,19 +22,27 @@ export default function App() {
   const projects = [
     {
       id: 1,
-      title: 'Violent Nights',
+      title: 'Black Phone',
       type: 'image',
       src: '/VN.jpg',
     },
     {
       id: 2,
+      title: 'Violent Nights',
+      type: 'image',
+      src: '/VN.jpg',
+    },
+    {
+      id: 3,
       title: 'NOPE',
-      type: 'video',
-      src: '/NOPE.mp4',
+      type: 'image',
+      src: '/VN.jpg',
     }
   ]
   // Current Project State Selection
-  const [currentProject, setCurrentProject] = useState(projects[0]);
+  const [currentProject, setCurrentProject] = useState(projects[1]);
+  const [previousProjectId, setPreviousProjectId] = useState(null);
+  // const [nextProjectId, setNextProjectId] = useState(null);
 
 
   return <>
@@ -44,18 +52,41 @@ export default function App() {
             camera={{ position: [0, 7, 13] }}
             gl={{ alpha: false }}
         >
-            <Experience currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} />
+            <Experience currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} previousProjectId={previousProjectId} setPreviousProjectId={setPreviousProjectId} />
         </Canvas>
-        <Overlay
-         />
+        <Overlay />
+        <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProjectId={setPreviousProjectId} />
 
     </>
   </>
 }
 
+// 2D Project Selection Overlay
+function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProjectId }) {
+
+
+  return <>
+    <div className="project-menu-container">
+      {projects.map(project => (
+        <button
+          key={project.id}
+          className={currentProject.id === project.id ? 'active project-button' : 'project-button'}
+          onClick={() => {
+            console.log("Setting project: ", project);
+            console.log("Setting previous project: ", currentProject);
+            setPreviousProjectId(currentProject.id);
+            setCurrentProject(project);
+          }}
+        >
+         <p>{project.title}</p>
+        </button>
+      ))}
+    </div>
+  </>
+}
+
 
 function Overlay() {
-
 
   // About animation -----------------------------------------------------
   const [sliderOut, setSliderOut] = useState(false);

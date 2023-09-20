@@ -232,6 +232,45 @@ canvas {
   text-align: center;
 }
 
+/* ---------------------------------- PROJECT MENU SELECTION ---------------- */
+.project-menu-container {
+  position: absolute;
+  top: 5%;
+  left: 10%;
+  width: 80%;
+  height: 30%;
+  z-index: 10000000;
+  border-radius: 0px;
+  display: flex;
+  flex-direction: column;
+}
+.project-menu-container button {
+  background-color: transparent;
+  border: none;
+}
+.project-menu-container .project-button {
+  font-size: 36px;
+  color: rgb(234, 234, 234);
+  font-family: 'Alpino', sans-serif;
+  font-weight: 700;
+  transition: .4s;
+  cursor: pointer;
+  margin: 0px;
+  opacity: .4;
+  pointer-events: none;
+}
+.project-button.active {
+  font-size: 62px;
+  letter-spacing: 2px;
+  transition: .4s;
+  opacity: 1;
+}
+.project-button p {
+  margin: 0px;
+  pointer-events: all;
+}
+
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -247,7 +286,7 @@ canvas {
   }
 }
 
-/* mobile device media query */
+/* ------------------------------------- mobile device media query ---------- */
 @media only screen and (max-width: 760px) {
 
   .overlay-button-container .overlay-button {

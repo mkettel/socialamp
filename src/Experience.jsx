@@ -1,4 +1,5 @@
 import { CameraControls, OrbitControls, MeshTransmissionMaterial, Text3D, Center, Html, Text, Environment, Billboard, RoundedBox, MeshDistortMaterial, Image } from '@react-three/drei'
+import './style.css'
 import { Perf } from 'r3f-perf'
 import { Canvas, extend, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -16,21 +17,21 @@ import { Vector2, Vector3, MathUtils } from 'three';
 extend(geometry)
 
 
-export default function Experience( { currentProject, setCurrentProject, projects} )
+export default function Experience( { currentProject, setCurrentProject, projects, previousProjectId, setPreviousProjectId} )
 {
   const { camera } = useThree();
 
   // Scene Resizing for Mobile -----------------------------------------------
   const [wordScale, setWordScale ] = useState(1.5);
   const [wordPosition, setWordPosition] = useState([0, 0.4, 0]);
-  const [imageScale, setImageScale] = useState([4, 2, 1]);
+  const [imageScale, setImageScale] = useState([6, 3, 1]);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const wordScale = isMobile ? .60 : 1.5;
       const wordPosition = isMobile ? [0, 0, 0] : [0, 0.4, 0];
-      const imageScale = isMobile ? [6, 4, 1] : [4, 2, 1];
+      const imageScale = isMobile ? [6, 4, 1] : [6, 3, 1];
       setWordScale(wordScale);
       setWordPosition(wordPosition);
       setImageScale(imageScale);
@@ -86,17 +87,34 @@ export default function Experience( { currentProject, setCurrentProject, project
     }
   });
 
-  // Used on the canvas to show the video / image
+  //----------------------------- Used on the canvas to show the video / image
   const imageV = useRef();
-  console.log(imageV.current);
+  // console.log(imageV.current);
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(false);
+    // Reset the animation state
+    const timeout = setTimeout(() => setIsMounted(true), 600); // you can adjust the delay if needed
+    return () => clearTimeout(timeout);
+  }, [currentProject]);
 
   useFrame(() => {
     imageV.current.material.zoom = 1 // 1 and higher
     // imageV.current.material.grayscale = ... // between 0 and 1
     imageV.current.material.color.set('#C6C8EE') // mix-in color
+    imageV.current.className = 'imageV'
   })
 
-  const { width: w, height: h } = useThree((state) => state.viewport)
+
+  const AnimatedImage = animated(Image);
+
+  const fade = useSpring({
+    // opacity animation
+    position: isMounted  ? [0, 0.5, 0] : [0, -5, 0],
+    config: { mass: 1, tension: 500, friction: 300 },
+  });
 
 
     return <>
@@ -110,22 +128,22 @@ export default function Experience( { currentProject, setCurrentProject, project
         <group scale={wordScale} position={wordPosition} rotation={[0, 0, 0]}>
           <Center>
 
-
-            {/* image */}
-            {currentProject.type === 'image' &&
-              <Image
-              ref={imageV}
-              url={currentProject.src}
-              transparent
-              opacity={0.9}
-              scale={imageScale}
-              position={[0, 0, 0]}
-              />
-          }
-
-
           </Center>
         </group>
+
+
+        {/* image */}
+        {currentProject.type === 'image' &&
+          <AnimatedImage
+            key={currentProject.id}
+            ref={imageV}
+            url={currentProject.src}
+            transparent
+            opacity={.8}
+            scale={imageScale}
+            position={fade.position}
+          />
+        }
 
       <Ocean />
 
@@ -138,7 +156,6 @@ export default function Experience( { currentProject, setCurrentProject, project
       }
       {/* <MouseEvents ref={lenseRef} /> */}
     </>
-
 }
 
 // Getting mouse position
@@ -190,7 +207,7 @@ function Rig({ animationProgress, cameraRef }) {
 
     if (animationProgress >= 1) {
       const camera = cameraRef.current.camera;
-      console.log(camera);
+      // console.log(camera);
 
         return useFrame(({ mouse, clock }) => {
             const t = clock.elapsedTime;
