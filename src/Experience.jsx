@@ -11,14 +11,12 @@ import { useSpring, a, animated } from '@react-spring/three';
 import { useThree } from '@react-three/fiber'
 import { lerp } from 'three/src/math/MathUtils'
 import { Vector2, Vector3, MathUtils } from 'three';
-import Annotation from './Annotation'
 
 
 extend(geometry)
 
 
-
-export default function Experience()
+export default function Experience( { currentProject, setCurrentProject, projects} )
 {
   const { camera } = useThree();
 
@@ -26,21 +24,15 @@ export default function Experience()
   const [wordScale, setWordScale ] = useState(1.5);
   const [wordPosition, setWordPosition] = useState([0, 0.4, 0]);
   const [imageScale, setImageScale] = useState([4, 2, 1]);
-  const [aboutModalScale, setAboutModalScale] = useState(1);
-  const [aboutTextScale, setAboutTextScale] = useState(.35);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const wordScale = isMobile ? .60 : 1.5;
       const wordPosition = isMobile ? [0, 0, 0] : [0, 0.4, 0];
-      const aboutModalScale = isMobile ? .6 : 1;
-      const aboutTextScale = isMobile ? .3 : .35;
       const imageScale = isMobile ? [6, 4, 1] : [4, 2, 1];
       setWordScale(wordScale);
       setWordPosition(wordPosition);
-      setAboutModalScale(aboutModalScale);
-      setAboutTextScale(aboutTextScale);
       setImageScale(imageScale);
     }
     window.addEventListener('resize', handleResize);
@@ -94,27 +86,7 @@ export default function Experience()
     }
   });
 
-  // ABOUT BUTTON MODAL CAMERA MOVEMENT ---------------------------------------
-  // Action when the About Button gets clicked
-  const handleAboutClick = () => {
-    const newAboutValue = !about;
-    setAbout(newAboutValue);
-    const aboutModalPosition = [0, 3, 7];
-    const aboutModalTarget = [0, 3, 0];
-    if (newAboutValue) {
-      // If About is already opened, set camera to starting position
-      cameraRef.current.azimuthRotateSpeed = 0; // disable camera rotation
-      cameraRef.current.polarRotateSpeed = 0; // disable camera rotation
-      cameraRef.current.setLookAt(...aboutModalPosition, ...aboutModalTarget, .001);
-      console.log(cameraRef);
-    } else {
-      // If About is closed, set camera to ending position
-      cameraRef.current.setLookAt(...endingCameraPosition, ...endingTarget, .1);
-      cameraRef.current.azimuthRotateSpeed = 1;
-      cameraRef.current.polarRotateSpeed = 1;
-    }
-  };
-
+  // Used on the canvas to show the video / image
   const imageV = useRef();
   console.log(imageV.current);
 
@@ -140,14 +112,16 @@ export default function Experience()
 
 
             {/* image */}
-            <Image
+            {currentProject.type === 'image' &&
+              <Image
               ref={imageV}
-              url="/VN.jpg"
+              url={currentProject.src}
               transparent
               opacity={0.9}
               scale={imageScale}
               position={[0, 0, 0]}
-            />
+              />
+          }
 
 
           </Center>
@@ -167,32 +141,6 @@ export default function Experience()
 
 }
 
-
-
-
-// Modal for About
-function AboutModal(props) {
-
-  return (
-    <>
-      <group {...props}>
-        <RoundedBox
-          args={[6.5, 1.2, .2]} // Width, height, depth. Default is [1, 1, 1]
-          radius={0.1} // Radius of the rounded corners. Default is 0.05
-          smoothness={4} // The number of curve segments. Default is 4
-          bevelSegments={4} // The number of bevel segments. Default is 4, setting it to 0 removes the bevel, as a result the texture is applied to the whole geometry.
-          creaseAngle={0.4} // Smooth normals everywhere except faces that meet at an angle greater than the crease angle
-        >
-          <meshStandardMaterial color="white" />
-        </RoundedBox>
-        <Html transform position={[0, 0, 0]}>
-           <p className='about-text'>SocialAmp can be used to amplify your movies social media engagement. <br></br> Using stats from various social media outlets, we give you what you are <br></br> looking for to analyze your latest media. </p>
-        </Html>
-      </group>
-    </>
-  )
-}
-
 // Getting mouse position
 function MouseEvents({ lenseRef }) {
   const vec = new THREE.Vector3();
@@ -205,6 +153,7 @@ function MouseEvents({ lenseRef }) {
 
   })
 }
+
 function Lense({ lenseRef }) {
 
   return <>

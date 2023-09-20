@@ -18,6 +18,25 @@ export default function App() {
   })
 
 
+  // Video List Data Structure
+  const projects = [
+    {
+      id: 1,
+      title: 'Violent Nights',
+      type: 'image',
+      src: '/VN.jpg',
+    },
+    {
+      id: 2,
+      title: 'NOPE',
+      type: 'video',
+      src: '/NOPE.mp4',
+    }
+  ]
+  // Current Project State Selection
+  const [currentProject, setCurrentProject] = useState(projects[0]);
+
+
   return <>
     <>
         <Canvas
@@ -25,7 +44,7 @@ export default function App() {
             camera={{ position: [0, 7, 13] }}
             gl={{ alpha: false }}
         >
-            <Experience />
+            <Experience currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} />
         </Canvas>
         <Overlay
          />
