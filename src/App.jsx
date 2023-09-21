@@ -99,7 +99,7 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
           transform: 'translateY(0%)',
           scale: 1,
           opacity: 1,
-          config: { mass: 4, tension: 350, friction: 40 }
+          config: { mass: 4.5, tension: 350, friction: 40 }
         };
 
         switch(index) {

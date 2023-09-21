@@ -33,7 +33,7 @@ export default function Experience( { currentProject, setCurrentProject, project
       const wordScale = isMobile ? .60 : 1.5;
       const wordPosition = isMobile ? [0, 0, 0] : [0, 0.4, 0];
       const imageScale = isMobile ? [4.5, 2.5, 1] : [7, 4, 1];
-      const imagePosition = isMobile ? [0, 0.1, 0] : [0, 0.6, 0];
+      const imagePosition = isMobile ? [0, 0.2, 0] : [0, 0.6, 0];
       setWordScale(wordScale);
       setWordPosition(wordPosition);
       setImageScale(imageScale);

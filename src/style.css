@@ -333,16 +333,16 @@ canvas {
 
   /* Project Menu */
   .project-menu-container {
-    top: 5%;
+    top: 10%;
     flex-direction: column;
-    gap: 5px;
+    gap: 3px;
     left: 13%;
   }
   .project-menu-container .project-button {
-    font-size: 22px;
+    font-size: 24px;
   }
   .project-button.active {
-    font-size: 22px;
+    font-size: 26px;
   }
   .project-button:nth-child(1).active {
     margin-right: 0px;
