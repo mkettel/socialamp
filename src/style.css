@@ -298,6 +298,10 @@ canvas {
   .overlay-button-container .overlay-button p {
     font-size: 22px;
   }
+  .overlay-right img {
+    width: 30px;
+    height: 30px;
+  }
 
   /* ABOUT MODAL */
   .about-modal-container {
@@ -336,13 +340,14 @@ canvas {
     top: 10%;
     flex-direction: column;
     gap: 3px;
-    left: 13%;
+    left: 2%;
+    width: 100%;
   }
   .project-menu-container .project-button {
     font-size: 24px;
   }
   .project-button.active {
-    font-size: 26px;
+    font-size: 24px;
   }
   .project-button:nth-child(1).active {
     margin-right: 0px;
