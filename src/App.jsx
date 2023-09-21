@@ -28,7 +28,7 @@ export default function App() {
     },
     {
       id: 2,
-      title: 'Violent Nights',
+      title: 'Violent Night',
       type: 'image',
       src: '/VN.jpg',
     },
@@ -42,8 +42,7 @@ export default function App() {
   // Current Project State Selection
   const [currentProject, setCurrentProject] = useState(projects[1]);
   const [previousProject, setPreviousProject] = useState(currentProject);
-  // const [nextProjectId, setNextProjectId] = useState(null);
-
+  const [selectedIndex, setSelectedIndex] = useState(2);
 
   return <>
     <>
@@ -62,27 +61,42 @@ export default function App() {
 }
 
 // 2D Project Selection Overlay
-function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject }) {
+function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject, setSelectedIndex, selectedIndex }) {
 
 
-  return <>
+  return (
     <div className="project-menu-container">
-      {projects.map(project => (
-        <button
-          key={project.id}
-          className={currentProject.id === project.id ? 'active project-button' : 'project-button'}
-          onClick={() => {
-            console.log("Setting project: ", project);
-            console.log("Setting previous project: ", currentProject);
-            setPreviousProject(currentProject);
-            setCurrentProject(project);
-          }}
-        >
-         <p>{project.title}</p>
-        </button>
-      ))}
+      {projects.map((project, index) => {
+        // Check if this project is the active one
+        const isActive = currentProject.id === project.id;
+
+        // Define animation for this project
+        const menuAnimation = useSpring({
+          transform: isActive ? 'translateY(0%)' : 'translateY(0%)',
+          scale: isActive ? 1.2 : .9,
+          opacity: isActive ? 1 : .5,
+          config: { mass: 5, tension: 350, friction: 40 },
+        });
+
+        return (
+          <animated.button
+            style={menuAnimation}
+            key={project.id}
+            className={isActive ? 'active project-button' : 'project-button'}
+            onClick={() => {
+              console.log("Setting project: ", project);
+              console.log("Setting previous project: ", currentProject);
+              setPreviousProject(currentProject);
+              setCurrentProject(project);
+              setSelectedIndex(index);
+            }}
+          >
+            <p>{project.title}</p>
+          </animated.button>
+        );
+      })}
     </div>
-  </>
+  );
 }
 
 

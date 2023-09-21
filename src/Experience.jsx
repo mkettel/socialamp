@@ -12,7 +12,7 @@ import { useSpring, a, animated } from '@react-spring/three';
 import { useThree } from '@react-three/fiber'
 import { lerp } from 'three/src/math/MathUtils'
 import { Vector2, Vector3, MathUtils } from 'three';
-
+import { EffectComposer, GodRays, Vignette } from '@react-three/postprocessing'
 
 extend(geometry)
 
@@ -116,8 +116,9 @@ export default function Experience( { currentProject, setCurrentProject, project
     config: { mass: 1, tension: 500, friction: 300 },
   });
 
-
     return <>
+    <EffectComposer>
+      <Vignette />
 
     <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} minAzimuthAngle={minAzimuthAngle} maxAzimuthAngle={maxAzimuthAngle} />
 
@@ -135,13 +136,13 @@ export default function Experience( { currentProject, setCurrentProject, project
         {/* image */}
         {currentProject.type === 'image' &&
           <AnimatedImage
-            key={currentProject.id}
-            ref={imageV}
-            url={isMounted ? currentProject.src : previousProject.src}
-            transparent
-            opacity={.8}
-            scale={imageScale}
-            position={fade.position}
+          key={currentProject.id}
+          ref={imageV}
+          url={isMounted ? currentProject.src : previousProject.src}
+          transparent
+          opacity={.8}
+          scale={imageScale}
+          position={fade.position}
           />
         }
 
@@ -150,11 +151,12 @@ export default function Experience( { currentProject, setCurrentProject, project
       {/* Don't use Rig on mobile */}
       {window.innerWidth > 768 &&
         <Rig
-          animationProgress={animationProgress}
-          cameraRef={cameraRef}
+        animationProgress={animationProgress}
+        cameraRef={cameraRef}
         />
       }
       {/* <MouseEvents ref={lenseRef} /> */}
+      </EffectComposer>
     </>
 }
 
