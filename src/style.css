@@ -297,6 +297,7 @@ canvas {
   }
   .overlay-button-container .overlay-button p {
     font-size: 22px;
+    font-weight: 400;
   }
   .overlay-right img {
     width: 30px;

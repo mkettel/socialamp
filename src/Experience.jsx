@@ -126,7 +126,7 @@ export default function Experience( { currentProject, setCurrentProject, project
     <EffectComposer>
       <Vignette />
 
-    <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} minAzimuthAngle={minAzimuthAngle} maxAzimuthAngle={maxAzimuthAngle} />
+    <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} minAzimuthAngle={minAzimuthAngle} maxAzimuthAngle={maxAzimuthAngle} minDistance={5} maxDistance={6} />
 
         {/* <Perf position="top-right" /> */}
         <Environment background files='./background/eveninghdr.hdr' />
