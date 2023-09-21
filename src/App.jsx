@@ -4,9 +4,8 @@ import { Canvas, extend } from '@react-three/fiber'
 import Experience from './Experience.jsx'
 import { useState, useEffect } from 'react'
 import { Html, OrbitControls } from '@react-three/drei'
-// import Overlay from './Overlay'
 // import { useSpring, a, animated } from '@react-spring/three';
-import { useSpring, animated } from '@react-spring/web'
+import { useSpring, animated, useTrail } from '@react-spring/web'
 
 
 
@@ -18,6 +17,46 @@ export default function App() {
     height: '100%'
   })
 
+  // -------------------------- MOBILE RESIZING FUNCTION -----------------------
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
+  // Video List Data Structure
+  const projects = [
+    {
+      id: 1,
+      title: 'Black Phone',
+      type: 'image',
+      src: '/BP.jpg',
+    },
+    {
+      id: 2,
+      title: 'Violent Night',
+      type: 'image',
+      src: '/VN.jpg',
+    },
+    {
+      id: 3,
+      title: 'NOPE',
+      type: 'image',
+      src: '/VN.jpg',
+    }
+  ]
+  // Current Project State Selection
+  const [currentProject, setCurrentProject] = useState(projects[1]);
+  const [previousProject, setPreviousProject] = useState(currentProject);
+  const [sceneLoaded, setSceneLoaded] = useState(false);
 
   return <>
     <>
@@ -26,24 +65,118 @@ export default function App() {
             camera={{ position: [0, 7, 13] }}
             gl={{ alpha: false }}
         >
-            <Experience />
+            <Experience currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} previousProject={previousProject} setPreviousProject={setPreviousProject} sceneLoaded={sceneLoaded} setSceneLoaded={setSceneLoaded} />
         </Canvas>
-        <Overlay
-         />
-
+        <Overlay />
+        {sceneLoaded && <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProject={setPreviousProject} />
+        }
     </>
   </>
+}
+
+// 2D Project Selection Overlay
+function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject, setSelectedIndex, selectedIndex, isMobile, setIsMobile }) {
+
+
+
+  // Get the center index
+  const centerIndex = Math.floor(projects.length / 2);
+
+  const trailAnims = useTrail(projects.length, {
+    from: { transform: 'translateY(-50px) rotate(0deg)' }, // Starting state (items slightly above and invisible)
+    to: { transform: 'translateY(0px) rotate(0deg)' }, // Ending state (items in position and visible)
+  });
+
+
+
+  return (
+    <div className="project-menu-container">
+      {projects.map((project, index) => {
+        // Check if this project is the active one
+        const isActive = currentProject.id === project.id;
+
+        let animation = {
+          transform: 'translateY(0%)',
+          scale: 1,
+          opacity: 1,
+          config: { mass: 4, tension: 350, friction: 40 }
+        };
+
+        switch(index) {
+          case 0: // first index
+          if (!isMobile) {
+            animation.transform = isActive ? 'translateX(0%)' : 'translateX(0%)';
+            animation.transform = isActive ? 'rotateZ(-2deg)' : 'rotateZ(0deg)';
+            animation.scale = isActive ? 1.2 : 0.9;
+            animation.opacity = isActive ? 1 : 0.5;
+            animation.marginRight = isActive ? '40px' : '0px';
+          }
+          animation.scale = isActive ? 1.2 : 0.9;
+          animation.opacity = isActive ? 1 : 0.5;
+          animation.margin = isActive ? '0px 0px' : '0px 0px';
+          break;
+
+          case centerIndex: // center index
+            animation.transform = isActive ? 'translateY(0%)' : 'translateY(0%)';
+            animation.scale = isActive ? 1.2 : 0.9;
+            animation.opacity = isActive ? 1 : 0.5;
+            animation.margin = isActive ? '0px 40px' : '0px 0px';
+            break;
+
+          case projects.length - 1: // last index
+          if (!isMobile) {
+            animation.transform = isActive ? 'rotateZ(2deg)' : 'rotateZ(0deg)';
+            animation.scale = isActive ? 1.2 : 0.9;
+            animation.opacity = isActive ? 1 : 0.5;
+            animation.marginLeft = isActive ? '30px' : '0px';
+          }
+          animation.scale = isActive ? 1.2 : 0.9;
+          animation.opacity = isActive ? 1 : 0.5;
+          animation.margin = isActive ? '0px 0px' : '0px 0px';
+          break;
+
+          default: // all other indexes
+            animation.scale = isActive ? 1.2 : 0.9;
+            animation.opacity = isActive ? 1 : 0.5;
+            break;
+        }
+
+        const menuAnimation = useSpring(animation);
+
+        const combinedStyles = {
+          ...menuAnimation,
+          ...trailAnims[index],
+        };
+
+        return (
+          <animated.button
+            style={combinedStyles}
+            key={project.id}
+            className={isActive ? 'active project-button' : 'project-button'}
+            onClick={() => {
+              console.log("Setting project: ", project);
+              console.log("Setting previous project: ", currentProject);
+              setPreviousProject(currentProject);
+              setCurrentProject(project);
+              setSelectedIndex(index);
+            }}
+          >
+            <p>{project.title}</p>
+          </animated.button>
+        );
+      })}
+    </div>
+  );
 }
 
 
 function Overlay() {
 
-
   // About animation -----------------------------------------------------
   const [sliderOut, setSliderOut] = useState(false);
   const animation = useSpring({
-    transform: sliderOut ? 'translateX(-22%)' : 'translateX(100%)',
-    config: { mass: 1.3, tension: 80, friction: 12 },
+    transform: sliderOut ? 'translateX(0%)' : 'translateX(100%)',
+    config: { mass: 1.2, tension: 50, friction: 15 },
   });
 
   const onAboutClick = () => {
@@ -73,9 +206,9 @@ function Overlay() {
   // Contact animation ------------------------------------------------
   const [contactSliderOut, setContactSliderOut] = useState(false);
   const contactAnimation = useSpring({
-    transform: contactSliderOut ? 'translateY(25%)' : 'translateY(-100%)',
+    transform: contactSliderOut ? 'translateY(0%)' : 'translateY(-100%)',
     // rotateZ: contactSliderOut ? '-180deg' : '0deg',
-    config: { mass: 2, tension: 80, friction: 15 },
+    config: { mass: 1.2, tension: 50, friction: 15 },
   });
 
   const onContactClick = () => {
@@ -89,16 +222,13 @@ function Overlay() {
 
 
   return <>
-      {/* <div className="overlay-button-free">
-        <p onClick={onAboutClick}>about</p>
-      </div> */}
     <animated.div className="overlay-button-container">
       <div className="overlay-button">
         <p onClick={onAboutClick}>about</p>
       </div>
-      <div className="overlay-button">
+      {/* <div className="overlay-button">
         <p onClick={onCaseClick}>case studies</p>
-      </div>
+      </div> */}
       <div className="overlay-button">
         <p onClick={onContactClick}>contact</p>
       </div>

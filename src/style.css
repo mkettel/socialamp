@@ -62,6 +62,7 @@ canvas {
   align-items: center;
 }
 .loading-text h1 {
+  color: rgba(208, 39, 221, 0.258);
   color: white;
 }
 
@@ -84,24 +85,19 @@ canvas {
   animation: fadeIn 2.5s ease-in-out forwards;
 }
 
-.overlay-button-free {
-  position: absolute;
-  left: 200px;
-  bottom: 200px;
-  cursor: pointer;
-}
 /* -----------------OVERLAY BUTTON MODAL REACT-SPRING-------------------- */
 .overlay-button-container {
   position: absolute;
   bottom: 0;
-  right: 0;
+  left: 30px;
   width: 100%;  /* Assuming you want the overlay to be 30% of the screen width */
   height: 20%;
   z-index: 100000000;
   background-color: transparent;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  gap: 25px;
 }
 .overlay-button-container .overlay-button {
   cursor: pointer;
@@ -109,6 +105,11 @@ canvas {
   top: 50px;
   left: 80px;
   z-index: 100000000;
+  transition: .3s;
+}
+.overlay-button-container .overlay-button:hover {
+  color: #cccce6;
+  transition: .3s;
 }
 .overlay-button-container .overlay-button p {
   font-size: 20px;
@@ -119,8 +120,8 @@ canvas {
   top: -15px;
   right: 15px;
   cursor: pointer;
-  color: white;
-  font-size: 60px;
+  color: rgb(84, 140, 237);
+  font-size: 80px;
   transform: rotate(45deg);
 }
 .closing-button p {
@@ -133,21 +134,21 @@ canvas {
 }
 .about-modal-container {
   position: absolute;
-  top: 15%;
+  top: 0%;
   right: 0;
-  width: 70%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
   z-index: 100000000;
-  background-color: rgba(168, 234, 235, 0.959);
-  /* background-color: rgba(56, 52, 52, 0.846); */
-  border-radius: 15px;
-  border: 4px solid white;
+  background-color: #747ab770;
+  backdrop-filter: blur(10px);
+  pointer-events: none;
 }
 .about-modal {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 25px;
+  pointer-events: all;
 }
 .about-modal h2 {
   font-size: 28px;
@@ -205,28 +206,72 @@ canvas {
 .contact-modal-container {
   position: absolute;
   top: 0;
-  right: 15%;
-  width: 70%;
-  height: 60%;
+  right: 0;
+  width: 100%;
+  height: 100%;
   z-index: 100000000;
-  background-color: rgba(168, 234, 235, 0.959);
-  background-color: rgba(16, 16, 16, 0.738);
-  border-radius: 25px;
+  background-color: #747ab770;
+  backdrop-filter: blur(10px);
+  pointer-events: none;
 }
 .contact-modal {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 25px;
+  pointer-events: all;
 }
 .contact-modal h2 {
   font-size: 28px;
-  color: white;
+  color: black;
 }
 .contact-modal .contact-text {
   padding: 0px 45px;
   text-align: center;
 }
+
+/* ---------------------------------- PROJECT MENU SELECTION ---------------- */
+.project-menu-container {
+  position: absolute;
+  top: 0%;
+  left: 7%;
+  width: 80%;
+  height: 20%;
+  z-index: 10000000;
+  border-radius: 0px;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  gap: 25px;
+  overflow-x: hidden;
+}
+.project-menu-container button {
+  background-color: transparent;
+  border: none;
+}
+.project-menu-container .project-button {
+  font-size: 36px;
+  color: rgba(208, 208, 208, 0.851);
+  font-family: 'Alpino', sans-serif;
+  font-weight: 800;
+  /* transition: .4s; */
+  cursor: pointer;
+  margin: 0px;
+  /* opacity: .4; */
+  pointer-events: none;
+  text-transform: uppercase;
+}
+.project-button.active {
+  font-size: 36px;
+  /* transition: .4s; */
+  /* opacity: 1; */
+  font-weight: 800;
+}
+.project-button p {
+  margin: 0px;
+  pointer-events: all;
+}
+
 
 @keyframes fadeIn {
   0% {
@@ -243,7 +288,7 @@ canvas {
   }
 }
 
-/* mobile device media query */
+/* ------------------------------------- mobile device media query ---------- */
 @media only screen and (max-width: 760px) {
 
   .overlay-button-container .overlay-button {
@@ -256,7 +301,7 @@ canvas {
 
   /* ABOUT MODAL */
   .about-modal-container {
-    top: 25%;
+    top: 0%;
   }
 
   .about-modal-container {
@@ -282,12 +327,24 @@ canvas {
   .contact-modal-container {
     position: absolute;
     top: 0;
-    right: 10%;
-    width: 75%;
-    height: 60%;
+    right: 0%;
     z-index: 100000000;
-    background-color: rgba(168, 234, 235, 0.959);
-    background-color: rgba(16, 16, 16, 0.738);
-    border-radius: 25px;
+  }
+
+  /* Project Menu */
+  .project-menu-container {
+    top: 5%;
+    flex-direction: column;
+    gap: 5px;
+    left: 13%;
+  }
+  .project-menu-container .project-button {
+    font-size: 22px;
+  }
+  .project-button.active {
+    font-size: 22px;
+  }
+  .project-button:nth-child(1).active {
+    margin-right: 0px;
   }
 }
