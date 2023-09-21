@@ -108,7 +108,7 @@ canvas {
   transition: .3s;
 }
 .overlay-button-container .overlay-button:hover {
-  color: #6161dd;
+  color: #cccce6;
   transition: .3s;
 }
 .overlay-button-container .overlay-button p {
@@ -223,7 +223,7 @@ canvas {
 }
 .contact-modal h2 {
   font-size: 28px;
-  color: white;
+  color: black;
 }
 .contact-modal .contact-text {
   padding: 0px 45px;
@@ -301,7 +301,7 @@ canvas {
 
   /* ABOUT MODAL */
   .about-modal-container {
-    top: 25%;
+    top: 0%;
   }
 
   .about-modal-container {
@@ -327,13 +327,8 @@ canvas {
   .contact-modal-container {
     position: absolute;
     top: 0;
-    right: 10%;
-    width: 75%;
-    height: 60%;
+    right: 0%;
     z-index: 100000000;
-    background-color: rgba(168, 234, 235, 0.959);
-    background-color: rgba(16, 16, 16, 0.738);
-    border-radius: 25px;
   }
 
   /* Project Menu */
