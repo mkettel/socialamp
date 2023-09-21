@@ -143,7 +143,7 @@ export default function Experience( { currentProject, setCurrentProject, project
           ref={imageV}
           url={isMounted ? currentProject.src : previousProject.src}
           transparent
-          opacity={.8}
+          opacity={.9}
           scale={imageScale}
           position={fade.position}
           onDoubleClick={() => setImageLoaded(!imageLoaded)}
