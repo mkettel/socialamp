@@ -335,4 +335,16 @@ canvas {
     background-color: rgba(16, 16, 16, 0.738);
     border-radius: 25px;
   }
+
+  /* Project Menu */
+  .project-menu-container {
+    top: 5%;
+    flex-direction: column;
+  }
+  .project-menu-container .project-button {
+    font-size: 20px;
+  }
+  .project-button.active {
+    font-size: 38px;
+  }
 }
