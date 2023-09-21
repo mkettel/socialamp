@@ -24,14 +24,14 @@ export default function Experience( { currentProject, setCurrentProject, project
   // Scene Resizing for Mobile -----------------------------------------------
   const [wordScale, setWordScale ] = useState(1.5);
   const [wordPosition, setWordPosition] = useState([0, 0.4, 0]);
-  const [imageScale, setImageScale] = useState([6, 3, 1]);
+  const [imageScale, setImageScale] = useState([7, 4, 1]);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const wordScale = isMobile ? .60 : 1.5;
       const wordPosition = isMobile ? [0, 0, 0] : [0, 0.4, 0];
-      const imageScale = isMobile ? [4, 2, 1] : [7, 4, 1];
+      const imageScale = isMobile ? [4.5, 2.5, 1] : [7, 4, 1];
       setWordScale(wordScale);
       setWordPosition(wordPosition);
       setImageScale(imageScale);
