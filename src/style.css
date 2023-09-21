@@ -234,7 +234,7 @@ canvas {
 .project-menu-container {
   position: absolute;
   top: 0%;
-  left: 10%;
+  left: 7%;
   width: 80%;
   height: 20%;
   z-index: 10000000;
@@ -243,13 +243,14 @@ canvas {
   /* flex-direction: column; */
   justify-content: center;
   gap: 25px;
+  overflow-x: hidden;
 }
 .project-menu-container button {
   background-color: transparent;
   border: none;
 }
 .project-menu-container .project-button {
-  font-size: 32px;
+  font-size: 36px;
   color: rgba(208, 208, 208, 0.851);
   font-family: 'Alpino', sans-serif;
   font-weight: 800;
@@ -261,7 +262,7 @@ canvas {
   text-transform: uppercase;
 }
 .project-button.active {
-  font-size: 32px;
+  font-size: 36px;
   /* transition: .4s; */
   /* opacity: 1; */
   font-weight: 800;
@@ -340,11 +341,15 @@ canvas {
     top: 5%;
     flex-direction: column;
     gap: 5px;
+    left: 13%;
   }
   .project-menu-container .project-button {
-    font-size: 20px;
+    font-size: 22px;
   }
   .project-button.active {
-    font-size: 38px;
+    font-size: 22px;
+  }
+  .project-button:nth-child(1).active {
+    margin-right: 0px;
   }
 }

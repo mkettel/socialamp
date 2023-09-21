@@ -17,7 +17,7 @@ import { EffectComposer, GodRays, Vignette } from '@react-three/postprocessing'
 extend(geometry)
 
 
-export default function Experience( { currentProject, setCurrentProject, projects, previousProject, setPreviousProject} )
+export default function Experience( { currentProject, setCurrentProject, projects, previousProject, setPreviousProject, setSceneLoaded}, sceneLoaded={sceneLoaded} )
 {
   const { camera } = useThree();
 
@@ -84,14 +84,16 @@ export default function Experience( { currentProject, setCurrentProject, project
     if (animationProgress < 1) {
       setAnimationProgress(prev => Math.min(prev + 0.0098, 1)); // increase progress towards 1
       setCameraLook();
+    } else {
+      setSceneLoaded(true);
     }
   });
 
   //----------------------------- Used on the canvas to show the video / image
   const imageV = useRef();
   // console.log(imageV.current);
-
   const [isMounted, setIsMounted] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     setIsMounted(false);
@@ -100,6 +102,7 @@ export default function Experience( { currentProject, setCurrentProject, project
     return () => clearTimeout(timeout);
   }, [currentProject]);
 
+  // Image Adjustments------
   useFrame(() => {
     imageV.current.material.zoom = 1 // 1 and higher
     // imageV.current.material.grayscale = ... // between 0 and 1
@@ -107,12 +110,12 @@ export default function Experience( { currentProject, setCurrentProject, project
     imageV.current.className = 'imageV'
   })
 
-
+  // Creating the react animated component--------
   const AnimatedImage = animated(Image);
 
   const fade = useSpring({
     // opacity animation
-    position: isMounted  ? [0, 0.6, 0] : [0, -5, 0],
+    position: isMounted  ? [0, 0.6, 0] : [0, -7, 0],
     config: { mass: 1, tension: 500, friction: 300 },
   });
 
@@ -134,7 +137,7 @@ export default function Experience( { currentProject, setCurrentProject, project
 
 
         {/* image */}
-        {currentProject.type === 'image' &&
+        {sceneLoaded && currentProject.type === 'image' && (
           <AnimatedImage
           key={currentProject.id}
           ref={imageV}
@@ -143,7 +146,9 @@ export default function Experience( { currentProject, setCurrentProject, project
           opacity={.8}
           scale={imageScale}
           position={fade.position}
+          onDoubleClick={() => setImageLoaded(!imageLoaded)}
           />
+          )
         }
 
       <Ocean />

@@ -5,7 +5,7 @@ import Experience from './Experience.jsx'
 import { useState, useEffect } from 'react'
 import { Html, OrbitControls } from '@react-three/drei'
 // import { useSpring, a, animated } from '@react-spring/three';
-import { useSpring, animated } from '@react-spring/web'
+import { useSpring, animated, useTrail } from '@react-spring/web'
 
 
 
@@ -16,6 +16,20 @@ export default function App() {
     width: '100%',
     height: '100%'
   })
+
+  // -------------------------- MOBILE RESIZING FUNCTION -----------------------
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
 
   // Video List Data Structure
@@ -42,7 +56,7 @@ export default function App() {
   // Current Project State Selection
   const [currentProject, setCurrentProject] = useState(projects[1]);
   const [previousProject, setPreviousProject] = useState(currentProject);
-  const [selectedIndex, setSelectedIndex] = useState(2);
+  const [sceneLoaded, setSceneLoaded] = useState(false);
 
   return <>
     <>
@@ -51,17 +65,28 @@ export default function App() {
             camera={{ position: [0, 7, 13] }}
             gl={{ alpha: false }}
         >
-            <Experience currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} previousProject={previousProject} setPreviousProject={setPreviousProject} />
+            <Experience currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} previousProject={previousProject} setPreviousProject={setPreviousProject} sceneLoaded={sceneLoaded} setSceneLoaded={setSceneLoaded} />
         </Canvas>
         <Overlay />
-        <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProject={setPreviousProject} />
-
+        {sceneLoaded && <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProject={setPreviousProject} />
+        }
     </>
   </>
 }
 
 // 2D Project Selection Overlay
-function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject, setSelectedIndex, selectedIndex }) {
+function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject, setSelectedIndex, selectedIndex, isMobile, setIsMobile }) {
+
+
+
+  // Get the center index
+  const centerIndex = Math.floor(projects.length / 2);
+
+  const trailAnims = useTrail(projects.length, {
+    from: { transform: 'translateY(-50px) rotate(0deg)' }, // Starting state (items slightly above and invisible)
+    to: { transform: 'translateY(0px) rotate(0deg)' }, // Ending state (items in position and visible)
+  });
+
 
 
   return (
@@ -70,17 +95,62 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
         // Check if this project is the active one
         const isActive = currentProject.id === project.id;
 
-        // Define animation for this project
-        const menuAnimation = useSpring({
-          transform: isActive ? 'translateY(0%)' : 'translateY(0%)',
-          scale: isActive ? 1.2 : .9,
-          opacity: isActive ? 1 : .5,
-          config: { mass: 5, tension: 350, friction: 40 },
-        });
+        let animation = {
+          transform: 'translateY(0%)',
+          scale: 1,
+          opacity: 1,
+          config: { mass: 4, tension: 350, friction: 40 }
+        };
+
+        switch(index) {
+          case 0: // first index
+          if (!isMobile) {
+            animation.transform = isActive ? 'translateX(0%)' : 'translateX(0%)';
+            animation.transform = isActive ? 'rotateZ(-2deg)' : 'rotateZ(0deg)';
+            animation.scale = isActive ? 1.2 : 0.9;
+            animation.opacity = isActive ? 1 : 0.5;
+            animation.marginRight = isActive ? '40px' : '0px';
+          }
+          animation.scale = isActive ? 1.2 : 0.9;
+          animation.opacity = isActive ? 1 : 0.5;
+          animation.margin = isActive ? '0px 0px' : '0px 0px';
+          break;
+
+          case centerIndex: // center index
+            animation.transform = isActive ? 'translateY(0%)' : 'translateY(0%)';
+            animation.scale = isActive ? 1.2 : 0.9;
+            animation.opacity = isActive ? 1 : 0.5;
+            animation.margin = isActive ? '0px 40px' : '0px 0px';
+            break;
+
+          case projects.length - 1: // last index
+          if (!isMobile) {
+            animation.transform = isActive ? 'rotateZ(2deg)' : 'rotateZ(0deg)';
+            animation.scale = isActive ? 1.2 : 0.9;
+            animation.opacity = isActive ? 1 : 0.5;
+            animation.marginLeft = isActive ? '30px' : '0px';
+          }
+          animation.scale = isActive ? 1.2 : 0.9;
+          animation.opacity = isActive ? 1 : 0.5;
+          animation.margin = isActive ? '0px 0px' : '0px 0px';
+          break;
+
+          default: // all other indexes
+            animation.scale = isActive ? 1.2 : 0.9;
+            animation.opacity = isActive ? 1 : 0.5;
+            break;
+        }
+
+        const menuAnimation = useSpring(animation);
+
+        const combinedStyles = {
+          ...menuAnimation,
+          ...trailAnims[index],
+        };
 
         return (
           <animated.button
-            style={menuAnimation}
+            style={combinedStyles}
             key={project.id}
             className={isActive ? 'active project-button' : 'project-button'}
             onClick={() => {
