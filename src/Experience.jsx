@@ -25,6 +25,7 @@ export default function Experience( { currentProject, setCurrentProject, project
   const [wordScale, setWordScale ] = useState(1.5);
   const [wordPosition, setWordPosition] = useState([0, 0.4, 0]);
   const [imageScale, setImageScale] = useState([7, 4, 1]);
+  const [imagePositon, setImagePosition] = useState([0, 0.6, 0]);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
@@ -32,9 +33,11 @@ export default function Experience( { currentProject, setCurrentProject, project
       const wordScale = isMobile ? .60 : 1.5;
       const wordPosition = isMobile ? [0, 0, 0] : [0, 0.4, 0];
       const imageScale = isMobile ? [4.5, 2.5, 1] : [7, 4, 1];
+      const imagePosition = isMobile ? [0, 0.1, 0] : [0, 0.6, 0];
       setWordScale(wordScale);
       setWordPosition(wordPosition);
       setImageScale(imageScale);
+      setImagePosition(imagePosition);
     }
     window.addEventListener('resize', handleResize);
   handleResize(); // Call the function initially
@@ -89,7 +92,7 @@ export default function Experience( { currentProject, setCurrentProject, project
     }
   });
 
-  //----------------------------- Used on the canvas to show the video / image
+  //----------------------------- IMAGE ----------------------------------------
   const imageV = useRef();
   // console.log(imageV.current);
   const [isMounted, setIsMounted] = useState(false);
@@ -115,7 +118,7 @@ export default function Experience( { currentProject, setCurrentProject, project
 
   const fade = useSpring({
     // opacity animation
-    position: isMounted  ? [0, 0.6, 0] : [0, -7, 0],
+    position: isMounted  ? imagePositon : [0, -7, 0],
     config: { mass: 1, tension: 500, friction: 300 },
   });
 
