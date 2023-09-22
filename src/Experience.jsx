@@ -30,12 +30,8 @@ export default function Experience( { currentProject, setCurrentProject, project
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
-      const wordScale = isMobile ? .60 : 1.5;
-      const wordPosition = isMobile ? [0, 0, 0] : [0, 0.4, 0];
       const imageScale = isMobile ? [4.5, 2.5, 1] : [7, 4, 1];
-      const imagePosition = isMobile ? [0, 0.2, 0] : [0, 0.6, 0];
-      setWordScale(wordScale);
-      setWordPosition(wordPosition);
+      const imagePosition = isMobile ? [0, 0.3, 0] : [0, 0.8, 0];
       setImageScale(imageScale);
       setImagePosition(imagePosition);
     }
@@ -47,6 +43,7 @@ export default function Experience( { currentProject, setCurrentProject, project
   };
   }, []);
   // --------------------------------------------------------------------------
+
   // STATES & OPENING ANIMATION------------------------------------------------
   const [about, setAbout] = useState(false);
   const lenseRef = useRef()
@@ -108,7 +105,7 @@ export default function Experience( { currentProject, setCurrentProject, project
   // Image Adjustments------
   useFrame(() => {
     imageV.current.material.zoom = 1 // 1 and higher
-    // imageV.current.material.grayscale = ... // between 0 and 1
+    imageV.current.material.grayscale = 0 // between 0 and 1
     imageV.current.material.color.set('#C6C8EE') // mix-in color
     imageV.current.className = 'imageV'
   })
@@ -131,26 +128,19 @@ export default function Experience( { currentProject, setCurrentProject, project
         {/* <Perf position="top-right" /> */}
         <Environment background files='./background/eveninghdr.hdr' />
 
-          {/* 3D TEXT */}
-        <group scale={wordScale} position={wordPosition} rotation={[0, 0, 0]}>
-          <Center>
-
-          </Center>
-        </group>
-
-
         {/* image */}
         {sceneLoaded && currentProject.type === 'image' && (
           <AnimatedImage
-          key={currentProject.id}
-          ref={imageV}
-          url={isMounted ? currentProject.src : previousProject.src}
-          transparent
-          opacity={.9}
-          scale={imageScale}
-          position={fade.position}
-          onDoubleClick={() => setImageLoaded(!imageLoaded)}
+            key={currentProject.id}
+            ref={imageV}
+            url={isMounted ? currentProject.src : previousProject.src}
+            transparent
+            opacity={.9}
+            scale={imageScale}
+            position={fade.position}
+            onDoubleClick={() => setImageLoaded(!imageLoaded)}
           />
+          // add Video mesh logic
           )
         }
 
@@ -215,7 +205,7 @@ function Rig({ animationProgress, cameraRef }) {
     const wobbleSpeed = 75e-2;
 
     const strength = 3;
-    const moveXY = new Vector2(8, 4);
+    const moveXY = new Vector2(9, 4);
     const deltaRotate = 20;
 
     if (animationProgress >= 1) {

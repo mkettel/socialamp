@@ -68,8 +68,10 @@ canvas {
 
 .overlay-right-container {
   position: absolute;
-  top: 30px;
-  left: 30px;
+  /* top: 30px; */
+  /* left: 30px; */
+  bottom: 30px;
+  right: 30px;
   z-index: 100000000;
 }
 .overlay-right {
@@ -106,9 +108,11 @@ canvas {
   left: 80px;
   z-index: 100000000;
   transition: .3s;
+  color: rgb(208, 208, 208);
 }
 .overlay-button-container .overlay-button:hover {
-  color: #cccce6;
+  /* color: rgb(167, 166, 166); */
+  opacity: .6;
   transition: .3s;
 }
 .overlay-button-container .overlay-button p {
@@ -151,16 +155,17 @@ canvas {
   pointer-events: all;
 }
 .about-modal h2 {
-  font-size: 28px;
+  font-size: 32px;
   color: white;
   color: black;
 }
 .about-modal .about-text {
   padding: 0px 45px;
   text-align: center;
+  max-width: 900px;
 }
 .about-text p {
-  font-size: 20px;
+  font-size: 24px;
   margin: 0px;
   color: white;
   color: black;
@@ -186,7 +191,7 @@ canvas {
   padding: 25px;
 }
 .case-study-modal h2 {
-  font-size: 28px;
+  font-size: 32px;
   color: white;
 }
 .case-study-grid {
@@ -222,7 +227,7 @@ canvas {
   pointer-events: all;
 }
 .contact-modal h2 {
-  font-size: 28px;
+  font-size: 32px;
   color: black;
 }
 .contact-modal .contact-text {
@@ -256,7 +261,7 @@ canvas {
   font-weight: 800;
   /* transition: .4s; */
   cursor: pointer;
-  margin: 0px;
+  /* margin: 0px; */
   /* opacity: .4; */
   pointer-events: none;
   text-transform: uppercase;
@@ -270,6 +275,9 @@ canvas {
 .project-button p {
   margin: 0px;
   pointer-events: all;
+}
+.project-button:nth-child(1).active {
+  margin-right: 40px;
 }
 
 
