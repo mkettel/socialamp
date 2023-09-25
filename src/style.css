@@ -239,15 +239,15 @@ canvas {
 .project-menu-container {
   position: absolute;
   top: 0%;
-  left: 7%;
+  left: 10%;
   width: 80%;
-  height: 20%;
+  height: 35%;
   z-index: 10000000;
   border-radius: 0px;
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   justify-content: center;
-  gap: 25px;
+  gap: 20px;
   overflow-x: hidden;
 }
 .project-menu-container button {
@@ -276,9 +276,7 @@ canvas {
   margin: 0px;
   pointer-events: all;
 }
-.project-button:nth-child(1).active {
-  margin-right: 40px;
-}
+
 
 
 @keyframes fadeIn {

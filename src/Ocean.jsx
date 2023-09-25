@@ -1,5 +1,5 @@
 import { Water } from 'three-stdlib'
-import React, { useRef, useMemo } from 'react'
+import React, { useRef, useMemo, useEffect } from 'react'
 import { useFrame, useThree, useLoader, extend } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -20,7 +20,7 @@ export default function Ocean() {
       sunColor: "#F3C98B",
       waterColor: "#264185",
       distortionScale: 1.5,
-      fog: false,
+      fog: true,
       format: gl.encoding
     }),
     [waterNormals]

@@ -108,36 +108,36 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
           if (!isMobile) {
             animation.transform = isActive ? 'translateX(0%)' : 'translateX(0%)';
             animation.transform = isActive ? 'rotateZ(-2deg)' : 'rotateZ(0deg)';
-            animation.scale = isActive ? 1.2 : 0.9;
+            animation.scale = isActive ? 2.9 : 1.9;
             animation.opacity = isActive ? 1 : 0.5;
-            animation.marginRight = isActive ? '40px' : '0px';
+            animation.marginRight = isActive ? '0px' : '0px';
           }
-          animation.scale = isActive ? 1.2 : 0.9;
+          animation.scale = isActive ? 2.9 : 1.9;
           animation.opacity = isActive ? 1 : 0.5;
           animation.margin = isActive ? '0px 0px' : '0px 0px';
           break;
 
           case centerIndex: // center index
             animation.transform = isActive ? 'translateY(0%)' : 'translateY(0%)';
-            animation.scale = isActive ? 1.2 : 0.9;
+            animation.scale = isActive ? 2.9 : 1.9;
             animation.opacity = isActive ? 1 : 0.5;
-            animation.margin = isActive ? '0px 40px' : '0px 0px';
+            animation.margin = isActive ? '0px 0px' : '0px 0px';
             break;
 
           case projects.length - 1: // last index
           if (!isMobile) {
             animation.transform = isActive ? 'rotateZ(2deg)' : 'rotateZ(0deg)';
-            animation.scale = isActive ? 1.2 : 0.9;
+            animation.scale = isActive ? 2.9 : 1.9;
             animation.opacity = isActive ? 1 : 0.5;
-            animation.marginLeft = isActive ? '30px' : '0px';
+            animation.marginLeft = isActive ? '0px' : '0px';
           }
-          animation.scale = isActive ? 1.2 : 0.9;
+          animation.scale = isActive ? 2.9 : 1.9;
           animation.opacity = isActive ? 1 : 0.5;
           animation.margin = isActive ? '0px 0px' : '0px 0px';
           break;
 
           default: // all other indexes
-            animation.scale = isActive ? 1.2 : 0.9;
+            animation.scale = isActive ? 1.9 : 0.9;
             animation.opacity = isActive ? 1 : 0.5;
             break;
         }
@@ -173,51 +173,38 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
 
 function Overlay() {
 
-  // About animation -----------------------------------------------------
-  const [sliderOut, setSliderOut] = useState(false);
+  const [activeModal, setActiveModal] = useState(null);
+  console.log(activeModal);
+
+  const openAboutModal = () => {
+    setActiveModal(activeModal === 'about' ? null : 'about');
+  };
+
+  const openCaseModal = () => {
+    setActiveModal(activeModal === 'case' ? null : 'case');
+  };
+
+  const openContactModal = () => {
+    setActiveModal(activeModal === 'contact' ? null : 'contact');
+  };
+
   const animation = useSpring({
-    transform: sliderOut ? 'translateX(0%)' : 'translateX(100%)',
-    config: { mass: 1.2, tension: 50, friction: 15 },
+    transform: activeModal === 'about' ? 'translateX(0%)' : 'translateX(0%)',
+    opacity: activeModal === 'about' ? 1 : 0,
+    config: { mass: 2.8, tension: 50, friction: 15 },
   });
 
-  const onAboutClick = () => {
-    setSliderOut(!sliderOut);
-    console.log(sliderOut);
-    setCaseSliderOut(false);
-    setContactSliderOut(false);
-  };
-  // ---------------------------------------------------------------------
-
-  // Case Study animation ------------------------------------------------
-  const [caseSliderOut, setCaseSliderOut] = useState(false);
   const caseAnimation = useSpring({
-    transform: caseSliderOut ? 'translateY(-60%)' : 'translateY(100%)',
+    transform: activeModal === 'case' ? 'translateY(-60%)' : 'translateY(100%)',
     config: { mass: 2, tension: 80, friction: 15 },
   });
 
-  const onCaseClick = () => {
-    setCaseSliderOut(!caseSliderOut);
-    console.log(caseSliderOut);
-    setSliderOut(false);
-    setContactSliderOut(false);
-  };
-
-  // ---------------------------------------------------------------------
-
-  // Contact animation ------------------------------------------------
-  const [contactSliderOut, setContactSliderOut] = useState(false);
   const contactAnimation = useSpring({
-    transform: contactSliderOut ? 'translateY(0%)' : 'translateY(-100%)',
-    // rotateZ: contactSliderOut ? '-180deg' : '0deg',
-    config: { mass: 1.2, tension: 50, friction: 15 },
+    transform: activeModal === 'about' ? 'translateY(-100%)' : 'translateY(0%)',
+    opacity: activeModal === 'contact' ? 1 : 0,
+    config: { mass: 2.8, tension: 50, friction: 15 },
   });
 
-  const onContactClick = () => {
-    setContactSliderOut(!contactSliderOut);
-    console.log(contactSliderOut);
-    setSliderOut(false);
-    setCaseSliderOut(false);
-  };
 
 
 
@@ -225,20 +212,20 @@ function Overlay() {
   return <>
     <animated.div className="overlay-button-container">
       <div className="overlay-button">
-        <p onClick={onAboutClick}>about</p>
+        <p onClick={openAboutModal}>about</p>
       </div>
       {/* <div className="overlay-button">
         <p onClick={onCaseClick}>case studies</p>
       </div> */}
       <div className="overlay-button">
-        <p onClick={onContactClick}>contact</p>
+        <p onClick={openContactModal}>contact</p>
       </div>
     </animated.div>
 
     {/* about modal slide out */}
     <animated.div className="about-modal-container" style={animation}>
       <div className="about-modal">
-      <div className="closing-button" onClick={onAboutClick} >
+      <div className="closing-button" onClick={openAboutModal} >
         <p>+</p>
       </div>
         <div className="about-modal-header">
@@ -254,7 +241,7 @@ function Overlay() {
     <animated.div className="case-study-modal-container" style={caseAnimation}>
       <div className="modal-blur-filter"></div>
       <div className="case-study-modal">
-      <div className="closing-button" onClick={onCaseClick} >
+      <div className="closing-button" onClick={openCaseModal} >
         <p>+</p>
       </div>
         <div className="case-study-modal-header">
@@ -282,7 +269,7 @@ function Overlay() {
     {/* Contact Us Modal */}
     <animated.div className="contact-modal-container" style={contactAnimation} >
       <div className="contact-modal">
-      <div className="closing-button" onClick={onContactClick} >
+      <div className="closing-button" onClick={openContactModal} >
         <p>+</p>
       </div>
         <div className="contact-modal-header">

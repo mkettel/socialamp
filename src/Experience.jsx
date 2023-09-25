@@ -14,6 +14,7 @@ import { lerp } from 'three/src/math/MathUtils'
 import { Vector2, Vector3, MathUtils } from 'three';
 import { EffectComposer, GodRays, Vignette } from '@react-three/postprocessing'
 
+
 extend(geometry)
 
 
@@ -56,8 +57,8 @@ export default function Experience( { currentProject, setCurrentProject, project
 
   const startingCameraPosition = [0, 7, 12];
   const startingTarget = [0, 1, 12];
-  const endingCameraPosition = [0, 0.3, 5.5];
-  const endingTarget = [0, 0.2, 0];
+  const endingCameraPosition = [0, 1.3, 5.5];
+  const endingTarget = [0, 1, 0];
 
   const [animationProgress, setAnimationProgress] = useState(0);
 
@@ -230,7 +231,7 @@ function Rig({ animationProgress, cameraRef }) {
             camera.position.add(wobble);
 
             camera.position.lerp(position, 0.04);
-            camera.lookAt(0, 0.2, 0);
+            camera.lookAt(0, 1, 0);
         });
     }
 }
