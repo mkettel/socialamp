@@ -108,18 +108,18 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
           if (!isMobile) {
             animation.transform = isActive ? 'translateX(0%)' : 'translateX(0%)';
             animation.transform = isActive ? 'rotateZ(-2deg)' : 'rotateZ(0deg)';
-            animation.scale = isActive ? 2.9 : 1.9;
+            animation.scale = isActive ? 2.1 : 1.3;
             animation.opacity = isActive ? 1 : 0.5;
             animation.marginRight = isActive ? '0px' : '0px';
           }
-          animation.scale = isActive ? 2.9 : 1.9;
+          animation.scale = isActive ? 2.1 : 1.3;
           animation.opacity = isActive ? 1 : 0.5;
           animation.margin = isActive ? '0px 0px' : '0px 0px';
           break;
 
           case centerIndex: // center index
             animation.transform = isActive ? 'translateY(0%)' : 'translateY(0%)';
-            animation.scale = isActive ? 2.9 : 1.9;
+            animation.scale = isActive ? 2.1 : 1.3;
             animation.opacity = isActive ? 1 : 0.5;
             animation.margin = isActive ? '0px 0px' : '0px 0px';
             break;
@@ -127,11 +127,11 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
           case projects.length - 1: // last index
           if (!isMobile) {
             animation.transform = isActive ? 'rotateZ(2deg)' : 'rotateZ(0deg)';
-            animation.scale = isActive ? 2.9 : 1.9;
+            animation.scale = isActive ? 2.1 : 1.3;
             animation.opacity = isActive ? 1 : 0.5;
             animation.marginLeft = isActive ? '0px' : '0px';
           }
-          animation.scale = isActive ? 2.9 : 1.9;
+          animation.scale = isActive ? 2.1 : 1.3;
           animation.opacity = isActive ? 1 : 0.5;
           animation.margin = isActive ? '0px 0px' : '0px 0px';
           break;
@@ -196,6 +196,7 @@ function Overlay() {
 
   const caseAnimation = useSpring({
     transform: activeModal === 'case' ? 'translateY(-60%)' : 'translateY(100%)',
+    zIndex: activeModal === null ? 1 : 1000000000,
     config: { mass: 2, tension: 80, friction: 15 },
   });
 
@@ -204,6 +205,13 @@ function Overlay() {
     opacity: activeModal === 'contact' ? 1 : 0,
     config: { mass: 2.8, tension: 50, friction: 15 },
   });
+
+  const pointerEvents = useSpring({
+    pointerEvents: activeModal === 'about' ? 'auto' : 'none',
+  })
+  const contactPointerEvents = useSpring({
+    pointerEvents: activeModal === 'contact' ? 'auto' : 'none',
+  })
 
 
 
@@ -224,10 +232,10 @@ function Overlay() {
 
     {/* about modal slide out */}
     <animated.div className="about-modal-container" style={animation}>
-      <div className="about-modal">
-      <div className="closing-button" onClick={openAboutModal} >
-        <p>+</p>
-      </div>
+      <div className="about-modal" style={pointerEvents}>
+        <div className="closing-button" onClick={openAboutModal} >
+          <p>+</p>
+        </div>
         <div className="about-modal-header">
           <h2>About SocialAmp</h2>
         </div>
@@ -268,7 +276,7 @@ function Overlay() {
 
     {/* Contact Us Modal */}
     <animated.div className="contact-modal-container" style={contactAnimation} >
-      <div className="contact-modal">
+      <div className="contact-modal" style={contactPointerEvents}>
       <div className="closing-button" onClick={openContactModal} >
         <p>+</p>
       </div>
