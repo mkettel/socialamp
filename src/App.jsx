@@ -115,7 +115,7 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
           } else {
             animation.opacity = isActive ? 1 : 0.3;
             animation.margin = isActive ? '0px 0px' : '0px 0px';
-            animation.fontSize = isActive ? '49px' : '36px';
+            animation.fontSize = isActive ? '38px' : '32px';
           }
           break;
 
