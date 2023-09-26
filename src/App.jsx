@@ -68,7 +68,7 @@ export default function App() {
             <Experience currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} previousProject={previousProject} setPreviousProject={setPreviousProject} sceneLoaded={sceneLoaded} setSceneLoaded={setSceneLoaded} />
         </Canvas>
         <Overlay />
-        {sceneLoaded && <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProject={setPreviousProject} />
+        {sceneLoaded && <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProject={setPreviousProject} isMobile={isMobile} setIsMobile={setIsMobile} />
         }
     </>
   </>
@@ -100,7 +100,8 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
           scale: 1,
           opacity: 1,
           config: { mass: 4.5, tension: 350, friction: 40 },
-          margin: '0px'
+          margin: '0px',
+          fontSize: '36px',
         };
 
         switch(index) {
@@ -108,37 +109,44 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
           if (!isMobile) {
             animation.transform = isActive ? 'translateX(0%)' : 'translateX(0%)';
             animation.transform = isActive ? 'rotateZ(-2deg)' : 'rotateZ(0deg)';
-            animation.scale = isActive ? 2.1 : 1.3;
-            animation.opacity = isActive ? 1 : 0.5;
+            animation.opacity = isActive ? 1 : 0.3;
             animation.marginRight = isActive ? '0px' : '0px';
+            animation.fontSize = isActive ? '82px' : '62px';
+          } else {
+            animation.opacity = isActive ? 1 : 0.3;
+            animation.margin = isActive ? '0px 0px' : '0px 0px';
+            animation.fontSize = isActive ? '49px' : '36px';
           }
-          animation.scale = isActive ? 2.1 : 1.3;
-          animation.opacity = isActive ? 1 : 0.5;
-          animation.margin = isActive ? '0px 0px' : '0px 0px';
           break;
 
           case centerIndex: // center index
+          if (!isMobile) {
             animation.transform = isActive ? 'translateY(0%)' : 'translateY(0%)';
-            animation.scale = isActive ? 2.1 : 1.3;
-            animation.opacity = isActive ? 1 : 0.5;
+            animation.opacity = isActive ? 1 : 0.3;
             animation.margin = isActive ? '0px 0px' : '0px 0px';
+            animation.fontSize = isActive ? '82px' : '62px';
+          } else {
+            animation.fontSize = isActive ? '42px' : '36px';
+            animation.opacity = isActive ? 1 : 0.3;
+          }
             break;
 
           case projects.length - 1: // last index
           if (!isMobile) {
             animation.transform = isActive ? 'rotateZ(2deg)' : 'rotateZ(0deg)';
-            animation.scale = isActive ? 2.1 : 1.3;
-            animation.opacity = isActive ? 1 : 0.5;
+            animation.opacity = isActive ? 1 : 0.3;
             animation.marginLeft = isActive ? '0px' : '0px';
+            animation.fontSize = isActive ? '82px' : '62px';
+          } else {
+            animation.opacity = isActive ? 1 : 0.3;
+            animation.margin = isActive ? '0px 0px' : '0px 0px';
+            animation.fontSize = isActive ? '42px' : '36px';
           }
-          animation.scale = isActive ? 2.1 : 1.3;
-          animation.opacity = isActive ? 1 : 0.5;
-          animation.margin = isActive ? '0px 0px' : '0px 0px';
           break;
 
           default: // all other indexes
-            animation.scale = isActive ? 1.9 : 0.9;
             animation.opacity = isActive ? 1 : 0.5;
+            animation.fontSize = isActive ? '42px' : '36px';
             break;
         }
 
