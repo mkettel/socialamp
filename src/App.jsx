@@ -126,7 +126,7 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
             animation.margin = isActive ? '0px 0px' : '0px 0px';
             animation.fontSize = isActive ? '82px' : '62px';
           } else {
-            animation.fontSize = isActive ? '42px' : '36px';
+            animation.fontSize = isActive ? '38px' : '32px';
             animation.opacity = isActive ? 1 : 0.3;
           }
             break;
@@ -140,7 +140,7 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
           } else {
             animation.opacity = isActive ? 1 : 0.3;
             animation.margin = isActive ? '0px 0px' : '0px 0px';
-            animation.fontSize = isActive ? '42px' : '36px';
+            animation.fontSize = isActive ? '38px' : '32px';
           }
           break;
 
