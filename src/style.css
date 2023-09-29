@@ -239,7 +239,7 @@ canvas {
 /* ---------------------------------- PROJECT MENU SELECTION ---------------- */
 .project-menu-container {
   position: absolute;
-  top: 0%;
+  top: 1%;
   left: 10%;
   width: 80%;
   height: 35%;
@@ -268,7 +268,7 @@ canvas {
   font-weight: 900;
 }
 .project-button p {
-  margin: 0px;
+  margin: -5px;
   pointer-events: all;
 }
 

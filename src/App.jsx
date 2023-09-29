@@ -1,11 +1,13 @@
 import './style.css'
 import ReactDOM from 'react-dom/client'
-import { Canvas, extend } from '@react-three/fiber'
+import { Canvas, extend, useThree } from '@react-three/fiber'
 import Experience from './Experience.jsx'
 import { useState, useEffect } from 'react'
 import { Html, OrbitControls } from '@react-three/drei'
 // import { useSpring, a, animated } from '@react-spring/three';
 import { useSpring, animated, useTrail } from '@react-spring/web'
+import TransShader from './CustomImage.jsx'
+import NormImage from './NormImage'
 
 
 
@@ -30,6 +32,7 @@ export default function App() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
 
 
   // Video List Data Structure
@@ -66,16 +69,22 @@ export default function App() {
             gl={{ alpha: false }}
         >
             <Experience currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} previousProject={previousProject} setPreviousProject={setPreviousProject} sceneLoaded={sceneLoaded} setSceneLoaded={setSceneLoaded} />
+
+            <NormImage currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} previousProject={previousProject} setPreviousProject={setPreviousProject} sceneLoaded={sceneLoaded} setSceneLoaded={setSceneLoaded} />
+
+        {/* {sceneLoaded &&  <TransShader sceneLoaded={sceneLoaded} />} */}
+
         </Canvas>
         <Overlay />
-        {sceneLoaded && <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProject={setPreviousProject} isMobile={isMobile} setIsMobile={setIsMobile} />
+        {sceneLoaded && <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProject={setPreviousProject} isMobile={isMobile} setIsMobile={setIsMobile}
+         />
         }
     </>
   </>
 }
 
 // 2D Project Selection Overlay
-function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject, setSelectedIndex, selectedIndex, isMobile, setIsMobile }) {
+function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject, isMobile, setIsMobile }) {
 
 
 
@@ -167,7 +176,6 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
               console.log("Setting previous project: ", currentProject);
               setPreviousProject(currentProject);
               setCurrentProject(project);
-              setSelectedIndex(index);
             }}
           >
             <p>{project.title}</p>
