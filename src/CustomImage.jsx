@@ -60,7 +60,7 @@ extend({ ImageFadeMaterial })
 export default function FadingImage({ currentProject, setCurrentProject, projects, previousProject, setPreviousProject, sceneLoaded }) {
   const ref = useRef()
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [texture1, texture2, dispTexture] = useTexture([previousProject.src, currentProject.src, "/shader-img/shader-fade-3.jpeg"])
+  const [texture1, texture2, dispTexture] = useTexture([previousProject.src, currentProject.src, "/shader-img/shader-fade-2.jpeg"])
 
   useFrame(() => {
     if (isTransitioning) {
