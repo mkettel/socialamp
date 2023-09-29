@@ -4,6 +4,9 @@ import { useSpring, animated } from '@react-spring/three';
 import { Image } from '@react-three/drei';
 
 
+/* ORIGINAL IMAGE COMPONENT JUST KEEPING FOR NOW IN CASE I NEED TO REFERENCE IT
+*/
+
 export default function NormImage({ currentProject, setCurrentProject, projects, previousProject, setPreviousProject, setSceneLoaded, sceneLoaded={sceneLoaded} }) {
 
 
