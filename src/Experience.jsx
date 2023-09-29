@@ -15,7 +15,7 @@ import { EffectComposer, GodRays, Vignette } from '@react-three/postprocessing'
 extend(geometry)
 
 
-export default function Experience( { setSceneLoaded, sceneLoaded={sceneLoaded} } )
+export default function Experience( { projects, setSceneLoaded, sceneLoaded={sceneLoaded} } )
 {
   const { camera } = useThree();
 
@@ -33,6 +33,8 @@ export default function Experience( { setSceneLoaded, sceneLoaded={sceneLoaded} 
   };
   }, []);
   // --------------------------------------------------------------------------
+
+
 
   // STATES & OPENING ANIMATION------------------------------------------------
   const [minPolarAngle, setMinPolarAngle] = useState(.7);
