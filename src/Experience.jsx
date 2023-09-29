@@ -1,14 +1,11 @@
-import { CameraControls, OrbitControls, MeshTransmissionMaterial, Text3D, Center, Html, Text, Environment, Billboard, RoundedBox, MeshDistortMaterial, Image } from '@react-three/drei'
+import { CameraControls, Environment, Image, useTexture } from '@react-three/drei'
 import './style.css'
 import { Perf } from 'r3f-perf'
 import { Canvas, extend, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { easing, geometry, three } from 'maath'
-import { useState, Suspense, useRef, useMemo, useEffect, React } from 'react'
-import lenseVertexShader from './shaders/lenseVertexShader'
-import lenseFragmentShader from './shaders/lenseFragmentShader'
+import { useState, Suspense, useRef, useMemo, useEffect, React, useCallback } from 'react'
 import Ocean from './Ocean'
-import { useSpring, a, animated } from '@react-spring/three';
 import { useThree } from '@react-three/fiber'
 import { lerp } from 'three/src/math/MathUtils'
 import { Vector2, Vector3, MathUtils } from 'three';
@@ -18,23 +15,15 @@ import { EffectComposer, GodRays, Vignette } from '@react-three/postprocessing'
 extend(geometry)
 
 
-export default function Experience( { currentProject, setCurrentProject, projects, previousProject, setPreviousProject, setSceneLoaded}, sceneLoaded={sceneLoaded} )
+export default function Experience( { projects, setSceneLoaded, sceneLoaded={sceneLoaded} } )
 {
   const { camera } = useThree();
 
   // Scene Resizing for Mobile -----------------------------------------------
-  const [wordScale, setWordScale ] = useState(1.5);
-  const [wordPosition, setWordPosition] = useState([0, 0.4, 0]);
-  const [imageScale, setImageScale] = useState([7, 4, 1]);
-  const [imagePositon, setImagePosition] = useState([0, 0.6, 0]);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
-      const imageScale = isMobile ? [4.5, 2.5, 1] : [7, 4, 1];
-      const imagePosition = isMobile ? [0, 0.3, 0] : [0, 0.8, 0];
-      setImageScale(imageScale);
-      setImagePosition(imagePosition);
     }
     window.addEventListener('resize', handleResize);
   handleResize(); // Call the function initially
@@ -45,9 +34,9 @@ export default function Experience( { currentProject, setCurrentProject, project
   }, []);
   // --------------------------------------------------------------------------
 
+
+
   // STATES & OPENING ANIMATION------------------------------------------------
-  const [about, setAbout] = useState(false);
-  const lenseRef = useRef()
   const [minPolarAngle, setMinPolarAngle] = useState(.7);
   const [maxPolarAngle, setMaxPolarAngle] = useState(Math.PI / 2);
   const [minAzimuthAngle, setMinAzimuthAngle] = useState(-.5);
@@ -78,7 +67,6 @@ export default function Experience( { currentProject, setCurrentProject, project
     setCameraLook();
     setMinPolarAngle(1.1);
     setMaxPolarAngle(Math.PI / 2);
-    console.log(about);
   }, []);
 
   useFrame(() => {
@@ -88,62 +76,17 @@ export default function Experience( { currentProject, setCurrentProject, project
     } else {
       setSceneLoaded(true);
     }
-  });
+  }, []);
 
-  //----------------------------- IMAGE ----------------------------------------
-  const imageV = useRef();
-  // console.log(imageV.current);
-  const [isMounted, setIsMounted] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(false);
-    // Reset the animation state
-    const timeout = setTimeout(() => setIsMounted(true), 600); // you can adjust the delay if needed
-    return () => clearTimeout(timeout);
-  }, [currentProject]);
-
-  // Image Adjustments------
-  useFrame(() => {
-    imageV.current.material.zoom = 1 // 1 and higher
-    imageV.current.material.grayscale = 0 // between 0 and 1
-    imageV.current.material.color.set('#C6C8EE') // mix-in color
-    imageV.current.className = 'imageV'
-  })
-
-  // Creating the react animated component--------
-  const AnimatedImage = animated(Image);
-
-  const fade = useSpring({
-    // opacity animation
-    position: isMounted  ? imagePositon : [0, -7, 0],
-    config: { mass: 1, tension: 500, friction: 300 },
-  });
 
     return <>
     <EffectComposer>
       <Vignette />
 
-    <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} minAzimuthAngle={minAzimuthAngle} maxAzimuthAngle={maxAzimuthAngle} minDistance={5} maxDistance={6} />
+      <CameraControls ref={cameraRef} minPolarAngle={minPolarAngle} maxPolarAngle={maxPolarAngle} minAzimuthAngle={minAzimuthAngle} maxAzimuthAngle={maxAzimuthAngle} minDistance={5} maxDistance={6} />
 
-        {/* <Perf position="top-right" /> */}
-        <Environment background files='./background/eveninghdr.hdr' />
-
-        {/* image */}
-        {sceneLoaded && currentProject.type === 'image' && (
-          <AnimatedImage
-            key={currentProject.id}
-            ref={imageV}
-            url={isMounted ? currentProject.src : previousProject.src}
-            transparent
-            opacity={.9}
-            scale={imageScale}
-            position={fade.position}
-            onDoubleClick={() => setImageLoaded(!imageLoaded)}
-          />
-          // add Video mesh logic
-          )
-        }
+      {/* <Perf position="top-right" /> */}
+      <Environment background files='./background/eveninghdr.hdr' />
 
       <Ocean />
 
@@ -154,7 +97,7 @@ export default function Experience( { currentProject, setCurrentProject, project
         cameraRef={cameraRef}
         />
       }
-      {/* <MouseEvents ref={lenseRef} /> */}
+
       </EffectComposer>
     </>
 }
@@ -172,25 +115,7 @@ function MouseEvents({ lenseRef }) {
   })
 }
 
-function Lense({ lenseRef }) {
 
-  return <>
-    <mesh ref={lenseRef} position={[0, 0, 0]} scale={.5} >
-      <sphereGeometry />
-        <meshPhysicalMaterial
-        reflectivity={.05}
-        roughness={.15}
-        metalness={.1}
-        clearcoat={.16}
-        transmission={1}
-        opacity={0.5}
-        thickness={10}
-        ior={1.1}
-        color={'#ffffff'}
-        />
-    </mesh>
-  </>
-}
 
 
 function Rig({ animationProgress, cameraRef }) {

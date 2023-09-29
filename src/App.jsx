@@ -1,13 +1,18 @@
 import './style.css'
 import ReactDOM from 'react-dom/client'
-import { Canvas, extend } from '@react-three/fiber'
+import { Canvas, extend, useThree } from '@react-three/fiber'
 import Experience from './Experience.jsx'
 import { useState, useEffect } from 'react'
-import { Html, OrbitControls } from '@react-three/drei'
+import { Html, OrbitControls, useTexture } from '@react-three/drei'
 // import { useSpring, a, animated } from '@react-spring/three';
 import { useSpring, animated, useTrail } from '@react-spring/web'
+import TransShader from './CustomImage.jsx'
+import NormImage from './NormImage'
+import FadingImage from './CustomImage.jsx'
+import * as THREE from 'three'
 
 
+const MOBILE_BREAKPOINT = 768;
 
 export default function App() {
 
@@ -18,7 +23,7 @@ export default function App() {
   })
 
   // -------------------------- MOBILE RESIZING FUNCTION -----------------------
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= MOBILE_BREAKPOINT);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -30,7 +35,6 @@ export default function App() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
 
   // Video List Data Structure
   const projects = [
@@ -65,29 +69,47 @@ export default function App() {
             camera={{ position: [0, 7, 13] }}
             gl={{ alpha: false }}
         >
-            <Experience currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} previousProject={previousProject} setPreviousProject={setPreviousProject} sceneLoaded={sceneLoaded} setSceneLoaded={setSceneLoaded} />
+          <Experience
+            currentProject={currentProject}
+            setCurrentProject={setCurrentProject}
+            projects={projects}
+            previousProject={previousProject}
+            setPreviousProject={setPreviousProject}
+            sceneLoaded={sceneLoaded}
+            setSceneLoaded={setSceneLoaded}
+          />
+
+          {/* <NormImage currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} previousProject={previousProject} setPreviousProject={setPreviousProject} sceneLoaded={sceneLoaded} setSceneLoaded={setSceneLoaded} /> */}
+
+          {sceneLoaded &&  <FadingImage
+            currentProject={currentProject}
+            setCurrentProject={setCurrentProject}
+            projects={projects}
+            previousProject={previousProject}
+            setPreviousProject={setPreviousProject}
+            sceneLoaded={sceneLoaded}
+          />}
+
         </Canvas>
         <Overlay />
-        {sceneLoaded && <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProject={setPreviousProject} isMobile={isMobile} setIsMobile={setIsMobile} />
+        {sceneLoaded && <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProject={setPreviousProject} isMobile={isMobile} setIsMobile={setIsMobile}
+         />
         }
     </>
   </>
 }
 
 // 2D Project Selection Overlay
-function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject, setSelectedIndex, selectedIndex, isMobile, setIsMobile }) {
-
-
+function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject, isMobile, setIsMobile }) {
 
   // Get the center index
   const centerIndex = Math.floor(projects.length / 2);
 
+  // Opening animation for project list entering nicely
   const trailAnims = useTrail(projects.length, {
     from: { transform: 'translateY(-50px) rotate(0deg)' }, // Starting state (items slightly above and invisible)
     to: { transform: 'translateY(0px) rotate(0deg)' }, // Ending state (items in position and visible)
   });
-
-
 
   return (
     <div className="project-menu-container">
@@ -167,7 +189,6 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
               console.log("Setting previous project: ", currentProject);
               setPreviousProject(currentProject);
               setCurrentProject(project);
-              setSelectedIndex(index);
             }}
           >
             <p>{project.title}</p>
