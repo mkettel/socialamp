@@ -37,10 +37,22 @@ export const ImageFadeMaterial = shaderMaterial(
     vec4 _texture = texture2D(tex, distortedPosition);
     vec4 _texture2 = texture2D(tex2, distortedPosition2);
     vec4 finalTexture = mix(_texture, _texture2, dispFactor);
+
+    // Calculate fade effect based on vUv.y for bottom fade
+    float fadeFactor = smoothstep(0.01, 0.7, vUv.y); // Here, 0.0 and 0.3 are control values that determine where the fading starts and ends. Adjust as needed.
+
+    // If you have an alpha channel, use this:
+    finalTexture.a *= fadeFactor;
     gl_FragColor = finalTexture;
+
+    // If you don't have an alpha channel and need to mix with a background color (e.g., white), use this:
+    // vec4 backgroundColor = vec4(1.0, 1.0, 1.0, 1.0); // White background
+    // gl_FragColor = mix(backgroundColor, finalTexture, fadeFactor);
+
     #include <tonemapping_fragment>
     #include <encodings_fragment>
-  }`
+  }
+  `
 )
 
 extend({ ImageFadeMaterial })
@@ -48,11 +60,11 @@ extend({ ImageFadeMaterial })
 export default function FadingImage({ currentProject, setCurrentProject, projects, previousProject, setPreviousProject, sceneLoaded }) {
   const ref = useRef()
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [texture1, texture2, dispTexture] = useTexture([previousProject.src, currentProject.src, "/shader-img/shader-fade-2.jpeg"])
+  const [texture1, texture2, dispTexture] = useTexture([previousProject.src, currentProject.src, "/shader-img/shader-fade-3.jpeg"])
 
   useFrame(() => {
     if (isTransitioning) {
-      ref.current.dispFactor += 0.055;
+      ref.current.dispFactor += 0.035;
       if (ref.current.dispFactor >= 1) {
         setIsTransitioning(false);
       }
@@ -75,7 +87,7 @@ export default function FadingImage({ currentProject, setCurrentProject, project
   return (
     <mesh>
       <planeGeometry args={[6, 4, 1]} />
-      <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} toneMapped={false} />
+      <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} toneMapped={false} transparent />
     </mesh>
   )
 }
