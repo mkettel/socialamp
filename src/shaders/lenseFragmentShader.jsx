@@ -102,14 +102,14 @@ void main() {
     // gl_FragColor = vec4(texColor, finalAlpha);
 
     // Get the texture color
-   vec4 texColor = texture2D(u_texture, vUv);
+    vec4 texColor = texture2D(u_texture, vUv);
 
-   float fadeFactor = smoothstep(0.0, 0.3, vUv.y);
-   float finalAlpha = texColor.a * fadeFactor * u_opacity;
+    float fadeFactor = smoothstep(0.0, 0.3, vUv.y);
+    float finalAlpha = texColor.a * fadeFactor * u_opacity;
 
-   vec3 finalColor = texColor.rgb;
+    vec3 finalColor = texColor.rgb;
 
-   gl_FragColor = vec4(finalColor, finalAlpha);
+    gl_FragColor = vec4(finalColor, finalAlpha);
 }
 
 `

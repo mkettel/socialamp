@@ -74,7 +74,7 @@ export default function FadingImage({ currentProject, setCurrentProject, project
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
-      const imageSize = isMobile ? [4.9, 3.7, 1] : [7, 5, 1]; // Adjust the scale values for mobile
+      const imageSize = isMobile ? [4.7, 3.7, 1] : [7, 5, 1]; // Adjust the scale values for mobile
       setImageSize(imageSize);
     }
     window.addEventListener('resize', handleResize);
