@@ -315,7 +315,7 @@ canvas {
 
   /* Project Menu */
   .project-menu-container {
-    top: 10%;
+    top: 5%;
     flex-direction: column;
     gap: 3px;
     left: 2%;
@@ -330,5 +330,9 @@ canvas {
   }
   .project-button:nth-child(1).active {
     margin-right: 0px;
+  }
+  .project-button p {
+    margin: -5px;
+    pointer-events: all;
   }
 }

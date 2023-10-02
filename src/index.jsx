@@ -5,7 +5,6 @@ import App from './App'
 
 const root = ReactDOM.createRoot(document.querySelector('#root'))
 
-
 root.render(
   <>
     {/* Overlay */}
@@ -14,6 +13,6 @@ root.render(
           <img src="pxl.png" alt="" />
       </div>
     </div>
-    <App  />
+    <App />
   </>
 )
