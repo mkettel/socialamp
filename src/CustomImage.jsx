@@ -5,6 +5,7 @@ import { useFrame, extend } from '@react-three/fiber'
 import { useRef, useEffect, useMemo, useCallback, useState } from 'react'
 import * as THREE from 'three'
 import { useTexture, shaderMaterial } from '@react-three/drei'
+import { EffectComposer, GodRays, Vignette } from '@react-three/postprocessing'
 
 
 export const ImageFadeMaterial = shaderMaterial(
@@ -39,7 +40,11 @@ export const ImageFadeMaterial = shaderMaterial(
     vec4 finalTexture = mix(_texture, _texture2, dispFactor);
 
     // Calculate fade effect based on vUv.y for bottom fade
-    float fadeFactor = smoothstep(0.01, 0.7, vUv.y); // Here, 0.0 and 0.3 are control values that determine where the fading starts and ends. Adjust as needed.
+    // float fadeFactor = pow(vUv.y, 4.0); // Here, 0.0 and 0.3 are control values that determine where the fading starts and ends. Adjust as needed.
+    float startFade = 0.2; // Start fading from 70% of the way down
+    float fadeRange = 0.5 - startFade; // Calculate the range over which to fade
+    float normalizedFade = clamp((vUv.y - startFade) / fadeRange, 0.0, 1.0); // Normalize and clamp the fade value to [0, 1]
+    float fadeFactor = pow(normalizedFade, 3.5);
 
     // If you have an alpha channel, use this:
     finalTexture.a *= fadeFactor;
@@ -64,7 +69,7 @@ export default function FadingImage({ currentProject, setCurrentProject, project
 
   useFrame(() => {
     if (isTransitioning) {
-      ref.current.dispFactor += 0.035;
+      ref.current.dispFactor += 0.065;
       if (ref.current.dispFactor >= 1) {
         setIsTransitioning(false);
       }
@@ -85,9 +90,12 @@ export default function FadingImage({ currentProject, setCurrentProject, project
   }, [isTransitioning, currentProject, setPreviousProject]);
 
   return (
-    <mesh>
-      <planeGeometry args={[6, 4, 1]} />
-      <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} toneMapped={false} transparent />
-    </mesh>
+    <>
+      <mesh>
+          <planeGeometry args={[7, 5, 1]} />
+          <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} toneMapped={false} transparent />
+      </mesh>
+
+    </>
   )
 }
