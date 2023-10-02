@@ -91,8 +91,15 @@ export default function App() {
           />}
 
         </Canvas>
+
         <Overlay />
-        {sceneLoaded && <ProjectMenu currentProject={currentProject} setCurrentProject={setCurrentProject} projects={projects} setPreviousProject={setPreviousProject} isMobile={isMobile} setIsMobile={setIsMobile}
+        {sceneLoaded && <ProjectMenu
+          currentProject={currentProject}
+          setCurrentProject={setCurrentProject}
+          projects={projects}
+          setPreviousProject={setPreviousProject}
+          isMobile={isMobile}
+          setIsMobile={setIsMobile}
          />
         }
     </>
@@ -136,8 +143,8 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
             animation.fontSize = isActive ? '82px' : '62px';
           } else {
             animation.opacity = isActive ? 1 : 0.3;
-            animation.margin = isActive ? '0px 0px' : '0px 0px';
-            animation.fontSize = isActive ? '38px' : '32px';
+            animation.margin = isActive ? '5px 0px' : '5px 0px';
+            animation.fontSize = isActive ? '38px' : '30px';
           }
           break;
 
@@ -148,8 +155,9 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
             animation.margin = isActive ? '0px 0px' : '0px 0px';
             animation.fontSize = isActive ? '82px' : '62px';
           } else {
-            animation.fontSize = isActive ? '38px' : '32px';
+            animation.fontSize = isActive ? '38px' : '30px';
             animation.opacity = isActive ? 1 : 0.3;
+            animation.margin = isActive ? '5px 0px' : '5px 0px';
           }
             break;
 
@@ -161,8 +169,8 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
             animation.fontSize = isActive ? '82px' : '62px';
           } else {
             animation.opacity = isActive ? 1 : 0.3;
-            animation.margin = isActive ? '0px 0px' : '0px 0px';
-            animation.fontSize = isActive ? '38px' : '32px';
+            animation.margin = isActive ? '5px 0px' : '5px 0px';
+            animation.fontSize = isActive ? '38px' : '30px';
           }
           break;
 

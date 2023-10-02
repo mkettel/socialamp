@@ -62,10 +62,29 @@ export const ImageFadeMaterial = shaderMaterial(
 
 extend({ ImageFadeMaterial })
 
+
 export default function FadingImage({ currentProject, setCurrentProject, projects, previousProject, setPreviousProject, sceneLoaded }) {
   const ref = useRef()
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [texture1, texture2, dispTexture] = useTexture([previousProject.src, currentProject.src, "/shader-img/shader-fade-2.jpeg"])
+
+  // Scene Resizing for Mobile -----------------------------------------------
+  const [imageSize, setImageSize] = useState([7, 5, 1]);
+  useEffect(() => {
+    function handleResize() {
+      const { innerWidth } = window;
+      const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
+      const imageSize = isMobile ? [5.4, 3.7, 1] : [7, 5, 1]; // Adjust the scale values for mobile
+      setImageSize(imageSize);
+    }
+    window.addEventListener('resize', handleResize);
+  handleResize(); // Call the function initially
+
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+  }, []);
+  // --------------------------------------------------------------------------
 
   useFrame(() => {
     if (isTransitioning) {
@@ -92,7 +111,8 @@ export default function FadingImage({ currentProject, setCurrentProject, project
   return (
     <>
       <mesh>
-          <planeGeometry args={[7, 5, 1]} />
+        const [imageScale, setImageScale] = useState([])
+          <planeGeometry args={imageSize} />
           <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} toneMapped={false} transparent />
       </mesh>
 
