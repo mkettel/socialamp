@@ -72,12 +72,15 @@ export default function FadingImage({ currentProject, setCurrentProject, project
 
   // Scene Resizing for Mobile -----------------------------------------------
   const [imageSize, setImageSize] = useState([7, 5, 1]);
+  const [imagePosition, setImagePosition] = useState([0, 0, 0]);
   useEffect(() => {
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
       const imageSize = isMobile ? [4.5, 3.5, 1] : [7, 5, 1]; // Adjust the scale values for mobile
+      const imagePosition = isMobile ? [0, -0.4, 0] : [0, 0, 0]; // Adjust the position values for mobile
       setImageSize(imageSize);
+      setImagePosition(imagePosition);
     }
     window.addEventListener('resize', handleResize);
   handleResize(); // Call the function initially
@@ -112,8 +115,7 @@ export default function FadingImage({ currentProject, setCurrentProject, project
 
   return (
     <>
-      <mesh>
-        const [imageScale, setImageScale] = useState([])
+      <mesh position={imagePosition}>
           <planeGeometry args={imageSize} />
           <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} toneMapped={false} transparent />
       </mesh>
