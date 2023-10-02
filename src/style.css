@@ -68,7 +68,7 @@ canvas {
   bottom: 0;
   left: 30px;
   width: 100%;  /* Assuming you want the overlay to be 30% of the screen width */
-  height: 20%;
+  height: 15%;
   z-index: 100000000;
   background-color: transparent;
   display: flex;

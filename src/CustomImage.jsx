@@ -15,6 +15,7 @@ export const ImageFadeMaterial = shaderMaterial(
     tex: undefined,
     tex2: undefined,
     disp: undefined,
+    generalOpacity: 0.9,
   },
   `
   varying vec2 vUv;
@@ -30,6 +31,7 @@ export const ImageFadeMaterial = shaderMaterial(
   uniform float _rot;
   uniform float dispFactor;
   uniform float effectFactor;
+  uniform float generalOpacity;
   void main() {
     vec2 uv = vUv;
     vec4 disp = texture2D(disp, uv);
@@ -40,14 +42,14 @@ export const ImageFadeMaterial = shaderMaterial(
     vec4 finalTexture = mix(_texture, _texture2, dispFactor);
 
     // Calculate fade effect based on vUv.y for bottom fade
-    // float fadeFactor = pow(vUv.y, 4.0); // Here, 0.0 and 0.3 are control values that determine where the fading starts and ends. Adjust as needed.
-    float startFade = 0.2; // Start fading from 70% of the way down
-    float fadeRange = 0.5 - startFade; // Calculate the range over which to fade
+    // float fadeFactor = pow(vUv.y, 4.0);
+    float startFade = 0.1; // Start fading from 20% of the way down
+    float fadeRange = 0.45 - startFade; // Calculate the range over which to fade
     float normalizedFade = clamp((vUv.y - startFade) / fadeRange, 0.0, 1.0); // Normalize and clamp the fade value to [0, 1]
-    float fadeFactor = pow(normalizedFade, 3.5);
+    float fadeFactor = pow(normalizedFade, 10.5);
 
     // If you have an alpha channel, use this:
-    finalTexture.a *= fadeFactor;
+    finalTexture.a *= fadeFactor * generalOpacity;
     gl_FragColor = finalTexture;
 
     // If you don't have an alpha channel and need to mix with a background color (e.g., white), use this:
@@ -74,7 +76,7 @@ export default function FadingImage({ currentProject, setCurrentProject, project
     function handleResize() {
       const { innerWidth } = window;
       const isMobile = innerWidth <= 768; // Adjust the breakpoint for mobile devices
-      const imageSize = isMobile ? [4.7, 3.7, 1] : [7, 5, 1]; // Adjust the scale values for mobile
+      const imageSize = isMobile ? [4.5, 3.5, 1] : [7, 5, 1]; // Adjust the scale values for mobile
       setImageSize(imageSize);
     }
     window.addEventListener('resize', handleResize);
