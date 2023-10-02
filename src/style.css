@@ -269,7 +269,7 @@ canvas {
 @media only screen and (max-width: 760px) {
 
   .overlay-button-container {
-    height: 16%;
+    height: 15%;
   }
 
   .overlay-button-container .overlay-button {
@@ -319,7 +319,7 @@ canvas {
 
   /* Project Menu */
   .project-menu-container {
-    top: 5%;
+    top: 2%;
     flex-direction: column;
     gap: 3px;
     left: 2%;
