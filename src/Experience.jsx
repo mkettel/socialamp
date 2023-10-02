@@ -119,44 +119,37 @@ function MouseEvents({ lenseRef }) {
 
 
 function Rig({ animationProgress, cameraRef }) {
+  const wobbleAngleRef = useRef(MathUtils.degToRad(Math.random() * 360));
+  const moveRef = useRef(new Vector3());
+  const positionRef = useRef(new Vector3());
 
-    if (!cameraRef.current || !cameraRef.current.camera) return null;
+  useFrame(({ mouse, clock }) => {
+      if (animationProgress >= 1 && cameraRef.current && cameraRef.current.camera) {
+          const wobble = new Vector3();
+          const wobbleStrength = 0.001;
+          const wobbleSpeed = 75e-2;
+          const strength = 3;
+          const moveXY = new Vector2(9, 4);
 
-    const vec = new Vector3();
-    const move = new Vector3();
-    const position = new Vector3();
-    const wobble = new Vector3();
-    const wobbleAngle = MathUtils.degToRad(Math.random() * 360);
-    const wobbleStrength = 0.001;
-    const wobbleSpeed = 75e-2;
+          const t = clock.elapsedTime;
+          const mouseX = (mouse.x + 1) / 2;  // Convert mouse range [-1, 1] to [0, 1]
+          const mouseY = (mouse.y + 1) / 2;
 
-    const strength = 3;
-    const moveXY = new Vector2(9, 4);
-    const deltaRotate = 20;
+          moveRef.current.x = MathUtils.mapLinear(mouseX, 0, 1, -1, 1) * strength * moveXY.x;
+          moveRef.current.y = MathUtils.mapLinear(mouseY, 0, 1, -1, 1) * strength * moveXY.y;
+          positionRef.current.lerp(moveRef.current, 0.04);
 
-    if (animationProgress >= 1) {
-      const camera = cameraRef.current.camera;
-      // console.log(camera);
+          // Wobbling effect
+          wobble.x = Math.cos(wobbleAngleRef.current + t * wobbleSpeed) * (wobbleAngleRef.current + 100 * Math.sin(t * 95e-4));
+          wobble.y = Math.sin(Math.asin(Math.cos(wobbleAngleRef.current + t * 85e-5))) * (150 * Math.sin(wobbleAngleRef.current + t * 75e-5));
+          wobble.z = Math.sin(wobbleAngleRef.current + 0.025 * wobble.x) * 100;
+          wobble.multiplyScalar(wobbleStrength);
+          cameraRef.current.camera.position.add(wobble);
 
-        return useFrame(({ mouse, clock }) => {
-            const t = clock.elapsedTime;
-            const mouseX = (mouse.x + 1) / 2;  // Convert mouse range [-1, 1] to [0, 1]
-            const mouseY = (mouse.y + 1) / 2;
+          cameraRef.current.camera.position.lerp(positionRef.current, 0.04);
+          cameraRef.current.camera.lookAt(0, 1, 0);
+      }
+  });
 
-            // Calculate desired movement based on the mouse
-            move.x = MathUtils.mapLinear(mouseX, 0, 1, -1, 1) * strength * moveXY.x;
-            move.y = MathUtils.mapLinear(mouseY, 0, 1, -1, 1) * strength * moveXY.y;
-            position.lerp(move, 0.04);  // Lerp speed for the camera position
-
-            // Wobbling effect
-            wobble.x = Math.cos(wobbleAngle + t * (wobbleSpeed)) * (wobbleAngle + 100 * Math.sin(t * (95e-4)));
-            wobble.y = Math.sin(Math.asin(Math.cos(wobbleAngle + t * (85e-5)))) * (150 * Math.sin(wobbleAngle + t * (75e-5)));
-            wobble.z = Math.sin(wobbleAngle + .025 * wobble.x) * 100;
-            wobble.multiplyScalar(wobbleStrength);
-            camera.position.add(wobble);
-
-            camera.position.lerp(position, 0.04);
-            camera.lookAt(0, 1, 0);
-        });
-    }
+  return null;
 }

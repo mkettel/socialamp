@@ -1,3 +1,5 @@
+@font-face { font-family: StandardCT; src: url('../public/fonts/StandardCT-XBoldExtd.otf'); }
+
 html,
 body,
 #root
@@ -8,41 +10,14 @@ body,
     width: 100%;
     height: 100%;
     background: rgb(12, 12, 12);
+    font-family: 'Standard', sans-serif;
     font-family: 'Alpino', sans-serif;
+    font-family: 'StandardCT', sans-serif;
 }
 canvas {
   position: relative;
 }
 
-
-.annotation {
-  /* transition: all 0.5s ease-in-out; */
-  /* box-shadow: inset 0 0 0 0.09px white; */
-  /* cursor: pointer; */
-  /* outline: none; */
-  /* border: none; */
-  /* font-size: 4px; */
-  /* font-weight: 300; */
-  /* background: indianred; */
-  color: white;
-  /* padding: 5px 10px; */
-  /* border-radius: 25px; */
-  /* letter-spacing: 1px; */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* gap: 5px; */
-  /* font-family: 'Roboto', sans-serif; */
-  /* font-family: 'Switzer', sans-serif; */
-  font-family: 'Alpino', sans-serif;
-
-}
-
-.annotation:hover {
-  /* box-shadow: inset 250px 0 0 0 white;
-  color: black; */
-  cursor: pointer;
-}
 
 .about-text {
   font-size: 9px;
@@ -258,7 +233,8 @@ canvas {
 .project-menu-container .project-button {
   /* font-size: 36px; */
   color: rgba(208, 208, 208, 0.851);
-  font-family: 'Alpino', sans-serif;
+  /* font-family: 'Alpino', sans-serif; */
+  font-family: 'StandardCT', sans-serif;
   font-weight: 900;
   cursor: pointer;
   pointer-events: none;
@@ -268,7 +244,7 @@ canvas {
   font-weight: 900;
 }
 .project-button p {
-  margin: -5px;
+  margin: -10px;
   pointer-events: all;
 }
 
