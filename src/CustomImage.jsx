@@ -6,6 +6,7 @@ import { useRef, useEffect, useMemo, useCallback, useState } from 'react'
 import * as THREE from 'three'
 import { useTexture, shaderMaterial } from '@react-three/drei'
 import { EffectComposer, GodRays, Vignette } from '@react-three/postprocessing'
+import { useSpring, animated } from '@react-spring/three'
 
 
 export const ImageFadeMaterial = shaderMaterial(
@@ -91,9 +92,19 @@ export default function FadingImage({ currentProject, setCurrentProject, project
   }, []);
   // --------------------------------------------------------------------------
 
+  const fadeProps = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: 0.9 },
+    config: { duration: 1000 }, // adjust the duration as needed
+  });
+
   useFrame(() => {
+    if (ref.current) {
+      ref.current.uniforms.generalOpacity.value = fadeProps.opacity.get();
+    }
+
     if (isTransitioning) {
-      ref.current.dispFactor += 0.065;
+      ref.current.dispFactor += 0.055;
       if (ref.current.dispFactor >= 1) {
         setIsTransitioning(false);
       }
@@ -113,12 +124,14 @@ export default function FadingImage({ currentProject, setCurrentProject, project
     }
   }, [isTransitioning, currentProject, setPreviousProject]);
 
+
+
   return (
     <>
-      <mesh position={imagePosition}>
+      <animated.mesh position={imagePosition} >
           <planeGeometry args={imageSize} />
           <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} toneMapped={false} transparent />
-      </mesh>
+      </animated.mesh>
 
     </>
   )

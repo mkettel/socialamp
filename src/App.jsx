@@ -140,7 +140,7 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
             animation.transform = isActive ? 'rotateZ(-2deg)' : 'rotateZ(0deg)';
             animation.opacity = isActive ? 1 : 0.3;
             animation.marginRight = isActive ? '0px' : '0px';
-            animation.fontSize = isActive ? '82px' : '62px';
+            animation.fontSize = isActive ? '86px' : '62px';
           } else {
             animation.opacity = isActive ? 1 : 0.3;
             animation.margin = isActive ? '0px 0px' : '0px 0px';
@@ -153,7 +153,7 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
             animation.transform = isActive ? 'translateY(0%)' : 'translateY(0%)';
             animation.opacity = isActive ? 1 : 0.3;
             animation.margin = isActive ? '0px 0px' : '0px 0px';
-            animation.fontSize = isActive ? '82px' : '62px';
+            animation.fontSize = isActive ? '86px' : '62px';
           } else {
             animation.fontSize = isActive ? '28px' : '24px';
             animation.opacity = isActive ? 1 : 0.3;
@@ -166,7 +166,7 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
             animation.transform = isActive ? 'rotateZ(2deg)' : 'rotateZ(0deg)';
             animation.opacity = isActive ? 1 : 0.3;
             animation.marginLeft = isActive ? '0px' : '0px';
-            animation.fontSize = isActive ? '82px' : '62px';
+            animation.fontSize = isActive ? '86px' : '62px';
           } else {
             animation.opacity = isActive ? 1 : 0.3;
             animation.margin = isActive ? '0px 0px' : '0px 0px';
