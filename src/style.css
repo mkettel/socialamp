@@ -332,7 +332,7 @@ canvas {
     margin-right: 0px;
   }
   .project-button p {
-    margin: -5px;
+    margin: 0px;
     pointer-events: all;
   }
 }

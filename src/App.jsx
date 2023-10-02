@@ -143,8 +143,8 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
             animation.fontSize = isActive ? '82px' : '62px';
           } else {
             animation.opacity = isActive ? 1 : 0.3;
-            animation.margin = isActive ? '5px 0px' : '5px 0px';
-            animation.fontSize = isActive ? '36px' : '30px';
+            animation.margin = isActive ? '0px 0px' : '0px 0px';
+            animation.fontSize = isActive ? '34px' : '28px';
           }
           break;
 
@@ -155,9 +155,9 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
             animation.margin = isActive ? '0px 0px' : '0px 0px';
             animation.fontSize = isActive ? '82px' : '62px';
           } else {
-            animation.fontSize = isActive ? '36px' : '30px';
+            animation.fontSize = isActive ? '34px' : '28px';
             animation.opacity = isActive ? 1 : 0.3;
-            animation.margin = isActive ? '5px 0px' : '5px 0px';
+            animation.margin = isActive ? '0px 0px' : '0px 0px';
           }
             break;
 
@@ -169,8 +169,8 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
             animation.fontSize = isActive ? '82px' : '62px';
           } else {
             animation.opacity = isActive ? 1 : 0.3;
-            animation.margin = isActive ? '5px 0px' : '5px 0px';
-            animation.fontSize = isActive ? '36px' : '30px';
+            animation.margin = isActive ? '0px 0px' : '0px 0px';
+            animation.fontSize = isActive ? '36px' : '28px';
           }
           break;
 
