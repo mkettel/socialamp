@@ -320,6 +320,7 @@ canvas {
     gap: 3px;
     left: 2%;
     width: 100%;
+    height: 50%;
   }
   .project-menu-container .project-button {
     font-size: 24px;
