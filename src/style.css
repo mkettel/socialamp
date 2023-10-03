@@ -290,14 +290,22 @@ canvas {
     height: 15%;
   }
 
-  .overlay-button-container .overlay-button {
-    top: 15px;
-    right: 30px;
+  .overlay-button-container .overlay-button:nth-child(1) {
+    top: -50px;
+    left: 0px;
+  }
+  .overlay-button-container .overlay-button:nth-child(2) {
+    top: 25px;
+    right: 170px;
   }
   .overlay-button-container .overlay-button p {
     font-size: 16px;
-    font-weight: 400;
+    font-family: 'Alpino', sans-serif;
+    text-transform: uppercase;
+    font-weight: 450;
+    color: black;
   }
+
   .overlay-right img {
     width: 30px;
     height: 30px;
