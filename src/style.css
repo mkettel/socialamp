@@ -68,7 +68,7 @@ canvas {
   bottom: 0;
   left: 30px;
   width: 100%;  /* Assuming you want the overlay to be 30% of the screen width */
-  height: 15%;
+  /* height: 15%; */
   z-index: 100000000;
   background-color: transparent;
   display: flex;
@@ -86,12 +86,14 @@ canvas {
   color: rgb(232, 232, 232);
 }
 .overlay-button-container .overlay-button:nth-child(1) {
-  top: -200px;
-  left: 150px;
+  top: -330px;
+  left: 120px;
 }
 .overlay-button-container .overlay-button:nth-child(2) {
-  top: -25px;
-  right: 350px;
+  /* top: 0px; */
+  /* right: 390px; */
+  top: -437px;
+  right: 200px;
 }
 .overlay-button-container .overlay-button p {
   font-size: 16px;

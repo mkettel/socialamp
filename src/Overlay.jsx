@@ -77,8 +77,8 @@ export default function Overlay() {
         const pullX = (deltaX / distance) * (maxDistance - distance) * pullAmount;
         const pullY = (deltaY / distance) * (maxDistance - distance) * pullAmount;
 
-        setSpring({ transform: `translate(${pullX * 0.8}px, ${pullY * 1.3}px)` });
-        setSpring2({ transform: `translate(${pullX * 1.2}px, ${pullY * 0.8}px)` });
+        setSpring({ transform: `translate(${-pullX * 1.5}px, ${-pullY * 1.3}px)` });
+        setSpring2({ transform: `translate(${-pullX * 1.2}px, ${-pullY * 1.2}px)` });
       } else {
         setSpring({ transform: 'translate(0px, 0px)' });
         setSpring2({ transform: 'translate(0px, 0px)' });
@@ -96,14 +96,14 @@ export default function Overlay() {
     <animated.div className="overlay-button-container">
       <animated.div ref={aboutButtonRef} style={{...initialButtonAnimation, ...springProps}} onMouseMove={handleMouseMove}  className="overlay-button">
         <p onClick={openAboutModal}>about</p>
-        <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+        <svg onClick={openAboutModal} width="50" height="50" xmlns="http://www.w3.org/2000/svg">
           <circle cx="25" cy="25" r="22.5" stroke="white" stroke-width="1" fill="none" />
           <circle cx="25" cy="25" r="2.5" fill="white" />
         </svg>
       </animated.div>
       <animated.div ref={contactButtonRef} style={{...initialButtonAnimation, ...springProps2}} onMouseMove={handleMouseMove} className="overlay-button">
         <p onClick={openContactModal}>contact</p>
-        <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+        <svg onClick={openContactModal} width="50" height="50" xmlns="http://www.w3.org/2000/svg">
           <circle cx="25" cy="25" r="22.5" stroke="white" stroke-width="1" fill="none" />
           <circle cx="25" cy="25" r="2.5" fill="white" />
         </svg>

@@ -104,7 +104,7 @@ export default function FadingImage({ currentProject, setCurrentProject, project
     }
 
     if (isTransitioning) {
-      ref.current.dispFactor += 0.055;
+      ref.current.dispFactor += 0.050;
       if (ref.current.dispFactor >= 1) {
         setIsTransitioning(false);
       }
@@ -128,7 +128,7 @@ export default function FadingImage({ currentProject, setCurrentProject, project
 
   return (
     <>
-      <animated.mesh position={imagePosition} >
+      <animated.mesh position={imagePosition} rotation={[-0.02, 0, 0]} >
           <planeGeometry args={imageSize} />
           <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} toneMapped={false} transparent />
       </animated.mesh>
