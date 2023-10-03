@@ -47,7 +47,7 @@ export const ImageFadeMaterial = shaderMaterial(
     float startFade = 0.1; // Start fading from 20% of the way down
     float fadeRange = 0.45 - startFade; // Calculate the range over which to fade
     float normalizedFade = clamp((vUv.y - startFade) / fadeRange, 0.0, 1.0); // Normalize and clamp the fade value to [0, 1]
-    float fadeFactor = pow(normalizedFade, 10.5);
+    float fadeFactor = pow(normalizedFade, 6.5);
 
     // If you have an alpha channel, use this:
     finalTexture.a *= fadeFactor * generalOpacity;
@@ -94,7 +94,7 @@ export default function FadingImage({ currentProject, setCurrentProject, project
 
   const fadeProps = useSpring({
     from: { opacity: 0 },
-    to: { opacity: 0.9 },
+    to: { opacity: 0.86 },
     config: { duration: 1000 }, // adjust the duration as needed
   });
 
