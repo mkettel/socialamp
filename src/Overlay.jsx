@@ -96,9 +96,11 @@ export default function Overlay() {
     <animated.div className="overlay-button-container">
       <animated.div ref={aboutButtonRef} style={{...initialButtonAnimation, ...springProps}} onMouseMove={handleMouseMove}  className="overlay-button">
         <p onClick={openAboutModal}>about</p>
+        <i className="fa-regular fa-circle-dot"></i>
       </animated.div>
       <animated.div ref={contactButtonRef} style={{...initialButtonAnimation, ...springProps2}} onMouseMove={handleMouseMove} className="overlay-button">
         <p onClick={openContactModal}>contact</p>
+        <i class="fa-regular fa-circle-dot"></i>
       </animated.div>
     </animated.div>
 

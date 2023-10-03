@@ -98,10 +98,29 @@ canvas {
   font-family: 'Alpino', sans-serif;
   text-transform: uppercase;
   font-weight: 450;
+  margin: 0px;
+}
+.overlay-button-container .overlay-button:nth-child(1) i {
+  font-size: 26px;
+  position: absolute;
+  top: 0px;
+  right: -35px;
+  transition: .3s;
+}
+.overlay-button-container .overlay-button:nth-child(2) i {
+  font-size: 26px;
+  position: absolute;
+  top: 0px;
+  left: -35px;
+  font-weight: 100;
+  transition: .3s;
 }
 
 .overlay-button-container .overlay-button p:hover {
-  /* font-size: 20px; */
+  opacity: .6;
+  transition: .3s;
+}
+.overlay-button-container .overlay-button:hover i {
   opacity: .6;
   transition: .3s;
 }
