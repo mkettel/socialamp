@@ -2,7 +2,7 @@ import './style.css'
 import ReactDOM from 'react-dom/client'
 import { Canvas, extend, useThree } from '@react-three/fiber'
 import Experience from './Experience.jsx'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Html, OrbitControls, useTexture } from '@react-three/drei'
 // import { useSpring, a, animated } from '@react-spring/three';
 import { useSpring, animated, useTrail } from '@react-spring/web'
@@ -106,7 +106,7 @@ export default function App() {
   </>
 }
 
-// 2D Project Selection Overlay
+// 2D Project Selection Overlay ------------------------------------------------
 function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject, isMobile, setIsMobile }) {
 
   // Get the center index
@@ -207,7 +207,7 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
   );
 }
 
-
+// MODAL BUTTONS ---------------------------------------------------------------
 function Overlay() {
 
   const [activeModal, setActiveModal] = useState(null);
@@ -215,10 +215,6 @@ function Overlay() {
 
   const openAboutModal = () => {
     setActiveModal(activeModal === 'about' ? null : 'about');
-  };
-
-  const openCaseModal = () => {
-    setActiveModal(activeModal === 'case' ? null : 'case');
   };
 
   const openContactModal = () => {
@@ -229,12 +225,6 @@ function Overlay() {
     transform: activeModal === 'about' ? 'translateX(0%)' : 'translateX(0%)',
     opacity: activeModal === 'about' ? 1 : 0,
     config: { mass: 2.8, tension: 50, friction: 15 },
-  });
-
-  const caseAnimation = useSpring({
-    transform: activeModal === 'case' ? 'translateY(-60%)' : 'translateY(100%)',
-    zIndex: activeModal === null ? 1 : 1000000000,
-    config: { mass: 2, tension: 80, friction: 15 },
   });
 
   const contactAnimation = useSpring({
@@ -250,21 +240,64 @@ function Overlay() {
     pointerEvents: activeModal === 'contact' ? 'auto' : 'none',
   })
 
+  // 2D button interaction on mousemove -------
+  const [springProps, setSpring] = useSpring(() => ({
+    transform: 'translate(0px, 0px)'
+  }));
+  const [springProps2, setSpring2] = useSpring(() => ({
+    transform: 'translate(0px, 0px)'
+  }));
 
+  const aboutButtonRef = useRef(null);
+  const contactButtonRef = useRef(null);
 
+  // Refactored the mouse move handler to handle both buttons
+  const handleMouseMove = (e) => {
+    [aboutButtonRef, contactButtonRef].forEach(buttonRef => {
+      const button = buttonRef.current;
+      const bounds = button.getBoundingClientRect();
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      const centerX = bounds.left + bounds.width / 2;
+      const centerY = bounds.top + bounds.height / 2;
+
+      const deltaX = mouseX - centerX;
+      const deltaY = mouseY - centerY;
+
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      const maxDistance = 1300;
+      const minPullDistance = 50;  // Within this distance, the pull effect is minimal
+
+      if (distance < maxDistance) {
+        // Quadratic decrease in pullAmount as we get closer to the button
+        const pullAmount = 0.2 * Math.pow((distance - minPullDistance) / (maxDistance - minPullDistance), 2);
+        const pullX = (deltaX / distance) * (maxDistance - distance) * pullAmount;
+        const pullY = (deltaY / distance) * (maxDistance - distance) * pullAmount;
+
+        setSpring({ transform: `translate(${pullX}px, ${pullY}px)` });
+        setSpring2({ transform: `translate(${-pullX}px, ${-pullY}px)` });
+      } else {
+        setSpring({ transform: 'translate(0px, 0px)' });
+        setSpring2({ transform: 'translate(0px, 0px)' });
+      }
+    });
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => document.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
 
   return <>
     <animated.div className="overlay-button-container">
-      <div className="overlay-button">
+      <animated.div ref={aboutButtonRef} style={springProps} onMouseMove={handleMouseMove}  className="overlay-button">
         <p onClick={openAboutModal}>about</p>
-      </div>
-      {/* <div className="overlay-button">
-        <p onClick={onCaseClick}>case studies</p>
-      </div> */}
-      <div className="overlay-button">
+      </animated.div>
+      <animated.div ref={contactButtonRef} style={springProps2} onMouseMove={handleMouseMove} className="overlay-button">
         <p onClick={openContactModal}>contact</p>
-      </div>
+      </animated.div>
     </animated.div>
 
     {/* about modal slide out */}
@@ -282,34 +315,6 @@ function Overlay() {
       </div>
     </animated.div>
 
-    {/* Case Study Modal with IFrames? */}
-    <animated.div className="case-study-modal-container" style={caseAnimation}>
-      <div className="modal-blur-filter"></div>
-      <div className="case-study-modal">
-      <div className="closing-button" onClick={openCaseModal} >
-        <p>+</p>
-      </div>
-        <div className="case-study-modal-header">
-          <h2>Case Studies</h2>
-        </div>
-        <div className="case-study-grid">
-          <div className="case-study-card">
-            <div className="case-study-title">
-              <h3>Movie Title</h3>
-            </div>
-            <div className="case-study-iframe">
-              <Canvas className="case-study-canvas" camera={{ position: [0, 0, 1] }}>
-                <ambientLight intensity={0.5} />
-                  <OrbitControls />
-                  <Html position={[-1.5, .8, 0]}>
-                    <iframe src="" width="300px" height="150px" />
-                  </Html>
-              </Canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-    </animated.div>
 
     {/* Contact Us Modal */}
     <animated.div className="contact-modal-container" style={contactAnimation} >

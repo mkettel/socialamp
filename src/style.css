@@ -93,6 +93,9 @@ canvas {
 .overlay-button-container .overlay-button p {
   font-size: 20px;
 }
+.overlay-button {
+  transition: transform 0.2s;
+}
 /* --------------------- ABOUT MODAL ---------------------------------------- */
 .closing-button {
   position: absolute;
