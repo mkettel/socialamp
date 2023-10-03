@@ -78,22 +78,30 @@ canvas {
 }
 .overlay-button-container .overlay-button {
   cursor: pointer;
-  /* position: absolute; */
-  top: 50px;
-  left: 80px;
+  position: absolute;
+  /* top: 50px; */
+  /* left: 80px; */
   z-index: 100000000;
   transition: .3s;
   color: rgb(208, 208, 208);
 }
+.overlay-button-container .overlay-button:nth-child(1) {
+  top: -200px;
+  left: 150px;
+}
+.overlay-button-container .overlay-button:nth-child(2) {
+  top: -30px;
+  right: 350px;
+}
 .overlay-button-container .overlay-button p {
-  font-size: 20px;
+  font-size: 18px;
   font-family: 'Alpino', sans-serif;
   text-transform: uppercase;
-  font-weight: 400;
+  font-weight: 450;
 }
 
 .overlay-button-container .overlay-button p:hover {
-  font-size: 20px;
+  /* font-size: 20px; */
   opacity: .6;
   transition: .3s;
 }
