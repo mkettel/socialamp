@@ -47,7 +47,7 @@ export const ImageFadeMaterial = shaderMaterial(
     float startFade = 0.1; // Start fading from 20% of the way down
     float fadeRange = 0.45 - startFade; // Calculate the range over which to fade
     float normalizedFade = clamp((vUv.y - startFade) / fadeRange, 0.0, 1.0); // Normalize and clamp the fade value to [0, 1]
-    float fadeFactor = pow(normalizedFade, 8.5);
+    float fadeFactor = pow(normalizedFade, 6.5);
 
     // If you have an alpha channel, use this:
     finalTexture.a *= fadeFactor * generalOpacity;
