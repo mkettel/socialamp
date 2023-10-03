@@ -93,7 +93,8 @@ export default function App() {
 
         </Canvas>
 
-        <Overlay />
+        {sceneLoaded && <Overlay /> }
+
         {sceneLoaded && <ProjectMenu
           currentProject={currentProject}
           setCurrentProject={setCurrentProject}

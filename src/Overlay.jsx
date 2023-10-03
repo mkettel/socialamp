@@ -34,7 +34,15 @@ export default function Overlay() {
     pointerEvents: activeModal === 'contact' ? 'auto' : 'none',
   })
 
-  // 2D button interaction on mousemove -------
+  // Button Animation On Load -------------------------------
+  const initialButtonAnimation = useSpring({
+    from: { opacity: 0, transform: 'scale(0.3)' },
+    to: { opacity: 1, transform: 'scale(1)' },
+    config: { mass: 1.5, tension: 200, friction: 20 },
+    delay: 400 // optional delay to start the animation a little later
+  });
+
+  // 2D button interaction on mousemove --------------------
   const [springProps, setSpring] = useSpring(() => ({
     transform: 'translate(0px, 0px)'
   }));
@@ -60,7 +68,7 @@ export default function Overlay() {
       const deltaY = mouseY - centerY;
 
       const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-      const maxDistance = 1300;
+      const maxDistance = 1400;
       const minPullDistance = 50;  // Within this distance, the pull effect is minimal
 
       if (distance < maxDistance) {
@@ -86,10 +94,10 @@ export default function Overlay() {
 
   return <>
     <animated.div className="overlay-button-container">
-      <animated.div ref={aboutButtonRef} style={springProps} onMouseMove={handleMouseMove}  className="overlay-button">
+      <animated.div ref={aboutButtonRef} style={{...initialButtonAnimation, ...springProps}} onMouseMove={handleMouseMove}  className="overlay-button">
         <p onClick={openAboutModal}>about</p>
       </animated.div>
-      <animated.div ref={contactButtonRef} style={springProps2} onMouseMove={handleMouseMove} className="overlay-button">
+      <animated.div ref={contactButtonRef} style={{...initialButtonAnimation, ...springProps2}} onMouseMove={handleMouseMove} className="overlay-button">
         <p onClick={openContactModal}>contact</p>
       </animated.div>
     </animated.div>
@@ -97,8 +105,8 @@ export default function Overlay() {
     {/* about modal slide out */}
     <animated.div className="about-modal-container" style={animation}>
       <div className="about-modal" style={pointerEvents}>
-        <div className="closing-button" onClick={openAboutModal} >
-          <p>+</p>
+        <div className="closing-button" onClick={openAboutModal}>
+          <p>close</p>
         </div>
         <div className="about-modal-header">
           <h2>About SocialAmp</h2>
@@ -114,7 +122,7 @@ export default function Overlay() {
     <animated.div className="contact-modal-container" style={contactAnimation} >
       <div className="contact-modal" style={contactPointerEvents}>
       <div className="closing-button" onClick={openContactModal} >
-        <p>+</p>
+        <p>close</p>
       </div>
         <div className="contact-modal-header">
           <h2>Contact Us</h2>

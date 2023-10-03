@@ -87,6 +87,9 @@ canvas {
 }
 .overlay-button-container .overlay-button p {
   font-size: 20px;
+  font-family: 'Alpino', sans-serif;
+  text-transform: uppercase;
+  font-weight: 400;
 }
 
 .overlay-button-container .overlay-button p:hover {
@@ -100,21 +103,24 @@ canvas {
 /* --------------------- ABOUT MODAL ---------------------------------------- */
 .closing-button {
   position: absolute;
-  top: -15px;
-  right: 15px;
+  top: 20px;
+  right: 35px;
   cursor: pointer;
-  color: rgb(84, 140, 237);
-  font-size: 80px;
-  transform: rotate(45deg);
+  color: rgb(233, 233, 233);
+  /* font-size: 69px; */
+  /* transform: rotate(45deg); */
   pointer-events: all;
+  transition: .2s;
 }
 .closing-button p {
   margin: 0;
-  transition: .2s;
+  font-size: 24px;
+  font-family: 'Alpino', sans-serif;
 }
 .closing-button:hover {
   color: black;
   transition: .2s;
+  /* transform: rotate(90deg); */
 }
 .about-modal-container {
   position: absolute;
