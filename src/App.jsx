@@ -55,7 +55,7 @@ export default function App() {
       id: 3,
       title: 'NOPE',
       type: 'image',
-      src: '/VN.jpg',
+      src: '/marcy-dam.jpg',
     }
   ]
   // Current Project State Selection
@@ -128,116 +128,106 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
           transform: 'translate3d(0px, 0px, 0px)',
           scale: 1,
           opacity: 1,
-          config: { mass: 4.5, tension: 350, friction: 40 },
+          config: { mass: 4.0, tension: 350, friction: 40 },
           margin: '0px',
           fontSize: '36px',
         };
 
-        // if the first project is selected then move it down and move the center project down then move th last project up
+        // if the first one is clicked...
         if (selectedIndex === 0) {
           if (index === 0) {
-            animation.transform = isActive ? 'translate3d(0px, 50px, 0px)' : 'translate3d(0px, 0px, 0px)';
+            if (!isMobile) {
+              animation.transform = isActive ? 'translate3d(0px, 50px, 0px)' : 'translate3d(0px, 0px, 0px)';
+              animation.fontSize = isActive ? '86px' : '58px';
+            } else {
+              animation.transform = isActive ? 'translate3d(0px, 40px, 0px)' : 'translate3d(0px, 0px, 0px)';
+              animation.fontSize = isActive ? '32px' : '28px';
+            }
             animation.opacity = isActive ? 1 : 0.3;
-            animation.marginRight = isActive ? '0px' : '0px';
-            animation.fontSize = isActive ? '86px' : '62px';
           } else if (index === centerIndex) {
-            animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 50px, 0px)';
+            if (!isMobile) {
+              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 50px, 0px)';
+              animation.fontSize = isActive ? '86px' : '58px';
+            } else {
+              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 40px, 0px)';
+              animation.fontSize = isActive ? '32px' : '28px';
+            }
             animation.opacity = isActive ? 1 : 0.3;
-            animation.margin = isActive ? '0px 0px' : '0px 0px';
-            animation.fontSize = isActive ? '86px' : '62px';
           } else if (index === projects.length - 1) {
-            animation.transform = 'translate3d(0px, -120px, 0px)'
+            if (!isMobile) {
+              animation.transform = 'translate3d(0px, -120px, 0px)'
+              animation.fontSize = isActive ? '86px' : '58px';
+            } else {
+              animation.transform = 'translate3d(0px, -70px, 0px)'
+              animation.fontSize = isActive ? '32px' : '28px';
+            }
             animation.opacity = isActive ? 1 : 0.3;
-            animation.marginLeft = isActive ? '0px' : '0px';
-            animation.fontSize = isActive ? '86px' : '62px';
           } else {
-            animation.opacity = isActive ? 1 : 0.5;
             animation.fontSize = isActive ? '42px' : '36px';
+            animation.opacity = isActive ? 1 : 0.5;
           }
+        // if the last one is clicked...
         } else if (selectedIndex === projects.length - 1) {
           if (index === 0) {
-            animation.transform = 'translate3d(0px, 120px, 0px)'
+            if (!isMobile) {
+              animation.transform = 'translate3d(0px, 120px, 0px)'
+              animation.fontSize = isActive ? '86px' : '58px';
+            } else {
+              animation.transform = 'translate3d(0px, 70px, 0px)'
+              animation.fontSize = isActive ? '32px' : '28px';
+            }
             animation.opacity = isActive ? 1 : 0.3;
-            animation.marginRight = isActive ? '0px' : '0px';
-            animation.fontSize = isActive ? '86px' : '62px';
           } else if (index === centerIndex) {
-            animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, -50px, 0px)';
+            if (!isMobile) {
+              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, -50px, 0px)';
+              animation.fontSize = isActive ? '86px' : '58px';
+            } else {
+              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, -40px, 0px)';
+              animation.fontSize = isActive ? '32px' : '28px';
+            }
             animation.opacity = isActive ? 1 : 0.3;
-            animation.margin = isActive ? '0px 0px' : '0px 0px';
-            animation.fontSize = isActive ? '86px' : '62px';
           } else if (index === projects.length - 1) {
-            animation.transform = isActive ? 'translate3d(0px, -50px, 0px)' : 'translate3d(0px, 0px, 0px)';
+            if (!isMobile) {
+              animation.transform = isActive ? 'translate3d(0px, -50px, 0px)' : 'translate3d(0px, 0px, 0px)';
+              animation.fontSize = isActive ? '86px' : '58px';
+            } else {
+              animation.transform = isActive ? 'translate3d(0px, -40px, 0px)' : 'translate3d(0px, 0px, 0px)';
+              animation.fontSize = isActive ? '32px' : '28px';
+            }
             animation.opacity = isActive ? 1 : 0.3;
-            animation.marginLeft = isActive ? '0px' : '0px';
-            animation.fontSize = isActive ? '86px' : '62px';
           } else {
-            animation.opacity = isActive ? 1 : 0.5;
             animation.fontSize = isActive ? '42px' : '36px';
+            animation.opacity = isActive ? 1 : 0.5;
           }
         } else {
           if (index === 0) {
+            if (!isMobile) {
+              animation.fontSize = isActive ? '86px' : '58px';
+            } else {
+              animation.fontSize = isActive ? '32px' : '28px';
+            }
             animation.opacity = isActive ? 1 : 0.3;
-            animation.marginRight = isActive ? '0px' : '0px';
-            animation.fontSize = isActive ? '86px' : '62px';
           } else if (index === centerIndex) {
-            animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 100px, 0px)';
+            if (!isMobile) {
+              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 100px, 0px)';
+              animation.fontSize = isActive ? '86px' : '58px';
+            } else {
+              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 100px, 0px)';
+              animation.fontSize = isActive ? '32px' : '28px';
+            }
             animation.opacity = isActive ? 1 : 0.3;
-            animation.margin = isActive ? '0px 0px' : '0px 0px';
-            animation.fontSize = isActive ? '86px' : '62px';
           } else if (index === projects.length - 1) {
+            if (!isMobile) {
+              animation.fontSize = isActive ? '86px' : '58px';
+            } else {
+              animation.fontSize = isActive ? '32px' : '28px';
+            }
             animation.opacity = isActive ? 1 : 0.3;
-            animation.marginLeft = isActive ? '0px' : '0px';
-            animation.fontSize = isActive ? '86px' : '62px';
           } else {
-            animation.opacity = isActive ? 1 : 0.5;
             animation.fontSize = isActive ? '42px' : '36px';
+            animation.opacity = isActive ? 1 : 0.5;
           }
         }
-
-
-        // switch(index) {
-        //   case 0: // first index
-        //   if (!isMobile) {
-        //     animation.transform = isActive ? 'translate3d(0px, 100px, 0px)' : 'translate3d(0px, 0px, 0px)';
-        //     animation.opacity = isActive ? 1 : 0.3;
-        //     animation.marginRight = isActive ? '0px' : '0px';
-        //     animation.fontSize = isActive ? '86px' : '62px';
-        //   } else {
-        //     animation.opacity = isActive ? 1 : 0.3;
-        //     animation.margin = isActive ? '0px 0px' : '0px 0px';
-        //     animation.fontSize = isActive ? '28px' : '24px';
-        //   }
-        //   break;
-
-        //   case centerIndex: // center index
-        //   if (!isMobile) {
-        //     animation.opacity = isActive ? 1 : 0.3;
-        //     animation.margin = isActive ? '0px 0px' : '0px 0px';
-        //     animation.fontSize = isActive ? '86px' : '62px';
-        //   } else {
-        //     animation.fontSize = isActive ? '28px' : '24px';
-        //     animation.opacity = isActive ? 1 : 0.3;
-        //     animation.margin = isActive ? '0px 0px' : '0px 0px';
-        //   }
-        //     break;
-
-        //   case projects.length - 1: // last index
-        //   if (!isMobile) {
-        //     animation.opacity = isActive ? 1 : 0.3;
-        //     animation.marginLeft = isActive ? '0px' : '0px';
-        //     animation.fontSize = isActive ? '86px' : '62px';
-        //   } else {
-        //     animation.opacity = isActive ? 1 : 0.3;
-        //     animation.margin = isActive ? '0px 0px' : '0px 0px';
-        //     animation.fontSize = isActive ? '30px' : '24px';
-        //   }
-        //   break;
-
-        //   default: // all other indexes
-        //     animation.opacity = isActive ? 1 : 0.5;
-        //     animation.fontSize = isActive ? '42px' : '36px';
-        //     break;
-        // }
 
         const menuAnimation = useSpring(animation);
 
