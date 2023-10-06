@@ -55,7 +55,7 @@ export default function App() {
       id: 3,
       title: 'NOPE',
       type: 'image',
-      src: '/marcy-dam.jpg',
+      src: '/nope.jpg',
     }
   ]
   // Current Project State Selection
@@ -213,7 +213,7 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
               animation.fontSize = isActive ? '86px' : '58px';
             } else {
               animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 100px, 0px)';
-              animation.fontSize = isActive ? '32px' : '28px';
+              animation.fontSize = isActive ? '30px' : '28px';
             }
             animation.opacity = isActive ? 1 : 0.3;
           } else if (index === projects.length - 1) {
