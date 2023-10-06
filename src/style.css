@@ -267,6 +267,7 @@ canvas {
   justify-content: center;
   gap: 0px;
   overflow-x: hidden;
+  perspective: 1000px;
 }
 .project-menu-container button {
   background-color: transparent;
@@ -281,6 +282,7 @@ canvas {
   cursor: pointer;
   pointer-events: none;
   text-transform: uppercase;
+  transition: transform 0.3s ease-out;
 }
 .project-button.active {
   font-weight: 900;
@@ -319,15 +321,27 @@ canvas {
     left: 0px;
   }
   .overlay-button-container .overlay-button:nth-child(2) {
-    top: 25px;
-    right: 170px;
+    top: -50px;
+    right: 50px;
   }
   .overlay-button-container .overlay-button p {
     font-size: 16px;
     font-family: 'Alpino', sans-serif;
     text-transform: uppercase;
     font-weight: 450;
-    color: black;
+    color: white;
+  }
+  .overlay-button-container .overlay-button:nth-child(1) svg {
+    scale: .6;
+    position: absolute;
+    top: -15px;
+    right: -50px;
+  }
+  .overlay-button-container .overlay-button:nth-child(2) svg {
+    scale: .6;
+    position: absolute;
+    top: -15px;
+    left: -50px;
   }
 
   .overlay-right img {

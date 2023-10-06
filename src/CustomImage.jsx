@@ -69,7 +69,7 @@ extend({ ImageFadeMaterial })
 export default function FadingImage({ currentProject, setCurrentProject, projects, previousProject, setPreviousProject, sceneLoaded }) {
   const ref = useRef()
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [texture1, texture2, dispTexture] = useTexture([previousProject.src, currentProject.src, "/shader-img/shader-fade-2.jpeg"])
+  const [texture1, texture2, dispTexture] = useTexture([previousProject.src, currentProject.src, "/shader-img/shader-fade-wall.jpeg"])
 
   // Scene Resizing for Mobile -----------------------------------------------
   const [imageSize, setImageSize] = useState([7, 5, 1]);
@@ -104,7 +104,7 @@ export default function FadingImage({ currentProject, setCurrentProject, project
     }
 
     if (isTransitioning) {
-      ref.current.dispFactor += 0.050;
+      ref.current.dispFactor += 0.040;
       if (ref.current.dispFactor >= 1) {
         setIsTransitioning(false);
       }
