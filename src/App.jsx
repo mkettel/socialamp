@@ -56,7 +56,7 @@ export default function App() {
       title: 'NOPE',
       type: 'image',
       src: '/nope.jpg',
-    }
+    },
   ]
   // Current Project State Selection
   const [currentProject, setCurrentProject] = useState(projects[1]);
@@ -137,95 +137,95 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
         if (selectedIndex === 0) {
           if (index === 0) {
             if (!isMobile) {
-              animation.transform = isActive ? 'translate3d(0px, 50px, 0px)' : 'translate3d(0px, 0px, 0px)';
-              animation.fontSize = isActive ? '86px' : '58px';
+              animation.transform = isActive ? 'translate3d(0px, 35px, 0px)' : 'translate3d(0px, 0px, 0px)';
+              animation.fontSize = isActive ? '96px' : '52px';
             } else {
               animation.transform = isActive ? 'translate3d(0px, 40px, 0px)' : 'translate3d(0px, 0px, 0px)';
               animation.fontSize = isActive ? '32px' : '28px';
             }
-            animation.opacity = isActive ? 1 : 0.3;
+            animation.opacity = isActive ? 1 : 0.2;
           } else if (index === centerIndex) {
             if (!isMobile) {
-              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 50px, 0px)';
-              animation.fontSize = isActive ? '86px' : '58px';
+              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 35px, 0px)';
+              animation.fontSize = isActive ? '96px' : '52px';
             } else {
               animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 40px, 0px)';
               animation.fontSize = isActive ? '32px' : '28px';
             }
-            animation.opacity = isActive ? 1 : 0.3;
+            animation.opacity = isActive ? 1 : 0.2;
           } else if (index === projects.length - 1) {
             if (!isMobile) {
-              animation.transform = 'translate3d(0px, -120px, 0px)'
-              animation.fontSize = isActive ? '86px' : '58px';
+              animation.transform = 'translate3d(0px, -125px, 0px)'
+              animation.fontSize = isActive ? '96px' : '52px';
             } else {
               animation.transform = 'translate3d(0px, -70px, 0px)'
               animation.fontSize = isActive ? '32px' : '28px';
             }
-            animation.opacity = isActive ? 1 : 0.3;
+            animation.opacity = isActive ? 1 : 0.2;
           } else {
             animation.fontSize = isActive ? '42px' : '36px';
-            animation.opacity = isActive ? 1 : 0.5;
+            animation.opacity = isActive ? 1 : 0.2;
           }
         // if the last one is clicked...
         } else if (selectedIndex === projects.length - 1) {
           if (index === 0) {
             if (!isMobile) {
               animation.transform = 'translate3d(0px, 120px, 0px)'
-              animation.fontSize = isActive ? '86px' : '58px';
+              animation.fontSize = isActive ? '96px' : '52px';
             } else {
               animation.transform = 'translate3d(0px, 70px, 0px)'
               animation.fontSize = isActive ? '32px' : '28px';
             }
-            animation.opacity = isActive ? 1 : 0.3;
+            animation.opacity = isActive ? 1 : 0.2;
           } else if (index === centerIndex) {
             if (!isMobile) {
-              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, -50px, 0px)';
-              animation.fontSize = isActive ? '86px' : '58px';
+              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, -40px, 0px)';
+              animation.fontSize = isActive ? '96px' : '52px';
             } else {
               animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, -40px, 0px)';
               animation.fontSize = isActive ? '32px' : '28px';
             }
-            animation.opacity = isActive ? 1 : 0.3;
+            animation.opacity = isActive ? 1 : 0.2;
           } else if (index === projects.length - 1) {
             if (!isMobile) {
-              animation.transform = isActive ? 'translate3d(0px, -50px, 0px)' : 'translate3d(0px, 0px, 0px)';
-              animation.fontSize = isActive ? '86px' : '58px';
+              animation.transform = isActive ? 'translate3d(0px, -40px, 0px)' : 'translate3d(0px, 0px, 0px)';
+              animation.fontSize = isActive ? '96px' : '52px';
             } else {
               animation.transform = isActive ? 'translate3d(0px, -40px, 0px)' : 'translate3d(0px, 0px, 0px)';
               animation.fontSize = isActive ? '32px' : '28px';
             }
-            animation.opacity = isActive ? 1 : 0.3;
+            animation.opacity = isActive ? 1 : 0.2;
           } else {
             animation.fontSize = isActive ? '42px' : '36px';
-            animation.opacity = isActive ? 1 : 0.5;
+            animation.opacity = isActive ? 1 : 0.2;
           }
         } else {
           if (index === 0) {
             if (!isMobile) {
-              animation.fontSize = isActive ? '86px' : '58px';
+              animation.fontSize = isActive ? '96px' : '52px';
             } else {
               animation.fontSize = isActive ? '32px' : '28px';
             }
-            animation.opacity = isActive ? 1 : 0.3;
+            animation.opacity = isActive ? 1 : 0.2;
           } else if (index === centerIndex) {
             if (!isMobile) {
               animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 100px, 0px)';
-              animation.fontSize = isActive ? '86px' : '58px';
+              animation.fontSize = isActive ? '96px' : '52px';
             } else {
               animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 100px, 0px)';
               animation.fontSize = isActive ? '30px' : '28px';
             }
-            animation.opacity = isActive ? 1 : 0.3;
+            animation.opacity = isActive ? 1 : 0.2;
           } else if (index === projects.length - 1) {
             if (!isMobile) {
-              animation.fontSize = isActive ? '86px' : '58px';
+              animation.fontSize = isActive ? '96px' : '52px';
             } else {
               animation.fontSize = isActive ? '32px' : '28px';
             }
-            animation.opacity = isActive ? 1 : 0.3;
+            animation.opacity = isActive ? 1 : 0.2;
           } else {
             animation.fontSize = isActive ? '42px' : '36px';
-            animation.opacity = isActive ? 1 : 0.5;
+            animation.opacity = isActive ? 1 : 0.2;
           }
         }
 

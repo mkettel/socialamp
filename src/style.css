@@ -120,6 +120,14 @@ canvas {
   scale: .8;
   color: rgb(232, 232, 232);
 }
+.overlay-button-container .overlay-button:nth-child(1) svg circle {
+  stroke: rgba(248, 248, 248, 0.296);
+  transition: .3s;
+}
+.overlay-button-container .overlay-button:nth-child(2) svg circle {
+  stroke: rgba(248, 248, 248, 0.296);
+  transition: .3s;
+}
 
 .overlay-button-container .overlay-button p:hover {
   opacity: .6;
@@ -267,7 +275,7 @@ canvas {
   justify-content: center;
   gap: 0px;
   overflow-x: hidden;
-  perspective: 1000px;
+  perspective: 10000px;
 }
 .project-menu-container button {
   background-color: transparent;
