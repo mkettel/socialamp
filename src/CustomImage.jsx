@@ -11,12 +11,13 @@ import { useSpring, animated } from '@react-spring/three'
 
 export const ImageFadeMaterial = shaderMaterial(
   {
-    effectFactor: 1.2,
+    effectFactor: 2.5,
     dispFactor: 0.0,
     tex: undefined,
     tex2: undefined,
     disp: undefined,
     generalOpacity: 0.9,
+    // mousePos: new THREE.Vector2(0, 0),
   },
   `
   varying vec2 vUv;
@@ -36,11 +37,12 @@ export const ImageFadeMaterial = shaderMaterial(
   void main() {
     vec2 uv = vUv;
     vec4 disp = texture2D(disp, uv);
-    vec2 distortedPosition = vec2(uv.x + dispFactor * (disp.r*effectFactor), uv.y);
-    vec2 distortedPosition2 = vec2(uv.x - (1.0 - dispFactor) * (disp.r*effectFactor), uv.y);
+    vec2 distortedPosition = vec2(uv.x + dispFactor * (disp.r * effectFactor) * (1.0 - dispFactor), uv.y);
+    vec2 distortedPosition2 = vec2(uv.x - (1.0 - dispFactor) * (disp.r * effectFactor) * dispFactor, uv.y);
     vec4 _texture = texture2D(tex, distortedPosition);
     vec4 _texture2 = texture2D(tex2, distortedPosition2);
-    vec4 finalTexture = mix(_texture, _texture2, dispFactor);
+    float smoothFactor = pow(dispFactor, 0.5); // Using square root for smoother transition
+    vec4 finalTexture = mix(_texture, _texture2, smoothFactor);
 
     // Calculate fade effect based on vUv.y for bottom fade
     // float fadeFactor = pow(vUv.y, 4.0);
@@ -52,10 +54,6 @@ export const ImageFadeMaterial = shaderMaterial(
     // If you have an alpha channel, use this:
     finalTexture.a *= fadeFactor * generalOpacity;
     gl_FragColor = finalTexture;
-
-    // If you don't have an alpha channel and need to mix with a background color (e.g., white), use this:
-    // vec4 backgroundColor = vec4(1.0, 1.0, 1.0, 1.0); // White background
-    // gl_FragColor = mix(backgroundColor, finalTexture, fadeFactor);
 
     #include <tonemapping_fragment>
     #include <encodings_fragment>
@@ -69,7 +67,7 @@ extend({ ImageFadeMaterial })
 export default function FadingImage({ currentProject, setCurrentProject, projects, previousProject, setPreviousProject, sceneLoaded }) {
   const ref = useRef()
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [texture1, texture2, dispTexture] = useTexture([previousProject.src, currentProject.src, "/shader-img/shader-fade-wall.jpeg"])
+  const [texture1, texture2, dispTexture] = useTexture([previousProject.src, currentProject.src, "/shader-img/shader-fade-2.jpeg"])
 
   // Scene Resizing for Mobile -----------------------------------------------
   const [imageSize, setImageSize] = useState([7, 5, 1]);
@@ -123,6 +121,25 @@ export default function FadingImage({ currentProject, setCurrentProject, project
       ref.current.dispFactor = 0;  // reset for the next transition
     }
   }, [isTransitioning, currentProject, setPreviousProject]);
+
+
+  // // Mouse Position
+  // const [mousePosition, setMousePosition] = useState([0, 0]);
+
+  // useEffect(() => {
+  //   const handleMouseMove = (e) => {
+  //     // Convert mouse position from [0, window.width] and [0, window.height] to [-1, 1] for both axes
+  //     setMousePosition([
+  //       (e.clientX / window.innerWidth) * 2 - 1,
+  //       -((e.clientY / window.innerHeight) * 2 - 1),
+  //     ]);
+  //   };
+  //   window.addEventListener("mousemove", handleMouseMove);
+
+  //   return () => {
+  //     window.removeEventListener("mousemove", handleMouseMove);
+  //   };
+  // }, []);
 
 
 
