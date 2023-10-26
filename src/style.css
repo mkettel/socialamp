@@ -306,8 +306,8 @@ canvas {
 .outer-container {
   position: absolute;
   top: -2%;
-  left: 10%;
-  width: 80%;
+  left: 0%;
+  width: 100%;
   height: 45%;
   /* max-width: 800px; */
   margin: auto;
@@ -517,5 +517,12 @@ MOUSE TRAILER
   .project-button p {
     margin: 0px;
     pointer-events: all;
+  }
+
+  .carousel-item {
+    font-size: 32px;
+  }
+  .carousel-item.active {
+    font-size: 38px;
   }
 }

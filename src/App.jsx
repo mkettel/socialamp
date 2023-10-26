@@ -132,7 +132,7 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
   const halfwayIndex = Math.ceil(projects.length / 2);
 
   // Usd to determine the height/spacing of each item
-  const itemHeight = 93;
+  const itemHeight = isMobile ? 45 : 93;
 
   // Used to determine at what point an item is moved from the top to the bottom
   const shuffleThreshold = halfwayIndex * itemHeight;
@@ -142,7 +142,13 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
 
   const determinePlacement = (itemIndex) => {
     // If these match, the item is active
-    if (activeIndex === itemIndex) return -13;
+    if (activeIndex === itemIndex) {
+      if (isMobile) {
+        return -5;
+      } else {
+        return -itemHeight / 6;
+      }
+    }
 
     // if the active item is in the top half of the list
     if (itemIndex >= halfwayIndex) {
