@@ -95,15 +95,15 @@ export default function Overlay() {
   return <>
     <animated.div className="overlay-button-container">
       <animated.div ref={aboutButtonRef} style={{...initialButtonAnimation, ...springProps}} onMouseMove={handleMouseMove}  className="overlay-button">
-        <p onClick={openAboutModal}>about</p>
-        <svg onClick={openAboutModal} width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+        <p data-trail-style='modal' onClick={openAboutModal}>about</p>
+        <svg data-trail-style='modal' onClick={openAboutModal} width="50" height="50" xmlns="http://www.w3.org/2000/svg">
           <circle cx="25" cy="25" r="22.5" stroke="white" strokeWidth="1" fill="none" />
           <circle cx="25" cy="25" r="2.5" fill="white" />
         </svg>
       </animated.div>
       <animated.div ref={contactButtonRef} style={{...initialButtonAnimation, ...springProps2}} onMouseMove={handleMouseMove} className="overlay-button">
-        <p onClick={openContactModal}>contact</p>
-        <svg onClick={openContactModal} width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+        <p data-trail-style='modal' onClick={openContactModal}>contact</p>
+        <svg data-trail-style='modal' onClick={openContactModal} width="50" height="50" xmlns="http://www.w3.org/2000/svg">
           <circle cx="25" cy="25" r="22.5" stroke="white" strokeWidth="1" fill="none" />
           <circle cx="25" cy="25" r="2.5" fill="white" />
         </svg>
