@@ -12,6 +12,7 @@ import FadingImage from './CustomImage.jsx'
 import * as THREE from 'three'
 import Overlay from './Overlay.jsx'
 import cn from "classnames";
+import { debounce } from "lodash";
 
 
 const MOBILE_BREAKPOINT = 768;
@@ -182,6 +183,27 @@ function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousP
     setActiveIndex(index);
     setCurrentProject(projects[index]); // Set the current project based on the clicked item
   };
+
+  useEffect(() => {
+    const handleScroll = debounce((event) => {
+      if (event.deltaY > 0) {
+        // Scrolling down
+        setActiveIndex((prevIndex) => (prevIndex + 1) % projects.length);
+      } else if (event.deltaY < 0) {
+        // Scrolling up
+        setActiveIndex((prevIndex) => (prevIndex - 1 + projects.length) % projects.length);
+      }
+      // Update the current project based on the new active index
+      setCurrentProject(projects[(activeIndex + projects.length) % projects.length]);
+    }, 50); // Adjust the debounce time to suit your needs
+
+    window.addEventListener('wheel', handleScroll);
+
+    return () => {
+      window.removeEventListener('wheel', handleScroll);
+      handleScroll.cancel(); // Cancel the debounce on unmount
+    };
+  }, [activeIndex, projects, setCurrentProject]);
 
 
     return (
