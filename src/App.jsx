@@ -11,6 +11,7 @@ import NormImage from './NormImage'
 import FadingImage from './CustomImage.jsx'
 import * as THREE from 'three'
 import Overlay from './Overlay.jsx'
+import cn from "classnames";
 
 
 const MOBILE_BREAKPOINT = 768;
@@ -57,10 +58,23 @@ export default function App() {
       type: 'image',
       src: '/nope.jpg',
     },
+    {
+      id: 4,
+      title: 'Top Gun 2',
+      type: 'image',
+      src: '/nope.jpg',
+    },
+    {
+      id: 5,
+      title: 'Margaret',
+      type: 'image',
+      src: '/nope.jpg',
+    },
   ]
   // Current Project State Selection
   const [currentProject, setCurrentProject] = useState(projects[1]);
-  const [previousProject, setPreviousProject] = useState(currentProject);
+  const [previousProject, setPreviousProject] = useState(projects[0]);
+  const [nextProject, setNextProject] = useState(projects[2]);
   const [sceneLoaded, setSceneLoaded] = useState(false);
 
   return <>
@@ -104,6 +118,7 @@ export default function App() {
           setIsMobile={setIsMobile}
          />
         }
+        {/* <MouseTrail /> */}
     </>
   </>
 }
@@ -111,147 +126,132 @@ export default function App() {
 // 2D Project Selection Overlay ------------------------------------------------
 function ProjectMenu({ currentProject, setCurrentProject, projects, setPreviousProject, isMobile, setIsMobile }) {
 
-  // Get the center index
-  const centerIndex = Math.floor(projects.length / 2);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  // State for selected index
-  const [selectedIndex, setSelectedIndex] = useState(centerIndex);
+  // Used to determine which items appear above the active item
+  const halfwayIndex = Math.ceil(projects.length / 2);
+
+  // Usd to determine the height/spacing of each item
+  const itemHeight = 93;
+
+  // Used to determine at what point an item is moved from the top to the bottom
+  const shuffleThreshold = halfwayIndex * itemHeight;
+
+  // Used to determine which items should be visible. this prevents the "ghosting" animation
+  const visibleStyleThreshold = shuffleThreshold / 2;
+
+  const determinePlacement = (itemIndex) => {
+    // If these match, the item is active
+    if (activeIndex === itemIndex) return -13;
+
+    // if the active item is in the top half of the list
+    if (itemIndex >= halfwayIndex) {
+      if (activeIndex > itemIndex - halfwayIndex) {
+        return (itemIndex - activeIndex) * itemHeight;
+      } else {
+        return -(projects.length + activeIndex - itemIndex) * itemHeight;
+      }
+    }
+
+    // if the active item is in the bottom half of the list
+    if (itemIndex > activeIndex) {
+      return (itemIndex - activeIndex) * itemHeight;
+    }
+
+    // if the active item is in the bottom half of the list and the item is in the top half
+    if (itemIndex < activeIndex) {
+      if ((activeIndex - itemIndex) * itemHeight >= shuffleThreshold) { // if the item is below the shuffle threshold
+        return (projects.length - (activeIndex - itemIndex)) * itemHeight; // move it to the bottom
+      }
+      return -(activeIndex - itemIndex) * itemHeight; // otherwise, move it to the top
+    }
+  };
+
+  const isActive = (itemIndex) => {
+    const placement = determinePlacement(itemIndex);
+    return activeIndex === itemIndex && Math.abs(placement + 15) < itemHeight / 2;
+  };
+
+  const handleProjectClick = (index) => {
+    setActiveIndex(index);
+    setCurrentProject(projects[index]); // Set the current project based on the clicked item
+  };
 
 
-  return (
-    <div className="project-menu-container">
-      {projects.map((project, index) => {
-        // Check if this project is the active one
-        const isActive = currentProject.id === project.id;
+    return (
+        <div className="outer-container">
+          <div className="carousel-wrapper">
+              <div className="slides">
+                  {projects.map((item, i) => (
+                    <button
+                      type="button"
+                      onClick={() => handleProjectClick(i)}
+                      className={cn("carousel-item", {
+                        active: isActive(i),
+                        visible:
+                          Math.abs(determinePlacement(i)) <= visibleStyleThreshold
+                      })}
+                      key={item.id}
+                      style={{
+                        transform: `translateY(${determinePlacement(i)}px)`
+                      }}
+                    >
+                      {item.title}
+                    </button>
+                  ))}
+            </div>
+          </div>
+        </div>
+    )
+}
 
-        let animation = {
-          transform: 'translate3d(0px, 0px, 0px)',
-          scale: 1,
-          opacity: 1,
-          config: { mass: 4.0, tension: 350, friction: 40 },
-          margin: '0px',
-          fontSize: '36px',
-        };
+function MouseTrail() {
 
-        // if the first one is clicked...
-        if (selectedIndex === 0) {
-          if (index === 0) {
-            if (!isMobile) {
-              animation.transform = isActive ? 'translate3d(0px, 35px, 0px)' : 'translate3d(0px, 0px, 0px)';
-              animation.fontSize = isActive ? '96px' : '52px';
-            } else {
-              animation.transform = isActive ? 'translate3d(0px, 40px, 0px)' : 'translate3d(0px, 0px, 0px)';
-              animation.fontSize = isActive ? '32px' : '28px';
-            }
-            animation.opacity = isActive ? 1 : 0.2;
-          } else if (index === centerIndex) {
-            if (!isMobile) {
-              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 35px, 0px)';
-              animation.fontSize = isActive ? '96px' : '52px';
-            } else {
-              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 40px, 0px)';
-              animation.fontSize = isActive ? '32px' : '28px';
-            }
-            animation.opacity = isActive ? 1 : 0.2;
-          } else if (index === projects.length - 1) {
-            if (!isMobile) {
-              animation.transform = 'translate3d(0px, -125px, 0px)'
-              animation.fontSize = isActive ? '96px' : '52px';
-            } else {
-              animation.transform = 'translate3d(0px, -70px, 0px)'
-              animation.fontSize = isActive ? '32px' : '28px';
-            }
-            animation.opacity = isActive ? 1 : 0.2;
-          } else {
-            animation.fontSize = isActive ? '42px' : '36px';
-            animation.opacity = isActive ? 1 : 0.2;
-          }
-        // if the last one is clicked...
-        } else if (selectedIndex === projects.length - 1) {
-          if (index === 0) {
-            if (!isMobile) {
-              animation.transform = 'translate3d(0px, 120px, 0px)'
-              animation.fontSize = isActive ? '96px' : '52px';
-            } else {
-              animation.transform = 'translate3d(0px, 70px, 0px)'
-              animation.fontSize = isActive ? '32px' : '28px';
-            }
-            animation.opacity = isActive ? 1 : 0.2;
-          } else if (index === centerIndex) {
-            if (!isMobile) {
-              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, -40px, 0px)';
-              animation.fontSize = isActive ? '96px' : '52px';
-            } else {
-              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, -40px, 0px)';
-              animation.fontSize = isActive ? '32px' : '28px';
-            }
-            animation.opacity = isActive ? 1 : 0.2;
-          } else if (index === projects.length - 1) {
-            if (!isMobile) {
-              animation.transform = isActive ? 'translate3d(0px, -40px, 0px)' : 'translate3d(0px, 0px, 0px)';
-              animation.fontSize = isActive ? '96px' : '52px';
-            } else {
-              animation.transform = isActive ? 'translate3d(0px, -40px, 0px)' : 'translate3d(0px, 0px, 0px)';
-              animation.fontSize = isActive ? '32px' : '28px';
-            }
-            animation.opacity = isActive ? 1 : 0.2;
-          } else {
-            animation.fontSize = isActive ? '42px' : '36px';
-            animation.opacity = isActive ? 1 : 0.2;
-          }
-        } else {
-          if (index === 0) {
-            if (!isMobile) {
-              animation.fontSize = isActive ? '96px' : '52px';
-            } else {
-              animation.fontSize = isActive ? '32px' : '28px';
-            }
-            animation.opacity = isActive ? 1 : 0.2;
-          } else if (index === centerIndex) {
-            if (!isMobile) {
-              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 100px, 0px)';
-              animation.fontSize = isActive ? '96px' : '52px';
-            } else {
-              animation.transform = isActive ? 'translate3d(0px, 0px, 0px)' : 'translate3d(0px, 100px, 0px)';
-              animation.fontSize = isActive ? '30px' : '28px';
-            }
-            animation.opacity = isActive ? 1 : 0.2;
-          } else if (index === projects.length - 1) {
-            if (!isMobile) {
-              animation.fontSize = isActive ? '96px' : '52px';
-            } else {
-              animation.fontSize = isActive ? '32px' : '28px';
-            }
-            animation.opacity = isActive ? 1 : 0.2;
-          } else {
-            animation.fontSize = isActive ? '42px' : '36px';
-            animation.opacity = isActive ? 1 : 0.2;
-          }
-        }
+  const mouseRef = useRef();
 
-        const menuAnimation = useSpring(animation);
+  window.onmousemove = e => {
+    const x = e.clientX - mouseRef.current.clientWidth / 2;
+    const y = e.clientY - mouseRef.current.clientWidth / 2;
 
-        const combinedStyles = {
-          ...menuAnimation,
-        };
+    const keyframes = {
+      transform: `translate3d(${x}px, ${y}px, 0)`
+    }
 
-        return (
-          <animated.button
-            style={combinedStyles}
-            key={project.id}
-            className={isActive ? 'active project-button' : 'project-button'}
-            onClick={() => {
-              console.log("Setting project: ", project);
-              console.log("Setting previous project: ", currentProject);
-              setPreviousProject(currentProject);
-              setCurrentProject(project);
-              setSelectedIndex(projects.findIndex(p => p.id === project.id));
-            }}
-          >
-            <p>{project.title}</p>
-          </animated.button>
-        );
-      })}
+    mouseRef.current.animate(keyframes, {
+      duration: 400,
+      fill: 'forwards',
+    })
+
+    // check for data attributes
+    const elementUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
+    const trailStyle = elementUnderCursor.getAttribute('data-trail-style');
+    console.log(trailStyle);
+
+    if (trailStyle) {
+      switch (trailStyle) {
+        case 'modal':
+          mouseRef.current.style.backgroundColor = 'transparent';
+          mouseRef.current.style.border = '1px solid black';
+          mouseRef.current.style.width = '100px';
+          mouseRef.current.style.height = '100px';
+          break;
+        case 'blue':
+          mouseRef.current.style.backgroundColor = 'blue';
+          break;
+        // ... add more cases as needed
+        default:
+          mouseRef.current.style.backgroundColor = ''; // default style
+      }
+    } else {
+      mouseRef.current.style.backgroundColor = ''; // default style
+      mouseRef.current.style.border = '';
+      mouseRef.current.style.width = '';
+      mouseRef.current.style.height = '';
+    }
+  }
+  return <>
+    <div id="trailer" ref={mouseRef}>
+
     </div>
-  );
+  </>
 }

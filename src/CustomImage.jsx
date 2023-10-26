@@ -1,10 +1,8 @@
-import lenseFragmentShader from './shaders/lenseFragmentShader'
-import lenseVertexShader from './shaders/lenseVertexShader'
 import { Color } from 'three'
 import { useFrame, extend } from '@react-three/fiber'
 import { useRef, useEffect, useMemo, useCallback, useState } from 'react'
 import * as THREE from 'three'
-import { useTexture, shaderMaterial } from '@react-three/drei'
+import { useTexture, shaderMaterial, Image } from '@react-three/drei'
 import { EffectComposer, GodRays, Vignette } from '@react-three/postprocessing'
 import { useSpring, animated } from '@react-spring/three'
 
@@ -68,6 +66,7 @@ export default function FadingImage({ currentProject, setCurrentProject, project
   const ref = useRef()
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [texture1, texture2, dispTexture] = useTexture([previousProject.src, currentProject.src, "/shader-img/shader-fade-2.jpeg"])
+
 
   // Scene Resizing for Mobile -----------------------------------------------
   const [imageSize, setImageSize] = useState([7, 5, 1]);
